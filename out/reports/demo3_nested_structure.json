@@ -1,0 +1,713 @@
+{
+  "input_file": "demos\\demo3_nested_structure.txt",
+  "generated_html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><title>demo3_nested_structure</title></head>\n<body>\n<h1>Report Title</h1>\n<p>This is an introduction paragraph.</p>\n<ul>\n  <li>First item</li>\n  <li>Second item</li>\n</ul>\n<p>&lt;div&gt;Inline literal div to test auto-close behavior&lt;/div&gt;</p></body>\n</html>",
+  "ir": {
+    "type": "document",
+    "children": [
+      {
+        "type": "heading",
+        "level": 1,
+        "text": "Report Title"
+      },
+      {
+        "type": "p",
+        "text": "This is an introduction paragraph."
+      },
+      {
+        "type": "ul",
+        "items": [
+          "First item",
+          "Second item"
+        ]
+      },
+      {
+        "type": "p",
+        "text": "<div>Inline literal div to test auto-close behavior</div>"
+      }
+    ]
+  },
+  "parser": {
+    "tokens": [
+      {
+        "type": "Text",
+        "data": "doctype html>\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "html",
+        "attributes": {
+          "lang": "en"
+        }
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "head",
+        "attributes": {}
+      },
+      {
+        "type": "StartTag",
+        "name": "meta",
+        "attributes": {
+          "charset": "utf-8"
+        }
+      },
+      {
+        "type": "StartTag",
+        "name": "title",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "demo3_nested_structure"
+      },
+      {
+        "type": "EndTag",
+        "name": "title"
+      },
+      {
+        "type": "EndTag",
+        "name": "head"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "body",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "h1",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Report Title"
+      },
+      {
+        "type": "EndTag",
+        "name": "h1"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "This is an introduction paragraph."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "ul",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "\n  "
+      },
+      {
+        "type": "StartTag",
+        "name": "li",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "First item"
+      },
+      {
+        "type": "EndTag",
+        "name": "li"
+      },
+      {
+        "type": "Text",
+        "data": "\n  "
+      },
+      {
+        "type": "StartTag",
+        "name": "li",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Second item"
+      },
+      {
+        "type": "EndTag",
+        "name": "li"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "EndTag",
+        "name": "ul"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "&lt;div&gt;Inline literal div to test auto-close behavior&lt;/div&gt;"
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "EndTag",
+        "name": "body"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "EndTag",
+        "name": "html"
+      }
+    ],
+    "tree": {
+      "type": "Document",
+      "children": [
+        {
+          "type": "Text",
+          "data": "doctype html>\n"
+        },
+        {
+          "type": "Element",
+          "name": "html",
+          "attributes": {
+            "lang": "en"
+          },
+          "children": [
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "head",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Element",
+                  "name": "meta",
+                  "attributes": {
+                    "charset": "utf-8"
+                  },
+                  "children": [
+                    {
+                      "type": "Element",
+                      "name": "title",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "demo3_nested_structure"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "body",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "h1",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "Report Title"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "This is an introduction paragraph."
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "ul",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "\n  "
+                    },
+                    {
+                      "type": "Element",
+                      "name": "li",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "First item"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text",
+                      "data": "\n  "
+                    },
+                    {
+                      "type": "Element",
+                      "name": "li",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "Second item"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text",
+                      "data": "\n"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "&lt;div&gt;Inline literal div to test auto-close behavior&lt;/div&gt;"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            }
+          ]
+        }
+      ]
+    },
+    "trace": [
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "html"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "meta"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "h1"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "h1"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "ul"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "li"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "li"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "li"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "li"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "ul"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "html"
+      }
+    ]
+  },
+  "bs4_pretty": "<!DOCTYPE html>\n<html lang=\"en\">\n <head>\n  <meta charset=\"utf-8\"/>\n  <title>\n   demo3_nested_structure\n  </title>\n </head>\n <body>\n  <h1>\n   Report Title\n  </h1>\n  <p>\n   This is an introduction paragraph.\n  </p>\n  <ul>\n   <li>\n    First item\n   </li>\n   <li>\n    Second item\n   </li>\n  </ul>\n  <p>\n   &lt;div&gt;Inline literal div to test auto-close behavior&lt;/div&gt;\n  </p>\n </body>\n</html>\n",
+  "validation": {
+    "valid_html": true,
+    "lxml_errors": [
+      "StartTag: invalid element name, line 1, column 2 (<string>, line 1)"
+    ],
+    "html5lib_roundtrip": "<html lang=en><meta charset=utf-8><title>demo3_nested_structure</title></head>\n<body>\n<h1>Report Title</h1>\n<p>This is an introduction paragraph.</p>\n<ul>\n  <li>First item</li>\n  <li>Second item</li>\n</ul>\n<p>&lt;div&gt;Inline literal div to test auto-close behavior&lt;/div&gt;</p>\n",
+    "w3c": {
+      "version": "26.2.17",
+      "messages": []
+    }
+  },
+  "validator_availability": {
+    "lxml": true,
+    "html5lib": true,
+    "w3c": true
+  },
+  "tree_diff": [
+    ": type Document != tag"
+  ],
+  "timestamp": "2026-02-23T17:23:57.260057Z"
+}

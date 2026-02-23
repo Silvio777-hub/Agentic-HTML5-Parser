@@ -1,0 +1,561 @@
+{
+  "input_file": "demos\\demo2_links_and_attributes.txt",
+  "generated_html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><title>demo2_links_and_attributes</title></head>\n<body>\n<p>Visit <a href=\"https://openai.com\">OpenAI</a> for more information.</p>\n<p>Also see https://example.com for examples.</p></body>\n</html>",
+  "ir": {
+    "type": "document",
+    "children": [
+      {
+        "type": "p",
+        "text": "Visit [OpenAI](https://openai.com) for more information.",
+        "links": [
+          {
+            "text": "OpenAI",
+            "href": "https://openai.com"
+          },
+          {
+            "text": "https://openai.com)",
+            "href": "https://openai.com)"
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "text": "Also see https://example.com for examples.",
+        "links": [
+          {
+            "text": "https://example.com",
+            "href": "https://example.com"
+          }
+        ]
+      }
+    ]
+  },
+  "parser": {
+    "tokens": [
+      {
+        "type": "Text",
+        "data": "doctype html>\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "html",
+        "attributes": {
+          "lang": "en"
+        }
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "head",
+        "attributes": {}
+      },
+      {
+        "type": "StartTag",
+        "name": "meta",
+        "attributes": {
+          "charset": "utf-8"
+        }
+      },
+      {
+        "type": "StartTag",
+        "name": "title",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "demo2_links_and_attributes"
+      },
+      {
+        "type": "EndTag",
+        "name": "title"
+      },
+      {
+        "type": "EndTag",
+        "name": "head"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "body",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Visit "
+      },
+      {
+        "type": "StartTag",
+        "name": "a",
+        "attributes": {
+          "href": "https://openai.com"
+        }
+      },
+      {
+        "type": "Text",
+        "data": "OpenAI"
+      },
+      {
+        "type": "EndTag",
+        "name": "a"
+      },
+      {
+        "type": "Text",
+        "data": " for more information."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Also see https://example.com for examples."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "EndTag",
+        "name": "body"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "EndTag",
+        "name": "html"
+      }
+    ],
+    "tree": {
+      "type": "Document",
+      "children": [
+        {
+          "type": "Text",
+          "data": "doctype html>\n"
+        },
+        {
+          "type": "Element",
+          "name": "html",
+          "attributes": {
+            "lang": "en"
+          },
+          "children": [
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "head",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Element",
+                  "name": "meta",
+                  "attributes": {
+                    "charset": "utf-8"
+                  },
+                  "children": [
+                    {
+                      "type": "Element",
+                      "name": "title",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "demo2_links_and_attributes"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "body",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "Visit "
+                    },
+                    {
+                      "type": "Element",
+                      "name": "a",
+                      "attributes": {
+                        "href": "https://openai.com"
+                      },
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "OpenAI"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text",
+                      "data": " for more information."
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "Also see https://example.com for examples."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            }
+          ]
+        }
+      ]
+    },
+    "trace": [
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "html"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "meta"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "a"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "a"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "html"
+      }
+    ]
+  },
+  "bs4_pretty": "<!DOCTYPE html>\n<html lang=\"en\">\n <head>\n  <meta charset=\"utf-8\"/>\n  <title>\n   demo2_links_and_attributes\n  </title>\n </head>\n <body>\n  <p>\n   Visit\n   <a href=\"https://openai.com\">\n    OpenAI\n   </a>\n   for more information.\n  </p>\n  <p>\n   Also see https://example.com for examples.\n  </p>\n </body>\n</html>\n",
+  "validation": {
+    "valid_html": true,
+    "lxml_errors": [
+      "StartTag: invalid element name, line 1, column 2 (<string>, line 1)"
+    ],
+    "html5lib_roundtrip": "<html lang=en><meta charset=utf-8><title>demo2_links_and_attributes</title></head>\n<body>\n<p>Visit <a href=\"https://openai.com\">OpenAI</a> for more information.</p>\n<p>Also see https://example.com for examples.</p>\n",
+    "w3c": {
+      "version": "26.2.20",
+      "messages": []
+    }
+  },
+  "validator_availability": {
+    "lxml": true,
+    "html5lib": true,
+    "w3c": true
+  },
+  "tree_diff": [
+    ": type Document != tag"
+  ],
+  "timestamp": "2026-02-23T17:23:55.607707Z"
+}

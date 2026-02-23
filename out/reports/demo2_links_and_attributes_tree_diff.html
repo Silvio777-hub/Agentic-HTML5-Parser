@@ -1,0 +1,25 @@
+
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <style>
+      body { font-family: Arial, sans-serif; }
+      .col { float:left; width:48%; padding:1%; box-sizing:border-box; }
+      .node { margin-left:10px; border-left:1px solid #eee; padding-left:8px; }
+      .diff { background:#fff5f5; }
+      .tag { color: #006; font-weight:600; }
+      .text { color: #222 }
+      .msgs { clear:both; margin-top:20px; background:#f8f8f8; padding:10px }
+    </style>
+    </head>
+    <body>
+    <h2>Tree diff: demo2_links_and_attributes</h2>
+      <div class="col"><h3>Parser tree</h3>
+      <div class="node "><span class="text"></span></div>
+      </div>
+      <div class="col"><h3>BeautifulSoup tree</h3>
+      <div class="node "><span class="tag">&lt;[document]&gt;</span><div class="node "><span class="text">html</span></div><div class="node "><span class="text"></span></div><div class="node "><span class="tag">&lt;html <span class="attr">lang="en"</span>&gt;</span><div class="node "><span class="text"></span></div><div class="node "><span class="tag">&lt;head&gt;</span><div class="node "><span class="tag">&lt;meta <span class="attr">charset="utf-8"</span>&gt;</span><span class="tag">&lt;/meta&gt;</span></div><div class="node "><span class="tag">&lt;title&gt;</span><div class="node "><span class="text">demo2_links_and_attributes</span></div><span class="tag">&lt;/title&gt;</span></div><span class="tag">&lt;/head&gt;</span></div><div class="node "><span class="text"></span></div><div class="node "><span class="tag">&lt;body&gt;</span><div class="node "><span class="text"></span></div><div class="node "><span class="tag">&lt;p&gt;</span><div class="node "><span class="text">Visit</span></div><div class="node "><span class="tag">&lt;a <span class="attr">href="https://openai.com"</span>&gt;</span><div class="node "><span class="text">OpenAI</span></div><span class="tag">&lt;/a&gt;</span></div><div class="node "><span class="text">for more information.</span></div><span class="tag">&lt;/p&gt;</span></div><div class="node "><span class="text"></span></div><div class="node "><span class="tag">&lt;p&gt;</span><div class="node "><span class="text">Also see https://example.com for examples.</span></div><span class="tag">&lt;/p&gt;</span></div><span class="tag">&lt;/body&gt;</span></div><div class="node "><span class="text"></span></div><span class="tag">&lt;/html&gt;</span></div><span class="tag">&lt;/[document]&gt;</span></div>
+      </div>
+            <div class="msgs"><h4>Diff messages</h4><ul><li>: type Document != tag</li></ul></div>
+    </body></html>
+    

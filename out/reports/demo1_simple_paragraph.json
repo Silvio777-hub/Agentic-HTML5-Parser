@@ -1,0 +1,461 @@
+{
+  "input_file": "demos\\demo1_simple_paragraph.txt",
+  "generated_html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><title>demo1_simple_paragraph</title></head>\n<body>\n<p>Hello, this is a simple paragraph for Demo 1.</p>\n<p>It should produce a paragraph element.</p></body>\n</html>",
+  "ir": {
+    "type": "document",
+    "children": [
+      {
+        "type": "p",
+        "text": "Hello, this is a simple paragraph for Demo 1."
+      },
+      {
+        "type": "p",
+        "text": "It should produce a paragraph element."
+      }
+    ]
+  },
+  "parser": {
+    "tokens": [
+      {
+        "type": "Text",
+        "data": "doctype html>\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "html",
+        "attributes": {
+          "lang": "en"
+        }
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "head",
+        "attributes": {}
+      },
+      {
+        "type": "StartTag",
+        "name": "meta",
+        "attributes": {
+          "charset": "utf-8"
+        }
+      },
+      {
+        "type": "StartTag",
+        "name": "title",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "demo1_simple_paragraph"
+      },
+      {
+        "type": "EndTag",
+        "name": "title"
+      },
+      {
+        "type": "EndTag",
+        "name": "head"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "body",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Hello, this is a simple paragraph for Demo 1."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "It should produce a paragraph element."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "EndTag",
+        "name": "body"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "EndTag",
+        "name": "html"
+      }
+    ],
+    "tree": {
+      "type": "Document",
+      "children": [
+        {
+          "type": "Text",
+          "data": "doctype html>\n"
+        },
+        {
+          "type": "Element",
+          "name": "html",
+          "attributes": {
+            "lang": "en"
+          },
+          "children": [
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "head",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Element",
+                  "name": "meta",
+                  "attributes": {
+                    "charset": "utf-8"
+                  },
+                  "children": [
+                    {
+                      "type": "Element",
+                      "name": "title",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "demo1_simple_paragraph"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "body",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "Hello, this is a simple paragraph for Demo 1."
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "It should produce a paragraph element."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            }
+          ]
+        }
+      ]
+    },
+    "trace": [
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "html"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "meta"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "html"
+      }
+    ]
+  },
+  "bs4_pretty": "<!DOCTYPE html>\n<html lang=\"en\">\n <head>\n  <meta charset=\"utf-8\"/>\n  <title>\n   demo1_simple_paragraph\n  </title>\n </head>\n <body>\n  <p>\n   Hello, this is a simple paragraph for Demo 1.\n  </p>\n  <p>\n   It should produce a paragraph element.\n  </p>\n </body>\n</html>\n",
+  "validation": {
+    "valid_html": true,
+    "lxml_errors": [
+      "StartTag: invalid element name, line 1, column 2 (<string>, line 1)"
+    ],
+    "html5lib_roundtrip": "<html lang=en><meta charset=utf-8><title>demo1_simple_paragraph</title></head>\n<body>\n<p>Hello, this is a simple paragraph for Demo 1.</p>\n<p>It should produce a paragraph element.</p>\n",
+    "w3c": {
+      "version": "26.2.17",
+      "messages": []
+    }
+  },
+  "validator_availability": {
+    "lxml": true,
+    "html5lib": true,
+    "w3c": true
+  },
+  "tree_diff": [
+    ": type Document != tag"
+  ],
+  "timestamp": "2026-02-23T17:23:53.783508Z"
+}

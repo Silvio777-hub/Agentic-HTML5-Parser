@@ -1,0 +1,653 @@
+{
+  "input_file": "demos\\demo5_malformed_input.txt",
+  "generated_html": "<!doctype html>\n<html lang=\"en\">\n<head><meta charset=\"utf-8\"><title>demo5_malformed_input</title></head>\n<body>\n<p>This is a paragraph with a stray &lt;div&gt; tag</p>\n<p>&lt;div&gt;</p>\n<p>Unclosed div should trigger parser&#x27;s auto-close behavior</p>\n<p>&lt;/div&gt;</p>\n<p>And final paragraph.</p></body>\n</html>",
+  "ir": {
+    "type": "document",
+    "children": [
+      {
+        "type": "p",
+        "text": "This is a paragraph with a stray <div> tag"
+      },
+      {
+        "type": "p",
+        "text": "<div>"
+      },
+      {
+        "type": "p",
+        "text": "Unclosed div should trigger parser's auto-close behavior"
+      },
+      {
+        "type": "p",
+        "text": "</div>"
+      },
+      {
+        "type": "p",
+        "text": "And final paragraph."
+      }
+    ]
+  },
+  "parser": {
+    "tokens": [
+      {
+        "type": "Text",
+        "data": "doctype html>\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "html",
+        "attributes": {
+          "lang": "en"
+        }
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "head",
+        "attributes": {}
+      },
+      {
+        "type": "StartTag",
+        "name": "meta",
+        "attributes": {
+          "charset": "utf-8"
+        }
+      },
+      {
+        "type": "StartTag",
+        "name": "title",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "demo5_malformed_input"
+      },
+      {
+        "type": "EndTag",
+        "name": "title"
+      },
+      {
+        "type": "EndTag",
+        "name": "head"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "body",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "This is a paragraph with a stray &lt;div&gt; tag"
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "&lt;div&gt;"
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "Unclosed div should trigger parser&#x27;s auto-close behavior"
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "&lt;/div&gt;"
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "StartTag",
+        "name": "p",
+        "attributes": {}
+      },
+      {
+        "type": "Text",
+        "data": "And final paragraph."
+      },
+      {
+        "type": "EndTag",
+        "name": "p"
+      },
+      {
+        "type": "EndTag",
+        "name": "body"
+      },
+      {
+        "type": "Text",
+        "data": "\n"
+      },
+      {
+        "type": "EndTag",
+        "name": "html"
+      }
+    ],
+    "tree": {
+      "type": "Document",
+      "children": [
+        {
+          "type": "Text",
+          "data": "doctype html>\n"
+        },
+        {
+          "type": "Element",
+          "name": "html",
+          "attributes": {
+            "lang": "en"
+          },
+          "children": [
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "head",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Element",
+                  "name": "meta",
+                  "attributes": {
+                    "charset": "utf-8"
+                  },
+                  "children": [
+                    {
+                      "type": "Element",
+                      "name": "title",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "type": "Text",
+                          "data": "demo5_malformed_input"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            },
+            {
+              "type": "Element",
+              "name": "body",
+              "attributes": {},
+              "children": [
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "This is a paragraph with a stray &lt;div&gt; tag"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "&lt;div&gt;"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "Unclosed div should trigger parser&#x27;s auto-close behavior"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "&lt;/div&gt;"
+                    }
+                  ]
+                },
+                {
+                  "type": "Text",
+                  "data": "\n"
+                },
+                {
+                  "type": "Element",
+                  "name": "p",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "type": "Text",
+                      "data": "And final paragraph."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Text",
+              "data": "\n"
+            }
+          ]
+        }
+      ]
+    },
+    "trace": [
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "html"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_NAME"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_VALUE"
+      },
+      {
+        "event": "state_transition",
+        "to": "ATTRIBUTE_VALUE_QUOTED"
+      },
+      {
+        "event": "state_transition",
+        "to": "BEFORE_ATTRIBUTE_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "meta"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "title"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "head"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_NAME"
+      },
+      {
+        "event": "emit_start_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "p"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "body"
+      },
+      {
+        "event": "state_transition",
+        "to": "TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "END_TAG_OPEN"
+      },
+      {
+        "event": "state_transition",
+        "to": "PROCESS_END_TAG"
+      },
+      {
+        "event": "emit_end_tag",
+        "name": "html"
+      }
+    ]
+  },
+  "bs4_pretty": "<!DOCTYPE html>\n<html lang=\"en\">\n <head>\n  <meta charset=\"utf-8\"/>\n  <title>\n   demo5_malformed_input\n  </title>\n </head>\n <body>\n  <p>\n   This is a paragraph with a stray &lt;div&gt; tag\n  </p>\n  <p>\n   &lt;div&gt;\n  </p>\n  <p>\n   Unclosed div should trigger parser's auto-close behavior\n  </p>\n  <p>\n   &lt;/div&gt;\n  </p>\n  <p>\n   And final paragraph.\n  </p>\n </body>\n</html>\n",
+  "validation": {
+    "valid_html": true,
+    "lxml_errors": [
+      "StartTag: invalid element name, line 1, column 2 (<string>, line 1)"
+    ],
+    "html5lib_roundtrip": "<html lang=en><meta charset=utf-8><title>demo5_malformed_input</title></head>\n<body>\n<p>This is a paragraph with a stray &lt;div&gt; tag</p>\n<p>&lt;div&gt;</p>\n<p>Unclosed div should trigger parser's auto-close behavior</p>\n<p>&lt;/div&gt;</p>\n<p>And final paragraph.</p>\n",
+    "w3c": {
+      "version": "26.2.20",
+      "messages": []
+    }
+  },
+  "validator_availability": {
+    "lxml": true,
+    "html5lib": true,
+    "w3c": true
+  },
+  "tree_diff": [
+    ": type Document != tag"
+  ],
+  "timestamp": "2026-02-23T17:23:59.729516Z"
+}
