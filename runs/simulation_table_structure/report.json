@@ -1,5 +1,5 @@
 {
-  "label": "Attributes and IDs",
+  "label": "Table Structure",
   "audit": {
     "score": 100,
     "violations": [],
@@ -7,15 +7,15 @@
   },
   "differential": {
     "matches": true,
-    "ref_tags": 2,
-    "our_tags": 2,
+    "ref_tags": 5,
+    "our_tags": 5,
     "details": "Structure matches reference"
   },
   "integrity": {
     "valid": true,
-    "node_count": 3,
-    "max_depth": 3,
+    "node_count": 6,
+    "max_depth": 4,
     "issues": []
   },
-  "trace_events": 26
+  "trace_events": 44
 }

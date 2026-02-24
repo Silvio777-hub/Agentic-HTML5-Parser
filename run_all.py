@@ -55,7 +55,9 @@ def main():
     demos = [
         ("<div><p>Simple Test</p></div>", "Simple Tag Nesting"),
         ("<p><div>Invalid Nesting</div></p>", "Semantic Violation"),
-        ("<div id='main' class='container'><p>Attributes Test</p></div>", "Attributes and IDs")
+        ('<div id="main" class="container" data-test="true"><p>Test</p></div>', "Attributes and IDs"),
+        ('<table><tr><th>Header</th></tr><tr><td>Data</td></tr></table>', "Table Structure"),
+        ('<form><label>User:</label><input type="text"><button>Submit</button></form>', "Login Form")
     ]
     
     for html, label in demos:

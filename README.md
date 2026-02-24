@@ -28,7 +28,7 @@ Convert text inputs directly to HTML:
 python cli.py source.txt output.html
 ```
 
-## 7 Core Agents
+## 4 Core Agents
 
 ### 1. **Spec Agent** - Creates Rules (spec.yml)
 **Responsibility:** Interpret HTML5 specification and generate structured rules.
@@ -84,27 +84,7 @@ test_cases:
 - Produces proper unified diff format
 - Applies using standard `git apply` command
 
-### 3. **Critique Agent** - Provides Approval/Rejection
-**Responsibility:** Validate generated code against specification.
-
-**Input:**
-- Generated patch from Codegen Agent
-- Original specification
-- Test execution results
-
-**Output:**
-- Approval decision (approve/reject)
-- Issues found (if any)
-- Confidence score (0-100%)
-- Recommendations for improvement
-
-**Decision Criteria:**
-- Specification compliance
-- Code quality
-- Edge case handling
-- Security considerations
-
-### 4. **Test Agent** - Creates Verification Suite (tests.py)
+### 3. **Test Agent** - Creates Verification Suite (tests.py)
 **Responsibility:** Generate comprehensive conformance tests.
 
 **Input:**
@@ -112,55 +92,30 @@ test_cases:
 - Parser interface documentation
 
 **Output:**
-- `test_parser.py` - Pytest test suite with:
-  - Tokenization tests
-  - Tree construction tests
-  - Implicit closure verification
-  - Edge case coverage
-  - Docstrings explaining each test
+- `test_parser.py` - Pytest test suite
 
 **Test Coverage:**
 - ✓ Basic functionality
 - ✓ Attribute parsing
 - ✓ Nested structures
 - ✓ Self-closing tags
-- ✓ Error handling
 
-### 5. **Red-Team Agent** - Adds Stress Tests (test_red_team.py)
-**Responsibility:** Generate adversarial and malformed input tests.
-
-**Input:**
-- Parser interface
-- Known vulnerability patterns
-
-**Output:**
-- `test_red_team.py` - Security-focused tests including:
-  - Deeply nested structures (1000+ levels)
-  - Malformed HTML (missing brackets, incomplete tags)
-  - Extremely long attributes
-  - Invalid character sequences
-  - Resource exhaustion scenarios
-  - Timeout violations
-
-**Security Focus:**
-- Parser gracefully handles malformed input
-- No resource exhaustion
-- No infinite loops
-- Predictable error handling
-- Timeout constraints enforced
-
-### 6. **Monitor Agent** - Observes Execution (checking for timeouts)
-**Responsibility:** Analyze execution traces for anomalies.
+### 4. **Repair Agent** - Autonomously Fixes Issues
+**Responsibility:** Analyze test failures and synthesize repairs.
 
 **Input:**
-- Parser execution traces
-- Performance metrics (timing, memory, depth)
+- Original specification
+- Failing test report
+- Current implementation code
 
 **Output:**
-- Health assessment (healthy/unhealthy)
-- Identified issues
-- Performance bottlenecks
-- Recommendations
+- Iterative repair patches (e.g., `repair_1.patch`)
+
+**Mechanism:**
+1. Parse the `test_report.json`
+2. Identify specific logic errors
+3. Generate minimal patches to resolve discrepancies
+4. Hand off for re-validation
 
 **Monitoring Points:**
 - ✓ Recursion depth violations
@@ -168,28 +123,6 @@ test_cases:
 - ✓ Timeout violations
 - ✓ Inefficient algorithms
 - ✓ State machine errors
-
-### 7. **Repair Agent** - Handles Self-Correction
-**Responsibility:** Fix failures identified by tests and monitoring.
-
-**Input:**
-- Failing test names and error messages
-- Execution trace showing failure
-- Current implementation
-
-**Output:**
-- `repair_N.patch` - Targeted fix patch containing:
-  - Root cause analysis
-  - Minimal code changes
-  - Explanatory inline comments
-  - Verification logic
-
-**Repair Strategy:**
-- Analyze failing test evidence
-- Identify root cause from trace
-- Generate minimal, focused fix
-- Avoid introducing regressions
-- Iterate until tests pass
 
 ## Pipeline Workflow
 
@@ -212,35 +145,18 @@ test_cases:
                      │ code.patch
                      ▼
             ┌─────────────────┐
-            │Critique Agent   │
+            │  Test Agent     │
             │ (Llama 3.3 70B) │
             └────────┬────────┘
-                     │ approval
+                     │ test_parser.py
                      ▼
-        ┌────────────────────────┐
-        │  Test Agent            │
-        │  (Llama 3.3 70B)       │
-        └────────┬───────────────┘
-                 │ tests.patch
-                 ▼
-        ┌────────────────────────┐
-        │  Red-Team Agent        │
-        │  (Llama 3.3 70B)       │
-        └────────┬───────────────┘
-                 │ red_team.patch
-                 ▼
-        ┌────────────────────────┐
-        │  Test Execution        │
-        │  & Results             │
-        └────────┬───────────────┘
-                 │ test_report
-                 ▼
-        ┌────────────────────────┐
-        │  Monitor Agent         │
-        │  (Llama 3.3 70B)       │
-        └────────┬───────────────┘
-                 │
-        ┌────────▼────────┐
+            ┌─────────────────┐
+            │  Test Execution │
+            │ & Analytics     │
+            └────────┬────────┘
+                     │ test_report
+                     ▼
+        ┌────────────┴────┐
         │ Tests Passed? ──┤──NO──┐
         └────────┬────────┘      │
                  │ YES           │
@@ -255,9 +171,9 @@ test_cases:
                         └────────┬────────┘
                                  │ repair.patch
                                  │
-                          ┌──────▼────────┐
-                          │ Re-run tests  │
-                          └───────────────┘
+                           ┌──────▼────────┐
+                           │ Re-run tests  │
+                           └───────────────┘
 ```
 
 ## 7 Core Features
@@ -321,28 +237,15 @@ Agentic AI HTML5 Parser/
 ├── src/
 │   ├── parser.py              # Parser implementation
 │   ├── utils.py               # Artifact management
-│   ├── groq_integration.py    ### 1. Multi-Agent Pipeline
-The core of the Professional Suite is a **5-stage agentic workflow** powered by Llama 3.3 (via Groq):
-1.  **Spec Agent**: Transforms natural language descriptions into technical IR specifications.
-2.  **Codegen Agent**: Synthesizes standards-compliant HTML5 output patches.
-3.  **Test Agent**: Generates a comprehensive validation suite for the current implementation.
-4.  **Runner**: Executes tests and generates performance/stability markers.
-5.  **Repair Agent**: Autonomously analyzes failures and applies iterative self-healing patches.
+│   ├── groq_integration.py    # AI agent wrappers
+│   ├── verifiers.py           # Compliance & Selector agents
+│   ├── robustness.py          # Sandboxing & Integrity
 │   └── __init__.py
-├── agents/
-│   ├── spec_agent.py          # Spec Agent implementation
-│   ├── codegen_agent.py       # Codegen Agent implementation
-│   ├── critique_agent.py      # Critique Agent implementation
-│   ├── test_agent.py          # Test Agent implementation
-│   ├── red_team_agent.py      # Red-Team Agent implementation
-│   ├── monitor_agent.py       # Monitor Agent implementation
-│   └── repair_agent.py        # Repair Agent implementation
+├── agents/ (Prompts)
+│   ├── spec_agent.txt
+│   ├── codegen_agent.txt
+│   └── ...
 ├── tests/
-│   ├── test_parser.py         # Generated conformance tests
-│   ├── test_red_team.py       # Generated adversarial tests
-│   └── test_integration.py    # Integration tests
-├── specs/
-│   └── seed_subset.md         # Human-defined HTML5 subset
 ├── prompts/
 │   ├── spec_agent.txt         # Spec Agent prompt
 │   ├── codegen_agent.txt      # Codegen Agent prompt
