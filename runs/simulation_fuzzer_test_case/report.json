@@ -1,0 +1,21 @@
+{
+  "label": "Fuzzer Test Case",
+  "audit": {
+    "score": 100,
+    "violations": [],
+    "status": "PASS"
+  },
+  "differential": {
+    "matches": true,
+    "ref_tags": 4,
+    "our_tags": 4,
+    "details": "Structure matches reference"
+  },
+  "integrity": {
+    "valid": true,
+    "node_count": 5,
+    "max_depth": 3,
+    "issues": []
+  },
+  "trace_events": 98
+}
