@@ -40,18 +40,13 @@ Generating specification from HTML subset...
   Rules: 12
 ```
 
-## What Just Happened?
-
-The orchestrator executed all 7 agents:
-
-1. **Spec Agent** - Converted HTML subset into `spec/spec.yml`
-2. **Codegen Agent** - Generated `patches/code.patch`
-3. **Critique Agent** - Validated the patch
-4. **Test Agent** - Created `tests/test_parser.py`
-5. **Red-Team Agent** - Created `tests/test_red_team.py`
-6. **Test Execution** - Ran 32 integration tests
-7. **Monitor Agent** - Analyzed execution metrics
-8. **Repair Agent** (if needed) - Fixed any failures
+## Pipeline Overview
+The system runs in 5 distinct stages:
+1.  **Stage 1**: Spec Generation
+2.  **Stage 2**: Code Synthesis
+3.  **Stage 3**: Test Generation
+4.  **Stage 4**: Execution & Analytics
+5.  **Stage 5**: Self-Healing (Repair)
 
 ## View Results
 

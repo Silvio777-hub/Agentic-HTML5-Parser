@@ -1,21 +1,26 @@
 {
   "label": "Fuzzer Test Case",
   "audit": {
-    "score": 100,
-    "violations": [],
-    "status": "PASS"
+    "score": 60,
+    "violations": [
+      "Invalid nesting: <div> inside <ul>",
+      "Invalid nesting: <div> inside <ul>",
+      "Invalid nesting: <div> inside <ul>",
+      "Invalid nesting: <div> inside <ul>"
+    ],
+    "status": "FAIL"
   },
   "differential": {
     "matches": true,
-    "ref_tags": 4,
-    "our_tags": 4,
+    "ref_tags": 7,
+    "our_tags": 7,
     "details": "Structure matches reference"
   },
   "integrity": {
     "valid": true,
-    "node_count": 5,
-    "max_depth": 3,
+    "node_count": 8,
+    "max_depth": 5,
     "issues": []
   },
-  "trace_events": 98
+  "trace_events": 115
 }

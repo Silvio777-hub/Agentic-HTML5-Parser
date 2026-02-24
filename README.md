@@ -321,7 +321,13 @@ Agentic AI HTML5 Parser/
 ├── src/
 │   ├── parser.py              # Parser implementation
 │   ├── utils.py               # Artifact management
-│   ├── groq_integration.py    # AI agent wrappers
+│   ├── groq_integration.py    ### 1. Multi-Agent Pipeline
+The core of the Professional Suite is a **5-stage agentic workflow** powered by Llama 3.3 (via Groq):
+1.  **Spec Agent**: Transforms natural language descriptions into technical IR specifications.
+2.  **Codegen Agent**: Synthesizes standards-compliant HTML5 output patches.
+3.  **Test Agent**: Generates a comprehensive validation suite for the current implementation.
+4.  **Runner**: Executes tests and generates performance/stability markers.
+5.  **Repair Agent**: Autonomously analyzes failures and applies iterative self-healing patches.
 │   └── __init__.py
 ├── agents/
 │   ├── spec_agent.py          # Spec Agent implementation

@@ -60,10 +60,7 @@ class PipelineOrchestrator:
         # Initialize agents
         self.spec_agent = SpecAgentAI()
         self.codegen_agent = CodegenAgentAI()
-        self.critique_agent = CritiqueAgentAI()
         self.test_agent = TestAgentAI()
-        self.red_team_agent = RedTeamAgentAI()
-        self.monitor_agent = MonitorAgentAI()
         self.repair_agent = RepairAgentAI()
         
         # Pipeline state
@@ -107,34 +104,22 @@ class PipelineOrchestrator:
             print("="*60)
             self._run_codegen_agent(report)
             
-            # Stage 3: Critique Agent
+            # Stage 3: Test Agent
             print("\n" + "="*60)
-            print("STAGE 3: CRITIQUE AGENT")
-            print("="*60)
-            self._run_critique_agent(report)
-            
-            # Stage 4: Test Agent
-            print("\n" + "="*60)
-            print("STAGE 4: TEST AGENT")
+            print("STAGE 3: TEST AGENT")
             print("="*60)
             self._run_test_agent(report)
             
-            # Stage 5: Red-Team Agent
+            # Stage 4: Execute Tests
             print("\n" + "="*60)
-            print("STAGE 5: RED-TEAM AGENT")
+            print("STAGE 4: TEST EXECUTION")
             print("="*60)
-            self._run_red_team_agent(report)
+            test_report = self._run_tests_only(report)
             
-            # Stage 6: Execute Tests & Generate Reports
-            print("\n" + "="*60)
-            print("STAGE 6: TEST EXECUTION & MONITORING")
-            print("="*60)
-            test_report = self._run_tests_and_monitor(report)
-            
-            # Stage 7: Repair (if needed)
+            # Stage 5: Repair (if needed)
             if test_report["summary"]["failed"] > 0:
                 print("\n" + "="*60)
-                print("STAGE 7: REPAIR AGENT")
+                print("STAGE 5: REPAIR AGENT")
                 print("="*60)
                 self._run_repair_agent(report, test_report)
             
@@ -216,42 +201,6 @@ class PipelineOrchestrator:
             report["stages"]["codegen_agent"] = {"status": "failed", "error": str(e)}
             print(f"✗ Codegen Agent failed: {e}")
     
-    def _run_critique_agent(self, report: Dict[str, Any]) -> None:
-        """Execute Critique Agent to validate patches."""
-        print("\nCritiquing generated patches...")
-        
-        try:
-            # Get patch and specification
-            patch_path = self.artifact_manager.patch_dir / "code.patch"
-            if not patch_path.exists():
-                raise FileNotFoundError("No patch found from Codegen Agent")
-            
-            patch_content = patch_path.read_text()
-            spec_str = json.dumps(self.specification)
-            
-            # Call Critique Agent AI
-            critique = self.critique_agent.critique_patch(
-                patch_content,
-                spec_str,
-                "Pending test execution"
-            )
-            
-            # Save critique
-            report["stages"]["critique_agent"] = {
-                "status": "success",
-                "critique": critique
-            }
-            
-            approval = critique.get("approval", False)
-            confidence = critique.get("confidence_score", 0)
-            print(f"✓ Code reviewed - Approval: {approval}, Confidence: {confidence}%")
-            
-            if not approval:
-                print(f"  Issues: {critique.get('issues', [])}")
-            
-        except Exception as e:
-            report["stages"]["critique_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Critique Agent failed: {e}")
     
     def _run_test_agent(self, report: Dict[str, Any]) -> None:
         """Execute Test Agent to generate test suite."""
@@ -280,35 +229,9 @@ class PipelineOrchestrator:
             report["stages"]["test_agent"] = {"status": "failed", "error": str(e)}
             print(f"✗ Test Agent failed: {e}")
     
-    def _run_red_team_agent(self, report: Dict[str, Any]) -> None:
-        """Execute Red-Team Agent to generate adversarial tests."""
-        print("\nGenerating adversarial tests...")
-        
-        try:
-            # Call Red-Team Agent AI
-            adversarial_tests = self.red_team_agent.generate_adversarial_tests(
-                self._load_parser_interface(),
-                "Focus on malformed HTML and deeply nested structures"
-            )
-            
-            # Save adversarial tests
-            red_team_file = Config.TESTS_DIR / "test_red_team.py"
-            red_team_file.write_text(adversarial_tests)
-            
-            report["stages"]["red_team_agent"] = {
-                "status": "success",
-                "test_file": str(red_team_file),
-                "test_code_size": len(adversarial_tests)
-            }
-            
-            print(f"✓ Adversarial tests generated ({len(adversarial_tests)} chars)")
-            
-        except Exception as e:
-            report["stages"]["red_team_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Red-Team Agent failed: {e}")
     
-    def _run_tests_and_monitor(self, report: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute tests and collect execution metrics."""
+    def _run_tests_only(self, report: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute tests and collect metrics."""
         print("\nExecuting test suite...")
         
         test_report = {
@@ -356,38 +279,8 @@ class PipelineOrchestrator:
         # Save test report
         self.artifact_manager.save_report(test_report, "test_report.json")
         
-        # Call Monitor Agent for analysis
-        self._run_monitor_agent(report, test_report)
-        
         return test_report
     
-    def _run_monitor_agent(self, report: Dict[str, Any], 
-                          test_report: Dict[str, Any]) -> None:
-        """Execute Monitor Agent to analyze execution metrics."""
-        print("\nMonitoring execution metrics...")
-        
-        try:
-            trace_data = json.dumps({
-                "test_summary": test_report["summary"],
-                "test_count": len(test_report["test_details"])
-            })
-            
-            analysis = self.monitor_agent.analyze_execution(
-                trace_data,
-                {"total_tests": test_report["summary"]["total"],
-                 "failed_tests": test_report["summary"]["failed"]}
-            )
-            
-            report["stages"]["monitor_agent"] = {
-                "status": "success",
-                "analysis": analysis
-            }
-            
-            print(f"✓ Execution monitored - Healthy: {analysis.get('healthy', False)}")
-            
-        except Exception as e:
-            report["stages"]["monitor_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Monitor Agent failed: {e}")
     
     def _run_repair_agent(self, report: Dict[str, Any], 
                          test_report: Dict[str, Any]) -> None:
