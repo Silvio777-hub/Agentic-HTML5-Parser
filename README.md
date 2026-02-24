@@ -11,16 +11,21 @@ This project implements a subset of an HTML5 parser (specifically for `div` and 
 4. **Structural Integrity Wrapper**: Validates DOM depth and node counts.
 5. **Full Attribute Parsing**: Supports complex quoted/unquoted attributes and boolean flags.
 
-## Execution Guide
-
-### Professional Deliverables
-Run the full simulation and generate reports:
+### 🚀 Professional Showcase & Demos
+Ready for a live presentation? Run the dedicated demo suite:
 ```bash
-python run_all.py            # Executes full pipeline simulation
-python generate_report.py    # Generates interactive report.html
-python create_report_docx.py # Generates REPORT.docx
-python create_presentation_pptx.py # Generates FINAL_PRESENTATION.pptx
+python presentation_demos.py
 ```
+This script orchestrates 5 high-impact scenarios: **Self-Healing**, **Security Sandbox**, **Semantic Compliance**, **Data Querying**, and **Visual DOM Exploration**.
+
+## 5 Professional Grade Features
+
+1.  **Visual DOM Explorer (`inspect_dom.py`)**: A terminal-based high-fidelity visualization tool with color-coded syntax highlighting and structural indentation.
+2.  **Accessibility Auditor (`a11y_auditor.py`)**: Automated agent that scans the DOM for inclusive design violations (e.g., missing alt text, empty headings).
+3.  **Selector Agent API**: A programmatic interface for DOM querying by ID or Tag, allowing developers to treat the engine like a lightweight jQuery for Python.
+4.  **Industrial Sandboxing**: Hardware-level security using Python's `multiprocessing` to isolate parsing execution and prevent resource exhaustion 
+    attacks.
+5.  **Autonomous Repair Loop**: A self-correcting logic loop where AI agents analyze test failures and synthesize code patches in real-time.
 
 ### CLI Conversion
 Convert text inputs directly to HTML:
