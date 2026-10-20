@@ -1,0 +1,16 @@
+{
+  "total_analyzed": 100,
+  "taxonomy": {
+    "Implicit Closure Rule Violation": 42,
+    "Unclosed / Mismatched Tag": 28,
+    "Malformed Attribute Syntax": 15,
+    "Tokenizer State Machine Exception": 9,
+    "Encoding / Unicode Error": 4,
+    "Unexpected EOF": 2
+  },
+  "recommendations_for_repair_agent": [
+    "Inject explicit tag closure rules into RepairAgent prompt",
+    "Handle unquoted attribute whitespace tolerance in tokenizer patch",
+    "Prioritize state machine backtracking on EOF encounters"
+  ]
+}

@@ -1,0 +1,25 @@
+# ==============================================================================
+# docker-compose.yml — Agentic AI HTML5 Parser Multi-Service Orchestration
+# Spins up the parser, live compliance dashboard, and benchmark suite.
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  html5-parser-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agentic_html5_parser_dashboard
+    restart: unless-stopped
+    ports:
+      - "8082:8080"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+      - ./figures:/app/figures
+      - ./cache:/app/cache

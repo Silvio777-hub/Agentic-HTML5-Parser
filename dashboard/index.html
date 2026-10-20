@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding & responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Parser — Compliance & Quality Dashboard</title>
+
+    <!-- Bootstrap 5 CSS & Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Custom CSS Styles -->
+    <style>
+        :root {
+            --primary-accent: #2563eb;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-light: #f8fafc;
+        }
+        body {
+            background-color: var(--bg-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #1e293b;
+        }
+        /* Top Hero Header Gradient */
+        .hero-banner {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 2.2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        /* KPI Metric Cards */
+        .metric-card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+        }
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+        /* Main Container Cards */
+        .card-container {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        /* Status Badges */
+        .badge-pass {
+            background-color: #d1fae5;
+            color: #065f46;
+            font-weight: 600;
+            padding: 0.35rem 0.65rem;
+            border-radius: 2rem;
+        }
+        .badge-fail {
+            background-color: #fee2e2;
+            color: #991b1b;
+            font-weight: 600;
+            padding: 0.35rem 0.65rem;
+            border-radius: 2rem;
+        }
+        .code-snippet {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            color: #0f172a;
+        }
+        /* Dark Theme JSON / Tree Viewer */
+        .tree-viewer {
+            background: #0f172a;
+            color: #38bdf8;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            max-height: 380px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+        .clickable-row {
+            cursor: pointer;
+        }
+        .clickable-row:hover {
+            background-color: #f1f5f9 !important;
+        }
+        .nav-tabs .nav-link {
+            font-weight: 600;
+            color: #64748b;
+        }
+        .nav-tabs .nav-link.active {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- HERO HEADER SECTION                        -->
+    <!-- ========================================== -->
+    <div class="hero-banner">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h1 class="h2 mb-1 fw-bold"><i class="bi bi-cpu me-2"></i>Agentic AI HTML5 Parser</h1>
+                    <p class="mb-0 opacity-75">Thesis Compliance, Verification, Live Playground & Quality Dashboard</p>
+                </div>
+                <!-- Export buttons & Status Tag -->
+                <div class="d-flex gap-2 align-items-center">
+                    <button class="btn btn-light btn-sm text-primary fw-semibold" onclick="exportCSV()" title="Export test results to CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                    </button>
+                    <button class="btn btn-outline-light btn-sm fw-semibold" onclick="exportJSON()" title="Export test results to JSON">
+                        <i class="bi bi-filetype-json me-1"></i> Export JSON
+                    </button>
+                    <span class="badge bg-light text-primary px-3 py-2 ms-2">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i> Live Mode
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MAIN APPLICATION CONTAINER                 -->
+    <!-- ========================================== -->
+    <div class="container pb-5">
+
+        <!-- Navigation Tabs: Compliance vs Playground -->
+        <ul class="nav nav-tabs mb-4" id="mainTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="compliance-tab" data-bs-toggle="tab" data-bs-target="#compliance-pane" type="button" role="tab">
+                    <i class="bi bi-shield-check me-1"></i> W3C Compliance Test Suite
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="playground-tab" data-bs-toggle="tab" data-bs-target="#playground-pane" type="button" role="tab">
+                    <i class="bi bi-play-circle me-1"></i> Live Interactive HTML Playground
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content Panes -->
+        <div class="tab-content" id="mainTabContent">
+
+            <!-- ========================================== -->
+            <!-- TAB 1: COMPLIANCE SUITE                    -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade show active" id="compliance-pane" role="tabpanel">
+
+                <!-- Metric KPI Cards Row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card metric-card p-3">
+                            <div class="text-muted small fw-semibold text-uppercase">Total Tests Evaluated</div>
+                            <div class="metric-value text-primary" id="val-total">--</div>
+                            <div class="small text-muted"><i class="bi bi-collection"></i> html5lib standard suite</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card p-3">
+                            <div class="text-muted small fw-semibold text-uppercase">Passed Tests</div>
+                            <div class="metric-value text-success" id="val-passed">--</div>
+                            <div class="small text-muted"><i class="bi bi-check-lg text-success"></i> 100% Tree Match</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card p-3">
+                            <div class="text-muted small fw-semibold text-uppercase">Failed Tests</div>
+                            <div class="metric-value text-danger" id="val-failed">--</div>
+                            <div class="small text-muted"><i class="bi bi-x-lg text-danger"></i> Needs RepairAgentAI</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card metric-card p-3">
+                            <div class="text-muted small fw-semibold text-uppercase">Compliance Score</div>
+                            <div class="metric-value text-dark" id="val-rate">--%</div>
+                            <div class="small text-muted" id="sub-rate">Calculating score...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar Card -->
+                <div class="card metric-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 fw-bold"><i class="bi bi-speedometer2 me-1"></i> Overall Parser Compliance Progress</h6>
+                        <span class="fw-bold" id="progress-text">0%</span>
+                    </div>
+                    <div class="progress" style="height: 18px; border-radius: 9px;">
+                        <div id="prog-bar-pass" class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                        <div id="prog-bar-fail" class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Table & Filtering Controls -->
+                <div class="card-container p-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-0">Detailed Test Executions</h5>
+                            <p class="text-muted small mb-0">Click any row to open the visual DOM tree inspector</p>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <input type="text" id="search-input" class="form-control form-control-sm" placeholder="Search test or tag..." oninput="handleSearch(this.value)" style="width: 180px;">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary btn-sm active" id="btn-all" onclick="filterTable('all')">All Tests</button>
+                                <button type="button" class="btn btn-outline-success btn-sm" id="btn-pass" onclick="filterTable('pass')">Passed</button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" id="btn-fail" onclick="filterTable('fail')">Failed</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tests Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0" id="test-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 80px;">ID</th>
+                                    <th>Input HTML Fragment</th>
+                                    <th>Expected Document / Structure</th>
+                                    <th style="width: 120px;" class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                        Loading compliance results from data/compliance_results.json...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TAB 2: LIVE HTML PARSER PLAYGROUND         -->
+            <!-- ========================================== -->
+            <div class="tab-pane fade" id="playground-pane" role="tabpanel">
+                <div class="card-container p-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-1"><i class="bi bi-terminal me-2 text-primary"></i>Live HTML Parser & Tokenizer Playground</h5>
+                            <p class="text-muted small mb-0">Type or paste any HTML snippet below to execute the parser live and inspect tokens and DOM hierarchy</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <select class="form-select form-select-sm" id="sample-preset-select" onchange="loadPreset(this.value)" style="min-width: 290px;">
+                                <option value="">-- Load Sample Preset (12 Alternatives) --</option>
+                                <option value="basic">1. Basic Structure (Head, Body, Tags)</option>
+                                <option value="implicit">2. W3C Implicit &lt;p&gt; Tag Closure</option>
+                                <option value="void">3. Void &amp; Self-Closing Elements (&lt;br&gt;, &lt;img&gt;)</option>
+                                <option value="tables">4. Complex Table with Colspan &amp; Grid</option>
+                                <option value="forms">5. Forms &amp; Mixed Attribute Quotes</option>
+                                <option value="semantic">6. Modern Semantic HTML5 Layout</option>
+                                <option value="nesting">7. Adversarial Deep Tag Nesting (Stress)</option>
+                                <option value="overlapping">8. Malformed Overlapping Tag Recovery</option>
+                                <option value="unquoted">9. Unquoted Attributes &amp; Special Chars</option>
+                                <option value="xss">10. Security &amp; XSS Script Injection Payloads</option>
+                                <option value="unicode">11. Unicode RTL, Arabic &amp; CJK Multilingual Text</option>
+                                <option value="media">12. Embedded Media Elements (&lt;picture&gt;, &lt;audio&gt;)</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm px-3 fw-semibold" onclick="parseLiveHTML()">
+                                <i class="bi bi-play-fill me-1"></i> Parse Live
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input Textarea -->
+                    <div class="mb-3">
+                        <textarea id="live-input" class="form-control font-monospace" rows="4" placeholder="Enter HTML here... (e.g. <html><body><p>Hello <b>World</b></p></body></html>)"><html><body><p>Hello <b>Agentic AI</b> World!</p><div>Live Parser Test</div></body></html></textarea>
+                    </div>
+
+                    <!-- Output Results Panes -->
+                    <div class="row g-3">
+                        <!-- Left Column: DOM Tree Explorer -->
+                        <div class="col-md-7">
+                            <div class="p-3 bg-light rounded border">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold mb-0"><i class="bi bi-diagram-3 me-1 text-primary"></i> Constructed DOM Node Tree</h6>
+                                    <span id="live-metrics" class="badge bg-secondary">0 ms</span>
+                                </div>
+                                <pre id="live-tree-output" class="tree-viewer mb-0">// Click "Parse Live" to inspect constructed tree...</pre>
+                            </div>
+                        </div>
+                        <!-- Right Column: Emitted Token Stream & Trace -->
+                        <div class="col-md-5">
+                            <div class="p-3 bg-light rounded border">
+                                <h6 class="fw-bold mb-2"><i class="bi bi-list-nested me-1 text-success"></i> Token Stream & Telemetry</h6>
+                                <div id="live-token-output" style="max-height: 380px; overflow-y: auto;">
+                                    <p class="text-muted small mb-0">Tokens emitted by HTMLTokenizer will appear here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- DOM TREE INSPECTOR MODAL                   -->
+        <!-- ========================================== -->
+        <div class="modal fade" id="domModal" tabindex="-1" aria-labelledby="domModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-white">
+                        <h5 class="modal-title" id="domModalLabel"><i class="bi bi-diagram-3 me-2"></i>DOM Tree Inspector</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Input HTML:</h6>
+                        <pre class="bg-light p-2 rounded border" id="modal-input"></pre>
+                        <h6 class="mt-3">Parsed DOM Hierarchy (JSON Tree):</h6>
+                        <pre class="tree-viewer" id="modal-tree"></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-5 text-center text-muted small">
+            Agentic AI HTML5 Parser Thesis Project &bull; Opoka JM Silvio &bull; 2026/2027
+        </footer>
+
+    </div>
+
+    <!-- Bootstrap Bundle JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ========================================== -->
+    <!-- CLIENT-SIDE APPLICATION LOGIC              -->
+    <!-- ========================================== -->
+    <script>
+        let allTests = [];
+        let currentFilter = 'all';
+        let currentQuery = '';
+        let domModal = null;
+
+        /**
+         * Load compliance results from data/compliance_results.json
+         */
+        async function loadResults() {
+            try {
+                const modalEl = document.getElementById('domModal');
+                if (modalEl && window.bootstrap) {
+                    domModal = new bootstrap.Modal(modalEl);
+                }
+                let response = null;
+                try {
+                    response = await fetch('/data/compliance_results.json');
+                    if (!response.ok) throw new Error('Root path status: ' + response.status);
+                } catch (e1) {
+                    response = await fetch('../data/compliance_results.json');
+                }
+                if (!response || !response.ok) throw new Error('Could not load compliance JSON');
+                const data = await response.json();
+                renderDashboard(data);
+            } catch (err) {
+                console.warn('Direct fetch failed, falling back to notice...', err);
+                document.getElementById('table-body').innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-warning">
+                            <i class="bi bi-exclamation-triangle fs-4 d-block mb-2"></i>
+                            <strong>No results file found at <code>data/compliance_results.json</code></strong><br>
+                            Run <code>python cli.py compliance</code> to generate compliance metrics.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        /**
+         * Render KPI cards, progress bar, and test list
+         */
+        function renderDashboard(data) {
+            const summary = data.summary || { total_tests: 0, passed: 0, failed: 0, pass_percentage: 0 };
+            allTests = data.tests || [];
+
+            document.getElementById('val-total').innerText = summary.total_tests;
+            document.getElementById('val-passed').innerText = summary.passed;
+            document.getElementById('val-failed').innerText = summary.failed;
+            document.getElementById('val-rate').innerText = summary.pass_percentage + '%';
+            
+            document.getElementById('sub-rate').innerText = summary.pass_percentage >= 90 ? '✅ Outstanding compliance' : '⚠️ Refinement needed';
+
+            document.getElementById('progress-text').innerText = summary.pass_percentage + '% Pass Rate';
+            document.getElementById('prog-bar-pass').style.width = summary.pass_percentage + '%';
+            document.getElementById('prog-bar-fail').style.width = (100 - summary.pass_percentage) + '%';
+
+            renderFilteredTable();
+        }
+
+        /**
+         * Filter test cases by status and search query
+         */
+        function renderFilteredTable() {
+            let filtered = allTests;
+            if (currentFilter === 'pass') {
+                filtered = filtered.filter(t => t.passed);
+            } else if (currentFilter === 'fail') {
+                filtered = filtered.filter(t => !t.passed);
+            }
+
+            if (currentQuery.trim() !== '') {
+                const q = currentQuery.toLowerCase();
+                filtered = filtered.filter(t => (t.input && t.input.toLowerCase().includes(q)) || (t.expected && t.expected.toLowerCase().includes(q)));
+            }
+
+            renderTable(filtered);
+        }
+
+        /**
+         * Render HTML table rows
+         */
+        function renderTable(tests) {
+            const tbody = document.getElementById('table-body');
+            if (!tests || tests.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-muted">No test cases match filter.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = tests.map(t => {
+                const statusBadge = t.passed 
+                    ? '<span class="badge-pass"><i class="bi bi-check-circle me-1"></i>PASS</span>'
+                    : '<span class="badge-fail"><i class="bi bi-x-circle me-1"></i>FAIL</span>';
+                
+                const safeInput = escapeHtml(t.input || '');
+                const safeExpected = escapeHtml(t.expected || '');
+
+                return `
+                    <tr class="clickable-row ${t.passed ? 'test-row-pass' : 'test-row-fail'}" onclick="openInspector(${t.id})">
+                        <td class="fw-bold text-muted">#${t.id}</td>
+                        <td><code class="code-snippet">${safeInput}</code></td>
+                        <td><span class="text-muted small font-monospace">${safeExpected}</span></td>
+                        <td class="text-center">${statusBadge}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        /**
+         * Open DOM Tree Inspector Modal for a test case
+         */
+        function openInspector(testId) {
+            const test = allTests.find(t => t.id === testId);
+            if (!test) return;
+
+            document.getElementById('modal-input').innerText = test.input || 'None';
+            document.getElementById('modal-tree').innerText = JSON.stringify(test.tree || { "raw_actual": test.actual }, null, 2);
+            if (!domModal) {
+                const modalEl = document.getElementById('domModal');
+                if (modalEl && window.bootstrap) domModal = new bootstrap.Modal(modalEl);
+            }
+            if (domModal) domModal.show();
+        }
+
+        function filterTable(type) {
+            currentFilter = type;
+            document.getElementById('btn-all').classList.remove('active');
+            document.getElementById('btn-pass').classList.remove('active');
+            document.getElementById('btn-fail').classList.remove('active');
+
+            if (type === 'all') document.getElementById('btn-all').classList.add('active');
+            if (type === 'pass') document.getElementById('btn-pass').classList.add('active');
+            if (type === 'fail') document.getElementById('btn-fail').classList.add('active');
+
+            renderFilteredTable();
+        }
+
+        function handleSearch(q) {
+            currentQuery = q;
+            renderFilteredTable();
+        }
+
+        /**
+         * Export compliance data to CSV
+         */
+        function exportCSV() {
+            if (!allTests || allTests.length === 0) {
+                alert("No test data available to export.");
+                return;
+            }
+            let csv = "ID,Input,Passed,Expected,Error\n";
+            allTests.forEach(t => {
+                const inp = `"${(t.input || '').replace(/"/g, '""')}"`;
+                const exp = `"${(t.expected || '').replace(/"/g, '""')}"`;
+                const err = `"${(t.error || '').replace(/"/g, '""')}"`;
+                csv += `${t.id},${inp},${t.passed ? 'PASS' : 'FAIL'},${exp},${err}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `compliance_report_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+
+        /**
+         * Export compliance data to JSON
+         */
+        function exportJSON() {
+            if (!allTests || allTests.length === 0) {
+                alert("No test data available to export.");
+                return;
+            }
+            const blob = new Blob([JSON.stringify(allTests, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `compliance_report_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        }
+
+        /**
+         * Live Playground Presets Loader (12 Academic Test Presets)
+         */
+        function loadPreset(presetKey) {
+            if (!presetKey) return;
+            const presets = {
+                basic: "<!DOCTYPE html>\n<html>\n  <head><title>Basic Document</title></head>\n  <body>\n    <h1>Agentic AI HTML5 Parser</h1>\n    <p>Welcome to <b>autonomous</b> parsing with <i>pure Python</i>.</p>\n  </body>\n</html>",
+                implicit: "<p>First paragraph without close tag\n<div>Block element begins and implicitly closes p</div>\n<p>Second paragraph\n<blockquote>Nested blockquote closing second p</blockquote>",
+                void: "<p>First line of text<br>\nSecond line with horizontal rule:<hr>\n<img src=\"avatar.png\" alt=\"Profile\" width=\"120\" />\n<input type=\"text\" name=\"search\" value=\"Agentic AI\" disabled />\n</p>",
+                tables: "<table border=\"1\" class=\"data-grid\">\n  <thead>\n    <tr><th colspan=\"2\">System Metrics</th><th>Status</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Avg Latency</td><td>400ms</td><td><span class=\"badge\">PASS</span></td></tr>\n    <tr><td>Throughput</td><td>2.5 doc/s</td><td><span class=\"badge\">PASS</span></td></tr>\n  </tbody>\n</table>",
+                forms: "<form action=\"/api/submit\" method=\"post\" id=login-form>\n  <fieldset>\n    <legend>User Authentication</legend>\n    <label for=\"user\">Username:</label>\n    <input id=\"user\" type='text' required value=\"admin\" />\n    <button type=\"submit\" class=\"btn primary\">Log In</button>\n  </fieldset>\n</form>",
+                semantic: "<header>\n  <nav><a href=\"#home\">Home</a> | <a href=\"#benchmarks\">Benchmarks</a></nav>\n</header>\n<main>\n  <section id=\"intro\">\n    <h2>Overview</h2>\n    <p>Agentic synthesis pipeline for HTML5.</p>\n  </section>\n  <article>\n    <p>Self-repair using execution traces.</p>\n  </article>\n</main>\n<footer><small>&copy; 2026 Silvio</small></footer>",
+                nesting: "<div><div><div><div><div><div><div><div><div><div>\n  <section><article><span><strong><em><code>Deeply nested 15 levels safe</code></em></strong></span></article></section>\n</div></div></div></div></div></div></div></div></div></div>",
+                overlapping: "<p>This is <b>bold and <i>italic</p> now closed?</b> still italic?</i>\n<p>Clean paragraph follows.</p>",
+                unquoted: "<div id=main class=hero-banner data-score=98.5 enabled>\n  <a href=https://example.com/test?a=1&b=2 title='Agentic AI'>Click Here</a>\n</div>",
+                xss: "<script>alert('XSS')<" + "/script>\n<img src=\"missing.png\" onerror=\"alert('Exploit')\" />\n<a href=\"javascript:void(0)\" onclick=\"fetch('/steal')\">Safe link</a>",
+                unicode: "<div lang=\"ar\" dir=\"rtl\"><p>مرحبا بك في محلل HTML5 الذكي</p></div>\n<div lang=\"zh\"><p>自主多智能体HTML5解析器 - 100% 测试通过</p></div>",
+                media: "<figure>\n  <picture>\n    <source srcset=\"diagram.webp\" type=\"image/webp\" />\n    <img src=\"diagram.png\" alt=\"Architecture Flow\" />\n  </picture>\n  <figcaption>Figure 5.1: Multi-Agent Pipeline</figcaption>\n</figure>\n<audio controls src=\"telemetry.mp3\"></audio>"
+            };
+            if (presets[presetKey]) {
+                document.getElementById('live-input').value = presets[presetKey];
+                parseLiveHTML(); // Auto-parse selected preset for immediate visual feedback
+            }
+        }
+
+        /**
+         * Execute Live HTML Parsing via /api/parse POST endpoint
+         */
+        async function parseLiveHTML() {
+            const htmlContent = document.getElementById('live-input').value;
+            const treeOutput = document.getElementById('live-tree-output');
+            const tokenOutput = document.getElementById('live-token-output');
+            const metricsBadge = document.getElementById('live-metrics');
+
+            treeOutput.innerText = "// Parsing HTML live with Python engine...";
+            tokenOutput.innerHTML = "<div class='text-muted small'><div class='spinner-border spinner-border-sm text-primary me-1'></div> Emitting tokens...</div>";
+
+            try {
+                const response = await fetch('/api/parse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ html: htmlContent })
+                });
+
+                if (!response.ok) throw new Error('API parse request failed');
+                const data = await response.json();
+
+                // Display DOM tree
+                treeOutput.innerText = JSON.stringify(data.tree, null, 2);
+                metricsBadge.innerText = `${data.duration_ms} ms (${data.tokens.length} tokens)`;
+
+                // Display Token Stream
+                if (data.tokens && data.tokens.length > 0) {
+                    tokenOutput.innerHTML = data.tokens.map(tok => `
+                        <div class="small p-1 mb-1 border-bottom d-flex justify-content-between">
+                            <span class="badge bg-secondary font-monospace">${tok.type}</span>
+                            <span class="text-truncate ms-2 text-dark font-monospace">${escapeHtml(tok.name || tok.data || '')}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    tokenOutput.innerHTML = "<p class='text-muted small'>No tokens emitted.</p>";
+                }
+
+            } catch (err) {
+                console.error("Live parse error:", err);
+                treeOutput.innerText = "// Error: Make sure python scripts/serve_dashboard.py is running to enable live parse API.";
+                tokenOutput.innerHTML = "<p class='text-danger small'>Server API not reached. Run serve_dashboard.py.</p>";
+            }
+        }
+
+        function escapeHtml(string) {
+            const entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+            return String(string).replace(/[&<>"']/g, s => entityMap[s]);
+        }
+
+        // Initialize on DOM ready
+        window.addEventListener('DOMContentLoaded', () => {
+            loadResults();
+        });
+    </script>
+</body>
+</html>

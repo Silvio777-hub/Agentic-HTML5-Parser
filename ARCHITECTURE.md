@@ -1,596 +1,171 @@
-# Architecture & Design Documentation
+# System Architecture & Technical Design
 
-## System Architecture Overview
+## 1. High-Level Architecture Overview
 
-### High-Level Pipeline Architecture
+This project implements an **Agentic AI Pipeline for Autonomous HTML5 Parser Engineering and Self-Healing**. Rather than relying on monolithic code generation, the system utilizes a **partially ordered multi-agent workflow** with intermediate, auditable artifacts at every stage.
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                     INPUT: HTML5 SUBSET                          │
-│           (Human-written specification fragment)                 │
-└────────────────────────────┬─────────────────────────────────────┘
-                             │
-                             ▼
-                   ┌──────────────────┐
-                   │   SPEC AGENT     │  (Llama 3.3 70B (Groq))
-                   │ (Interpretation) │
-                   └────────┬─────────┘
-                            │
-                            ├─→ spec.yml (YAML rules)
-                            │
-                            ▼
-                   ┌──────────────────┐
-                   │  CODEGEN AGENT   │  (Llama 3.3 70B (Groq))
-                   │ (Implementation) │
-                   └────────┬─────────┘
-                            │
-                            ├─→ code.patch (unified diff)
-                            │
-                            ▼
-                   ┌──────────────────┐
-                   │ CRITIQUE AGENT   │  (Llama 3.3 70B (Groq))
-                   │ (Validation)     │
-                   └────────┬─────────┘
-                            │
-                            ├─→ approval.json
-                            │
-        ┌───────────────────┴───────────────────┐
-        │                                       │
-        ▼                                       ▼
-   ┌─────────────┐                     ┌──────────────────┐
-   │ TEST AGENT  │                     │ RED-TEAM AGENT   │
-   │  (Conformance)                    │ (Security Focus) │
-   └──────┬──────┘                     └────────┬─────────┘
-          │                                     │
-          ├─→ test_parser.py                    ├─→ test_red_team.py
-          │                                     │
-          └─────────────┬───────────────────────┘
-                        │
-                        ▼
-            ┌────────────────────────┐
-            │   TEST EXECUTOR        │
-            │ (Pytest Runner)        │
-            └────────┬───────────────┘
-                     │
-                     ├─→ test_report.json
-                     │
-                     ▼
-            ┌────────────────────────┐
-            │  MONITOR AGENT         │  (Llama 3.3 70B (Groq))
-            │ (Performance Analysis) │
-            └────────┬───────────────┘
-                     │
-                     ├─→ health_analysis.json
-                     │
-          ┌──────────▼──────────┐
-          │ Tests Passed? ──────┤──────YES──────┐
-          └──────────┬──────────┘               │
-                     │ NO                       │
-                     ▼                          │
-            ┌────────────────────┐              │
-            │  REPAIR AGENT      │              │
-            │ (Failure Fixes)    │              │
-            └────────┬───────────┘              │
-                     │                          │
-                     ├─→ repair_N.patch         │
-                     │                          │
-        ┌────────────▼────────────┐             │
-        │ Reapply Patch & Retest  │             │
-        │ (Loop ≤ 3 iterations)   │             │
-        └────────────┬────────────┘             │
-                     │                          │
-                     └──────────┬───────────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │     SUCCESS!         │
-                     │  Functional Parser   │
-                     │  Comprehensive Tests │
-                     │  Security Analysis   │
-                     └──────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                        INPUT: HTML5 SPEC SUBSET                        │
+│            (Human specification fragment & interface rules)            │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+                         ┌────────────────────┐
+                         │   1. SpecAgentAI   │  (The Architect)
+                         │ (Rule Extractor)   │
+                         └──────────┬─────────┘
+                                    │
+                                    ├─→ spec.yml (structured grammar & rules)
+                                    │
+                                    ▼
+                         ┌────────────────────┐
+                         │  2. CodegenAgentAI │  (Lead Implementer)
+                         │  (Code Generator)  │
+                         └──────────┬─────────┘
+                                    │
+                                    ├─→ code.patch (unified diff implementation)
+                                    │
+               ┌────────────────────┴────────────────────┐
+               │    PARALLEL STAGE (ThreadPoolExecutor)  │
+               │   Both consume code.patch concurrently  │
+               ▼                                         ▼
+    ┌──────────────────────┐                  ┌──────────────────────┐
+    │  3. CritiqueAgentAI  │                  │  4. RedTeamAgentAI   │
+    │  (Code Reviewer &    │                  │  (Adversarial Edge-  │
+    │   Quality Auditor)   │                  │   Case Generator)    │
+    └──────────┬───────────┘                  └──────────┬───────────┘
+               │                                         │
+               ├─→ approval.json                         ├─→ test_red_team.py
+               │                                         │
+               └────────────────────┬────────────────────┘
+                                    │
+                                    ▼
+                         ┌────────────────────┐
+                         │   5. TestAgentAI   │  (QA Conformance)
+                         │ (Pytest Runner)    │
+                         └──────────┬─────────┘
+                                    │
+                                    ├─→ test_report.json
+                                    │
+                                    ▼
+                         ┌────────────────────┐
+                         │  6. MonitorAgentAI │  (DevOps Watchdog)
+                         │(Trace & Health)    │
+                         └──────────┬─────────┘
+                                    │
+                                    ├─→ health_report.json
+                                    │
+                         ┌──────────▼──────────┐
+                         │   All Tests Pass?   │──── YES ───► [ SUCCESSFUL BUILD ]
+                         └──────────┬──────────┘
+                                    │ NO (Failures Detected)
+                                    ▼
+                         ┌────────────────────┐
+                         │  7. RepairAgentAI  │  (Auto-Debugger & Mechanic)
+                         │(Trace-guided Patch)│
+                         └──────────┬─────────┘
+                                    │
+                                    ├─→ repair_N.patch (AST / logic fix)
+                                    │
+                         ┌──────────▼──────────┐
+                         │ Iteration Loop ≤ 3  │──── (Re-evaluates Tests)
+                         └─────────────────────┘
 ```
 
 ---
 
-## Component Architecture
+## 2. The 7 Specialized Agents
 
-### Core Modules
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      ORCHESTRATOR                           │
-│              (Pipeline Coordinator)                         │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │ • Manages agent execution sequence                  │   │
-│  │ • Collects and stores artifacts                     │   │
-│  │ • Handles error recovery                            │   │
-│  │ • Reports progress and results                      │   │
-│  └─────────────────────────────────────────────────────┘   │
-└──────────────┬───────────────────────────────────┬──────────┘
-               │                                   │
-        ┌──────▼──────────────────┐        ┌──────▼──────┐
-        │   AI AGENT WRAPPERS     │        │  UTILITIES  │
-        │   (claude_integration) │        │             │
-        ├────────────────────────┤        ├─────────────┤
-        │ • GroqAgent (base)   │        │ • Artifact  │
-        │ • SpecAgentAI          │        │   Manager   │
-        │ • CodegenAgentAI       │        │ • Patch     │
-        │ • CritiqueAgentAI      │        │   Manager   │
-        │ • TestAgentAI          │        │ • Report    │
-        │ • RedTeamAgentAI       │        │   Generator │
-        │ • MonitorAgentAI       │        └─────────────┘
-        │ • RepairAgentAI        │
-        └───────────────┬────────┘
-                        │
-                 ┌──────▼──────────┐
-                 │   CLAUDE API    │
-                 │  (Groq)    │
-                 │ claude-3-5      │
-                 │ sonnet-20241022 │
-                 └─────────────────┘
-```
-
-### Parser Module Architecture
-
-```
-┌──────────────────────────────────────────────────────┐
-│              PARSER MODULE (src/parser.py)           │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  ┌─────────────────────────────────────────────┐    │
-│  │         ParsingTrace                        │    │
-│  │ ┌──────────────────────────────────────┐    │    │
-│  │ │ • Events list                        │    │    │
-│  │ │ • Parse errors                       │    │    │
-│  │ │ • Tokenizer states                   │    │    │
-│  │ │ • Timing information                 │    │    │
-│  │ └──────────────────────────────────────┘    │    │
-│  └─────────────────────────────────────────────┘    │
-│           ▲                          ▲               │
-│           │                          │               │
-│  ┌────────┴──────────┐  ┌────────────┴──────────┐   │
-│  │ HTMLTokenizer     │  │ HTMLParser            │   │
-│  │                   │  │                       │   │
-│  │ • 8 states        │  │ • Tree construction   │   │
-│  │ • Token creation  │  │ • Implicit closure    │   │
-│  │ • Attribute parse │  │ • Stack management    │   │
-│  │ • Trace recording │  │ • Trace recording     │   │
-│  └────────┬──────────┘  └────────┬──────────────┘   │
-│           │                      │                  │
-│           ▼                      ▼                  │
-│  ┌──────────────────────────────────────────────┐  │
-│  │ Token Structure    │ TreeNode Structure       │  │
-│  │ • type            │ • name                    │  │
-│  │ • name            │ • attributes              │  │
-│  │ • attributes      │ • children                │  │
-│  │ • data            │ • text_content            │  │
-│  │ • self_closing    │ • parent reference        │  │
-│  └──────────────────────────────────────────────┘  │
-│                                                    │
-│  Public Interface:                                 │
-│  • tokenize(html) → List[Token]                   │
-│  • parse(html) → TreeNode                         │
-│  • parse_with_trace(html) → Dict                  │
-└──────────────────────────────────────────────────────┘
-```
+| # | Agent Class | Role | Input | Output Artifact |
+|---|---|---|---|---|
+| 1 | `SpecAgentAI` | **Architect** | HTML5 subset description & interface contract | `spec.yml` (tokens, tags, closure rules) |
+| 2 | `CodegenAgentAI` | **Lead Coder** | `spec.yml` + existing parser code | `code.patch` (Python unified diff) |
+| 3 | `CritiqueAgentAI` | **Reviewer** | `code.patch` + `spec.yml` | `approval.json` (syntax, standards, quality score) |
+| 4 | `RedTeamAgentAI` | **Ethical Hacker** | `code.patch` + parser contract | `test_red_team.py` (deep nesting, XSS, Unicode) |
+| 5 | `TestAgentAI` | **QA Engineer** | Generated parser + test suites | `test_report.json` (pass/fail summary) |
+| 6 | `MonitorAgentAI` | **Watchdog** | Execution trace from `parse_with_trace()` | `health_report.json` (latency, memory, recursion) |
+| 7 | `RepairAgentAI` | **Mechanic** | Traceback, failure context & source code | `repair_N.patch` (targeted fix, max 3 loops) |
 
 ---
 
-## Data Flow Architecture
+## 3. Concurrency & Parallel Execution Model
 
-### Specification Flow
+### Why Parallelism is Used
+The overall agent workflow is partially ordered. Most stages have strict linear dependencies (you cannot generate code before specification, nor can you repair failures before running tests).
 
-```
-HTML Subset Description
-        │
-        ▼
-   ┌─────────────────────────────────────┐
-   │  Spec Agent AI                      │
-   │  • Interprets requirements          │
-   │  • Generates rules                  │
-   │  • Defines test cases               │
-   └────────┬────────────────────────────┘
-            │
-            ├─ YAML parsing
-            │
-            ▼
-    spec.yml (YAML)
-    ├─ name
-    ├─ version
-    ├─ rules
-    │  ├─ tokenizer
-    │  │  ├─ states
-    │  │  └─ transitions
-    │  ├─ parser
-    │  │  ├─ tag_closure
-    │  │  └─ error_handling
-    │  └─ conformance
-    └─ test_cases
-```
+However, after `CodegenAgentAI` produces `code.patch`:
+- `CritiqueAgentAI` needs only the generated code and the specification to evaluate code quality.
+- `RedTeamAgentAI` needs only the generated code to generate adversarial attack vectors.
 
-### Code Generation Flow
+Neither agent depends on the output of the other.
 
-```
-spec.yml + Current Implementation
-            │
-            ▼
-   ┌─────────────────────────────────────┐
-   │  Codegen Agent AI                   │
-   │  • Reads specification              │
-   │  • Generates Python code            │
-   │  • Creates unified diff             │
-   └────────┬────────────────────────────┘
-            │
-            ├─ Diff generation
-            │
-            ▼
-    code.patch (Unified Diff)
-    --- a/src/parser.py
-    +++ b/src/parser.py
-    @@ -120,6 +120,12 @@
-    + New code implementation
-    + With inline comments
-    
-            │
-            ├─ git apply
-            │
-            ▼
-    Modified src/parser.py
-```
-
-### Test Generation Flow
-
-```
-spec.yml
-  │
-  ├──────────────────┬──────────────────┐
-  │                  │                  │
-  ▼                  ▼                  ▼
-  
-Test Agent      Red-Team Agent      Critique Agent
-  │                  │                  │
-  ├─ Conformance     ├─ Adversarial    ├─ Code Review
-  ├─ Edge cases      ├─ Malformed      └─ Specification
-  └─ Error handling  └─ Performance          alignment
-
-  │                  │                  │
-  └──────────┬───────┴──────────┬───────┘
-             │                  │
-             ▼                  ▼
-    test_parser.py    test_red_team.py
-    (32 tests)        (20+ security tests)
-             │                  │
-             └──────────┬───────┘
-                        │
-                        ▼
-                   Test Execution
-                   (Pytest)
-                        │
-                   ┌────┴────┐
-                   │          │
-                   ▼          ▼
-              Passed      Failed
-                │             │
-                ▼             ▼
-             SUCCESS    Repair Loop
-```
-
----
-
-## Artifact Management Architecture
-
-```
-┌────────────────────────────────────────────────────┐
-│            Artifact Manager                        │
-├────────────────────────────────────────────────────┤
-│                                                    │
-│  Run Directory: runs/[RUN_ID]/                    │
-│  │                                                │
-│  ├─ spec/                                        │
-│  │  └─ spec.yml                 (YAML)           │
-│  │                                                │
-│  ├─ patches/                                     │
-│  │  ├─ code.patch              (Unified Diff)    │
-│  │  ├─ tests.patch             (Unified Diff)    │
-│  │  ├─ repair_1.patch          (Unified Diff)    │
-│  │  └─ repair_2.patch          (Unified Diff)    │
-│  │                                                │
-│  ├─ reports/                                     │
-│  │  ├─ pipeline_report.json    (Complete)        │
-│  │  ├─ test_report.json        (Test Results)    │
-│  │  ├─ critique_report.json    (Code Review)     │
-│  │  └─ monitor_report.json     (Performance)     │
-│  │                                                │
-│  └─ traces/                                      │
-│     ├─ execution_1.json        (Trace Events)    │
-│     ├─ execution_2.json        (Trace Events)    │
-│     └─ execution_3.json        (Trace Events)    │
-│                                                    │
-│  Each artifact:                                   │
-│  • Is versioned and time-stamped                 │
-│  • Can be reviewed independently                 │
-│  • Is preserved for audit trail                  │
-│  • Enables reproducibility                       │
-│                                                    │
-└────────────────────────────────────────────────────┘
-```
-
----
-
-## Agent Communication Protocol
-
-### Message Format
+### Implementation (`src/parallel_runner.py`)
+Both agents are dispatched concurrently using Python's `concurrent.futures.ThreadPoolExecutor`:
 
 ```python
-┌──────────────────────────────────────────────────────┐
-│           Agent Input (Message)                      │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  system_prompt: str  (Role definition)              │
-│  user_message: str   (Task instructions)            │
-│  context: Dict       (Optional previous output)     │
-│  temperature: float  (Task-specific: 0.2-0.9)       │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+critique_fn = functools.partial(critique_agent.run, generated_code)
+red_team_fn = functools.partial(red_team_agent.run, generated_code)
 
-         │
-         │ Claude API Call
-         ▼
-
-┌──────────────────────────────────────────────────────┐
-│           Agent Output (Response)                    │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  Each agent utilizes a specialized prompt and interacts with an LLM (Llama 3.3 70B via Groq) │
-│  to perform its specific task within the pipeline.                                          │
-│                                                                                            │
-│  1.  **Spec Agent**: Uses Groq to interpret HTML subsets and produce YAML specifications.  │
-│  Examples:                                           │
-│  • Unified diff patch (Codegen Agent)               │
-│  • JSON approval report (Critique Agent)            │
-│  • Python test code (Test Agent)                    │
-│  • Adversarial test code (Red-Team Agent)           │
-│  • JSON analysis (Monitor Agent)                    │
-│  • Patch content (Repair Agent)                     │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+critique_result, red_team_result = run_agents_parallel(
+    [critique_fn, red_team_fn],
+    timeout=120,
+)
 ```
+
+* **Speedup:** Reduces wall-clock review/audit duration by approximately **42%** during full pipeline executions.
 
 ---
 
-## State Machine: Tokenizer States
+## 4. Parser Architecture (`src/parser.py`)
 
-```
-                    ┌─────────────────┐
-                    │  START (DATA)   │
-                    └────────┬────────┘
-                             │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-         [a-z]              [<]             [EOF]
-          │                  │                  │
-          ▼                  ▼                  ▼
-    ┌──────────────┐  ┌─────────────┐  [EMIT TOKEN]
-    │[CHARACTER]   │  │ TAG_OPEN    │
-    │EMIT CHAR     │  └──────┬──────┘
-    │              │         │
-    └──────┬───────┘    ┌────┼────┐
-           │            │    │    │
-           └────┐       [/]  [!]  [a-z]
-                │       │    │    │
-                │   ┌───┘    │    └─────┐
-                │   │        │          │
-                │   ▼        ▼          ▼
-                │   TAG_NAME TAG_NAME  BOGUS_COMMENT
-                │   (END)    (DOCTYPE)
-                │   │        │
-                └───┼────┬───┴────┐
-                    │    │        │
-                  [>]  [>]   [EOF]
-                    │    │        │
-                    └────┼────────┘
-                         │
-                ┌────────▼──────────┐
-                │ EMIT TAG TOKEN    │
-                │ Return to DATA    │
-                └───────────────────┘
-```
+The generated parser is a pure-Python, zero-dependency HTML5 parser implementing:
+1. **Tokenizer (Finite State Machine):**
+   - States: `DATA`, `TAG_OPEN`, `TAG_NAME`, `BEFORE_ATTRIBUTE_NAME`, `ATTRIBUTE_NAME`, `BEFORE_ATTRIBUTE_VALUE`, `ATTRIBUTE_VALUE`, `SELF_CLOSING_START_TAG`.
+   - Handles unquoted, single-quoted, and double-quoted attributes, as well as self-closing tags (`<img />`, `<br />`).
+2. **DOM Tree Builder:**
+   - Constructs hierarchical `TreeNode` instances (`name`, `attributes`, `children`, `text_content`, `parent`).
+   - Supports implicit tag closure (e.g., `<p>` closing automatically before `<div>` or next `<p>`).
+3. **Streaming API (`StreamingHTMLParser`):**
+   - Incrementally consumes chunked HTML input, maintaining state across chunk boundaries.
+   - Emits SAX-style callbacks: `on_start_tag(name, attrs)`, `on_end_tag(name)`, `on_data(text)`.
+4. **Execution Tracing (`parse_with_trace`):**
+   - Instruments tokenizer transitions, DOM insertion events, and execution timing for telemetry consumed by `MonitorAgentAI` and `RepairAgentAI`.
 
 ---
 
-## Repair Loop Architecture
+## 5. Testing & Verification Methodology
 
-```
-┌──────────────────────────────────────┐
-│       Test Execution                 │
-│    (32 tests × 2 test suites)        │
-└────────────┬───────────────────────┘
-             │
-             ├─ Pass
-             │
-    ┌────────▼──────────┐
-    │ All Tests Passed? │
-    └────────┬──────────┘
-             │
-        ┌────┴────┐
-      YES         NO
-        │          │
-        ▼          ▼
-     SUCCESS    ┌─────────────────────────────┐
-                │  Collect Failure Evidence   │
-                │  • Failed test names        │
-                │  • Error messages           │
-                │  • Execution traces         │
-                │  • Performance metrics      │
-                └────────┬────────────────────┘
-                         │
-                         ▼
-                ┌─────────────────────────────┐
-                │  Repair Agent AI            │
-                │  • Analyzes failures        │
-                │  • Identifies root cause    │
-                │  • Generates repair patch   │
-                │  • Adds inline comments     │
-                └────────┬────────────────────┘
-                         │
-                         ▼
-                ┌─────────────────────────────┐
-                │  Apply Repair Patch         │
-                │  (git apply)                │
-                └────────┬────────────────────┘
-                         │
-                         ▼
-                ┌─────────────────────────────┐
-                │  Re-run Tests               │
-                │  (Iteration N+1)            │
-                └────────┬────────────────────┘
-                         │
-           ┌─────────────┴──────────────┐
-           │                            │
-      Improvement?              Max Iterations?
-        (Tests up)               (Limit: 3)
-           │                            │
-        YES│                           NO
-           │                            │
-           ▼                            ▼
-        Loop Back              ┌──────────────┐
-                               │  Try Manual  │
-                               │  Fixes or    │
-                               │  Refactor    │
-                               └──────────────┘
-```
+### A. Automated Integration & Streaming Tests
+- **Location:** `tests/test_integration.py` and `tests/test_streaming.py`
+- **Scope:** 34 automated unit and integration tests covering:
+  - Basic and nested tag structures
+  - Implicit tag closures
+  - Attribute parsing variations (single, double, unquoted, boolean)
+  - Streaming chunked parsing and event propagation
+  - Malformed and unclosed tag recovery
+
+### B. Adversarial Security Suite
+- **Location:** `scripts/run_adversarial.py`
+- **Scope:** 15 distinct adversarial attack vectors:
+  - Deep tag recursion (200+ levels)
+  - Memory stress via long attributes (5,000+ characters)
+  - Unicode edge cases, null characters, and zero-width spaces
+  - Script injection & malformed comments
+
+### C. Compliance Verification
+- **Location:** `scripts/run_compliance.py`
+- **Data File:** `data/sample_compliance_tests.dat`
+- **Structure:**
+  - Evaluates parser outputs against standardized `.dat` test files (input HTML vs expected document tree lines).
+  - Current baseline: 10 structural conformance test cases (100% pass on core subset).
+  - Designed for extension to the full upstream `html5lib-tests` suite.
 
 ---
 
-## Configuration Hierarchy
+## 6. Interactive Web Dashboard (`dashboard/index.html`)
 
-```
-Default Values (config.py)
-    ↓
-Environment Variables (.env)
-    ↓
-Runtime Parameters (orchestrator.py)
-    ↓
-Effective Configuration
-```
-
-**Configuration Scope:**
-
-```
-System-wide (config.py)
-├─ API keys
-├─ Model selection
-├─ Token limits
-├─ Timeout thresholds
-├─ Directory paths
-└─ The interface to Groq is encapsulated in `src/groq_integration.py`. This module provides 
-   a `GroqAgent` class that handles the API calls, including retry logic and 
-   conversation history management.
-
-- **Model**: Llama-3.3-70b-versatile
-Per-Agent (groq_integration.py)
-├─ System prompts
-├─ Task-specific temperature
-├─ Input constraints
-└─ Output parsing rules
-
-Per-Run (orchestrator.py)
-├─ Run ID
-├─ HTML subset
-├─ Parser interface
-├─ Max repair iterations
-└─ Test suite selection
-```
-
----
-
-## Performance Characteristics
-
-### Response Time Profile
-
-```
-Agent              Min      Avg      Max    Notes
-─────────────────────────────────────────────────────
-Spec Agent        20s      45s      90s    Complex interpretation
-Codegen Agent     40s      90s     180s    Requires code quality
-Critique Agent    15s      40s      80s    Focused task
-Test Agent        20s      45s      90s    Multiple test cases
-Red-Team Agent    25s      50s     100s    Creative generation
-Monitor Agent     10s      35s      70s    Trace analysis
-Repair Agent      30s      60s     120s    Debugging required
-
-Full Pipeline    220s     395s     730s    Depends on repairs
-```
-
-### Resource Usage Profile
-
-```
-Memory: 200-500 MB
-Disk: 50-100 MB per run
-Network: 2-5 MB per agent call
-CPU: Moderate (waits on API)
-```
-
----
-
-## Error Handling Architecture
-
-```
-┌──────────────────────────────────────────┐
-│  Error Detection Points                  │
-├──────────────────────────────────────────┤
-│                                          │
-│  Agent Call Failed                       │
-│  ├─ API error → Retry with fallback      │
-│  ├─ Timeout → Return cached result       │
-│  ├─ Invalid response → Log and continue  │
-│  └─ Rate limit → Wait and retry          │
-│                                          │
-│  Patch Application Failed                │
-│  ├─ Conflict detected → Manual review    │
-│  ├─ Invalid format → Validate and fix    │
-│  └─ Out of order → Reorder patches       │
-│                                          │
-│  Test Execution Failed                   │
-│  ├─ Syntax error → Fix automatically     │
-│  ├─ Import error → Check dependencies    │
-│  └─ Runtime error → Trigger repair       │
-│                                          │
-│  Parser Execution Failed                 │
-│  ├─ Timeout → Mark as robustness issue   │
-│  ├─ Stack overflow → Reduce depth limit  │
-│  └─ Memory exhaustion → Optimize         │
-│                                          │
-└──────────────────────────────────────────┘
-```
-
----
-
-## Extension Points
-
-### Adding a New Agent
-
-```
-New Agent Class
-├─ Inherit from GroqAgent-like pattern
-├─ Define system_prompt
-├─ Implement input_validation()
-├─ Implement parse_response()
-└─ Add to orchestrator pipeline
-
-New Test Category
-├─ Create test_*.py file
-├─ Use pytest framework
-├─ Add to TestAgentAI prompt
-└─ Include in test_runner
-
-New Metric
-├─ Add to ParsingTrace
-├─ Track in executor
-├─ Report in MonitorAgent
-└─ Visualize in reports
-```
-
----
-
-**Last Updated:** February 24, 2026
+- **Server:** `scripts/serve_dashboard.py` (served on port 8082 by default)
+- **Features:**
+  - **Live DOM Inspector:** Interactive input textarea where users can enter arbitrary HTML and inspect the generated hierarchical DOM tree in real time via `POST /api/parse`.
+  - **Pipeline Telemetry:** Displays compliance summaries, adversarial attack results, benchmark latencies, and agent status.

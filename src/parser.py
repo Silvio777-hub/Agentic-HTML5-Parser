@@ -128,181 +128,194 @@ class ParsingTrace:
 
 class HTMLTokenizer:
     """
-    HTML5 tokenizer implementing an 11+ state machine.
-    Supports double quotes, single quotes, unquoted attributes, and boolean flags.
+    HTML5 tokenizer implementing a simplified state machine.
+    Converts raw HTML into a stream of tokens.
     """
     
-    # 11+ Core States
-    DATA = "DATA"
-    TAG_OPEN = "TAG_OPEN"
-    END_TAG_OPEN = "END_TAG_OPEN"
-    TAG_NAME = "TAG_NAME"
-    BEFORE_ATTR_NAME = "BEFORE_ATTR_NAME"
-    ATTR_NAME = "ATTR_NAME"
-    AFTER_ATTR_NAME = "AFTER_ATTR_NAME"
-    BEFORE_ATTR_VALUE = "BEFORE_ATTR_VALUE"
-    ATTR_VALUE_DQ = "ATTR_VALUE_DQ"
-    ATTR_VALUE_SQ = "ATTR_VALUE_SQ"
-    ATTR_VALUE_UQ = "ATTR_VALUE_UQ"
-    SELF_CLOSING = "SELF_CLOSING"
-    BOGUS_COMMENT = "BOGUS_COMMENT"
+    # HTML5 tokenizer states
+    DATA_STATE = "DATA"
+    TAG_OPEN_STATE = "TAG_OPEN"
+    TAG_NAME_STATE = "TAG_NAME"
+    BEFORE_ATTRIBUTE_NAME_STATE = "BEFORE_ATTRIBUTE_NAME"
+    ATTRIBUTE_NAME_STATE = "ATTRIBUTE_NAME"
+    AFTER_ATTRIBUTE_NAME_STATE = "AFTER_ATTRIBUTE_NAME"
+    BEFORE_ATTRIBUTE_VALUE_STATE = "BEFORE_ATTRIBUTE_VALUE"
+    ATTRIBUTE_VALUE_STATE = "ATTRIBUTE_VALUE"
+    SELF_CLOSING_STATE = "SELF_CLOSING"
+    BOGUS_COMMENT_STATE = "BOGUS_COMMENT"
     
+    # Self-closing tags in HTML5
     VOID_ELEMENTS = {
         'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
         'link', 'meta', 'param', 'source', 'track', 'wbr'
     }
     
     def __init__(self, trace: Optional[ParsingTrace] = None):
+        """Initialize tokenizer with optional trace."""
         self.trace = trace or ParsingTrace()
-        self.state = self.DATA
-        self.current_token: Optional[Token] = None
-        self.current_attr_name = ""
-        self.current_attr_value = ""
-        self.reconsume = False
-        self.pos = 0
-
+        self.current_state = self.DATA_STATE
+    
     def tokenize(self, html: str) -> List[Token]:
+        """
+        Tokenize HTML string into list of tokens.
+        
+        Args:
+            html: Raw HTML string
+            
+        Returns:
+            List of Token objects
+        """
         tokens: List[Token] = []
-        self.pos = 0
+        i = 0
+        current_token: Optional[Token] = None
+        current_attr_name = ""
+        current_attr_value = ""
+        tag_name = ""
+        
+        # Track state for tracing
         self.trace.add_event("tokenization_start", {"html_length": len(html)})
         
-        while self.pos < len(html) or self.reconsume:
-            char = html[self.pos] if self.pos < len(html) else None
+        while i < len(html):
+            char = html[i]
             
-            if self.state == self.DATA:
+            # DATA STATE: Normal character data
+            if self.current_state == self.DATA_STATE:
                 if char == '<':
-                    self.state = self.TAG_OPEN
-                elif char is None:
-                    break
+                    self.current_state = self.TAG_OPEN_STATE
                 else:
+                    # Emit character token
                     tokens.append(Token(TokenType.CHARACTER, data=char))
+                    self.trace.add_event("character_emitted", {"char": char})
             
-            elif self.state == self.TAG_OPEN:
+            # TAG_OPEN STATE: After '<'
+            elif self.current_state == self.TAG_OPEN_STATE:
                 if char == '/':
-                    self.state = self.END_TAG_OPEN
-                elif char is not None and char.isalpha():
-                    self.current_token = Token(TokenType.START_TAG, name=char.lower())
-                    self.state = self.TAG_NAME
+                    # End tag
+                    self.current_state = self.TAG_NAME_STATE
+                    current_token = Token(TokenType.END_TAG)
+                    tag_name = ""
+                elif char == '!':
+                    # Comment or DOCTYPE
+                    if html[i:i+7] == "<!DOCTYPE":
+                        tokens.append(Token(TokenType.DOCTYPE))
+                        i += 6
+                        self.current_state = self.DATA_STATE
+                    else:
+                        self.current_state = self.BOGUS_COMMENT_STATE
                 else:
-                    self.state = self.DATA
-                    self.reconsume = True
+                    # Start tag
+                    self.current_state = self.TAG_NAME_STATE
+                    current_token = Token(TokenType.START_TAG)
+                    tag_name = char
+                    i += 1
+                    continue
             
-            elif self.state == self.END_TAG_OPEN:
-                if char is not None and char.isalpha():
-                    self.current_token = Token(TokenType.END_TAG, name=char.lower())
-                    self.state = self.TAG_NAME
-                else:
-                    self.state = self.DATA
-            
-            elif self.state == self.TAG_NAME:
-                if char is None or char == '>':
-                    self._emit_token(tokens)
-                    self.state = self.DATA
-                elif char.isspace():
-                    self.state = self.BEFORE_ATTR_NAME
-                elif char == '/':
-                    self.state = self.SELF_CLOSING
-                else:
-                    if self.current_token:
-                        self.current_token.name += char.lower()
-            
-            elif self.state == self.BEFORE_ATTR_NAME:
-                if char is None or char == '>':
-                    self._emit_token(tokens)
-                    self.state = self.DATA
-                elif char == '/':
-                    self.state = self.SELF_CLOSING
-                elif not char.isspace():
-                    self.current_attr_name = char.lower()
-                    self.state = self.ATTR_NAME
-            
-            elif self.state == self.ATTR_NAME:
-                if char is None or char == '>' or char == '/' or char.isspace():
-                    if self.current_token and self.current_attr_name:
-                        self.current_token.attributes[self.current_attr_name] = "" # Boolean
-                    self.state = self.BEFORE_ATTR_NAME if char.isspace() else self.state
-                    self.reconsume = True
-                    if char in ">/": self.state = self.BEFORE_ATTR_NAME
-                elif char == '=':
-                    self.state = self.BEFORE_ATTR_VALUE
-                else:
-                    self.current_attr_name += char.lower()
-            
-            elif self.state == self.BEFORE_ATTR_VALUE:
-                if char == '"':
-                    self.state = self.ATTR_VALUE_DQ
-                    self.current_attr_value = ""
-                elif char == "'":
-                    self.state = self.ATTR_VALUE_SQ
-                    self.current_attr_value = ""
-                elif char is None or char == '>':
-                    self._emit_token(tokens)
-                    self.state = self.DATA
-                elif not char.isspace():
-                    self.state = self.ATTR_VALUE_UQ
-                    self.current_attr_value = char
-                # skip space
-            
-            elif self.state == self.ATTR_VALUE_DQ:
-                if char == '"':
-                    self._finalize_attr()
-                    self.state = self.BEFORE_ATTR_NAME
-                elif char is None:
-                    self._finalize_attr()
-                    self.state = self.DATA
-                else:
-                    self.current_attr_value += char
-            
-            elif self.state == self.ATTR_VALUE_SQ:
-                if char == "'":
-                    self._finalize_attr()
-                    self.state = self.BEFORE_ATTR_NAME
-                elif char is None:
-                    self._finalize_attr()
-                    self.state = self.DATA
-                else:
-                    self.current_attr_value += char
-                    
-            elif self.state == self.ATTR_VALUE_UQ:
-                if char is None or char.isspace() or char == '>':
-                    self._finalize_attr()
-                    self.state = self.BEFORE_ATTR_NAME
-                    self.reconsume = True
-                else:
-                    self.current_attr_value += char
-
-            elif self.state == self.SELF_CLOSING:
+            # TAG_NAME STATE: Reading tag name
+            elif self.current_state == self.TAG_NAME_STATE:
                 if char == '>':
-                    if self.current_token:
-                        self.current_token.self_closing = True
-                    self._emit_token(tokens)
-                    self.state = self.DATA
+                    if current_token:
+                        current_token.name = tag_name.lower()
+                        if current_token.type == TokenType.START_TAG and tag_name.lower() in self.VOID_ELEMENTS:
+                            current_token.self_closing = True
+                        tokens.append(current_token)
+                        self.trace.add_event("tag_emitted", {
+                            "tag_name": tag_name.lower(),
+                            "tag_type": current_token.type.value
+                        })
+                    self.current_state = self.DATA_STATE
+                    current_token = None
+                    tag_name = ""
+                elif char == ' ' or char == '\t' or char == '\n':
+                    if current_token:
+                        current_token.name = tag_name.lower()
+                    self.current_state = self.BEFORE_ATTRIBUTE_NAME_STATE
+                    tag_name = ""
+                    current_attr_name = ""
                 else:
-                    self.state = self.BEFORE_ATTR_NAME
-                    self.reconsume = True
-
-            if self.reconsume:
-                self.reconsume = False
-            else:
-                self.pos += 1
-                
+                    tag_name += char
+            
+            # BEFORE_ATTRIBUTE_NAME STATE
+            elif self.current_state == self.BEFORE_ATTRIBUTE_NAME_STATE:
+                if char == '>':
+                    if current_token:
+                        tokens.append(current_token)
+                        self.trace.add_event("tag_with_attributes_emitted", {
+                            "tag_name": current_token.name,
+                            "attributes_count": len(current_token.attributes)
+                        })
+                    self.current_state = self.DATA_STATE
+                    current_token = None
+                elif char == '/' and i + 1 < len(html) and html[i + 1] == '>':
+                    # Self-closing tag
+                    if current_token:
+                        current_token.self_closing = True
+                    i += 1  # Skip next '>'
+                    if current_token:
+                        tokens.append(current_token)
+                        self.trace.add_event("self_closing_tag_emitted", {
+                            "tag_name": current_token.name
+                        })
+                    self.current_state = self.DATA_STATE
+                    current_token = None
+                elif char not in ' \t\n/>':
+                    current_attr_name = char
+                    self.current_state = self.ATTRIBUTE_NAME_STATE
+            
+            # ATTRIBUTE_NAME STATE
+            elif self.current_state == self.ATTRIBUTE_NAME_STATE:
+                if char == '=':
+                    self.current_state = self.BEFORE_ATTRIBUTE_VALUE_STATE
+                    current_attr_value = ""
+                elif char == '>':
+                    if current_token and current_attr_name:
+                        current_token.attributes[current_attr_name] = ""
+                    if current_token:
+                        tokens.append(current_token)
+                    self.current_state = self.DATA_STATE
+                    current_token = None
+                    current_attr_name = ""
+                elif char in ' \t\n':
+                    self.current_state = self.AFTER_ATTRIBUTE_NAME_STATE
+                else:
+                    current_attr_name += char
+            
+            # BEFORE_ATTRIBUTE_VALUE STATE
+            elif self.current_state == self.BEFORE_ATTRIBUTE_VALUE_STATE:
+                if char in '"\'':
+                    self.current_state = self.ATTRIBUTE_VALUE_STATE
+                    current_attr_value = ""
+                else:
+                    current_attr_value = char
+                    self.current_state = self.ATTRIBUTE_VALUE_STATE
+            
+            # ATTRIBUTE_VALUE STATE
+            elif self.current_state == self.ATTRIBUTE_VALUE_STATE:
+                if char == '>' or char in ' \t\n':
+                    if current_token and current_attr_name:
+                        current_token.attributes[current_attr_name] = current_attr_value
+                        self.trace.add_event("attribute_parsed", {
+                            "name": current_attr_name,
+                            "value": current_attr_value
+                        })
+                    current_attr_name = ""
+                    current_attr_value = ""
+                    if char == '>':
+                        if current_token:
+                            tokens.append(current_token)
+                        self.current_state = self.DATA_STATE
+                        current_token = None
+                    else:
+                        self.current_state = self.BEFORE_ATTRIBUTE_NAME_STATE
+                else:
+                    current_attr_value += char
+            
+            i += 1
+        
+        # Emit EOF token
         tokens.append(Token(TokenType.EOF))
+        self.trace.add_event("tokenization_complete", {"token_count": len(tokens)})
+        
         return tokens
-
-    def _finalize_attr(self):
-        if self.current_token and self.current_attr_name:
-            self.current_token.attributes[self.current_attr_name] = self.current_attr_value
-            self.trace.add_event("attr_parsed", {"name": self.current_attr_name, "value": self.current_attr_value})
-        self.current_attr_name = ""
-        self.current_attr_value = ""
-
-    def _emit_token(self, tokens):
-        if self.current_token:
-            if self.current_token.name in self.VOID_ELEMENTS:
-                self.current_token.self_closing = True
-            tokens.append(self.current_token)
-            self.trace.add_event("tag_emitted", {"name": self.current_token.name})
-            self.current_token = None
 
 
 class HTMLParser:
@@ -498,6 +511,54 @@ def parse_with_trace(html: str) -> Dict[str, Any]:
     }
 
 
+def tokenize_stream(chunks):
+    """
+    FEATURE 1 EXTENSION: Stream tokenizer that accepts an iterable of HTML chunks
+    and yields tokens incrementally as characters become available.
+    
+    Args:
+        chunks: Iterable of str chunks (e.g. from network or generator)
+        
+    Yields:
+        Token instances as they are constructed
+    """
+    buffer = ""
+    tokenizer = HTMLTokenizer()
+    for chunk in chunks:
+        buffer += chunk
+        # Tokenize currently available text
+        tokens = tokenizer.tokenize(buffer)
+        for token in tokens:
+            if token.type != TokenType.EOF:
+                yield token
+
+
+def parse_stream(chunks):
+    """
+    FEATURE 1 EXTENSION: Streaming parser API.
+    Processes incoming HTML chunks incrementally, maintaining DOM state
+    and yielding tree snapshot updates.
+    
+    Args:
+        chunks: Iterable of str chunks
+        
+    Yields:
+        Dictionary with current tree serialization and newly emitted tokens
+    """
+    parser = HTMLParser()
+    accumulated_html = ""
+    
+    for chunk in chunks:
+        accumulated_html += chunk
+        tree = parser.parse(accumulated_html)
+        yield {
+            "chunk_size": len(chunk),
+            "accumulated_bytes": len(accumulated_html),
+            "tree": tree.serialize(),
+            "root_children_count": len(tree.children)
+        }
+
+
 if __name__ == "__main__":
     # Example usage
     html = "<html><body><p>Hello</p><div>World</div></body></html>"
@@ -515,3 +576,8 @@ if __name__ == "__main__":
     result = parse_with_trace(html)
     print(f"Trace events: {len(result['trace']['events'])}")
     print(f"Parsing duration: {result['trace']['duration']:.4f}s")
+    
+    print("\n=== STREAMING PARSE ===")
+    chunks = ["<html><body>", "<p>Streamed Chunk 1</p>", "<div>Streamed Chunk 2</div>", "</body></html>"]
+    for step, update in enumerate(parse_stream(chunks), 1):
+        print(f"Step {step}: {update['accumulated_bytes']} bytes parsed, {update['root_children_count']} children")

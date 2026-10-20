@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-10-08T20:55:07Z",
+  "parser_metrics": {
+    "iterations": 100,
+    "total_time_seconds": 1.7154,
+    "avg_time_per_doc_ms": 17.154,
+    "energy_joules": 77.1919,
+    "energy_kwh": 2.144e-05,
+    "co2_grams_eu": 0.005897,
+    "co2_per_doc_milligrams": 0.059
+  },
+  "pipeline_metrics": {
+    "uncached_run": {
+      "energy_joules": 5250.0,
+      "energy_kwh": 0.001458,
+      "co2_grams": 0.401
+    },
+    "cached_run": {
+      "energy_joules": 0.1575,
+      "energy_kwh": 4e-08,
+      "co2_grams": 1.2e-05
+    },
+    "energy_savings_percentage": 100.0
+  },
+  "carbon_intensity_standards": {
+    "EU_Average": 0.275,
+    "UK_Grid": 0.207,
+    "US_Average": 0.385,
+    "Global_Average": 0.475
+  }
+}

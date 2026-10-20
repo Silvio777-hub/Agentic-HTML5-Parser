@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-10-08T20:57:58Z",
+  "test_input": "<p>First paragraph content<div>Block element begins</div>",
+  "initial_status": "FAILED",
+  "root_cause": "Missing implicit paragraph closure condition",
+  "patch_applied": "--- a/src/parser.py\n+++ b/src/parser.py\n@@ -382,6 +382,9 @@ class HTMLParser:\n         tag_name = token.name\n         \n+        # Implicit <p> closure before block elements\n+        if tag_name in self.SPECIAL_END_TAGS and self._is_open(\"p\"):\n+            self._close_element(\"p\")\n         \n         # Create new node\n         new_node = TreeNode(tag_name or \"\", attributes=token.attributes or {})\n",
+  "final_status": "PASSED",
+  "repair_duration_sec": 1.52,
+  "iterations_used": 1
+}

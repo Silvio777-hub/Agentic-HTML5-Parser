@@ -1,0 +1,130 @@
+{
+  "summary": {
+    "total": 15,
+    "passed": 15,
+    "crashed": 0,
+    "resilience_rate": 100.0
+  },
+  "results": [
+    {
+      "id": "ADV-01",
+      "name": "Deeply Nested 200 Levels",
+      "category": "Nesting",
+      "status": "PASSED",
+      "duration_ms": 12.62,
+      "error": null
+    },
+    {
+      "id": "ADV-02",
+      "name": "Unclosed Paragraphs Cascade",
+      "category": "Implicit Closure",
+      "status": "PASSED",
+      "duration_ms": 0.39,
+      "error": null
+    },
+    {
+      "id": "ADV-03",
+      "name": "Bogus Comment Syntax",
+      "category": "Comments",
+      "status": "PASSED",
+      "duration_ms": 0.09,
+      "error": null
+    },
+    {
+      "id": "ADV-04",
+      "name": "Script Injection Attack Vector",
+      "category": "Security / XSS",
+      "status": "PASSED",
+      "duration_ms": 0.22,
+      "error": null
+    },
+    {
+      "id": "ADV-05",
+      "name": "Unquoted Complex Attributes",
+      "category": "Attributes",
+      "status": "PASSED",
+      "duration_ms": 0.18,
+      "error": null
+    },
+    {
+      "id": "ADV-06",
+      "name": "Unicode RTL & Emoji Tags",
+      "category": "Internationalization",
+      "status": "PASSED",
+      "duration_ms": 0.22,
+      "error": null
+    },
+    {
+      "id": "ADV-07",
+      "name": "Zero-Width Spaces in Tag Names",
+      "category": "Unicode",
+      "status": "PASSED",
+      "duration_ms": 0.55,
+      "error": null
+    },
+    {
+      "id": "ADV-08",
+      "name": "Self-Closing Non-Void Tag",
+      "category": "Void Elements",
+      "status": "PASSED",
+      "duration_ms": 0.12,
+      "error": null
+    },
+    {
+      "id": "ADV-09",
+      "name": "Extreme Long Attribute (5000 chars)",
+      "category": "Stress",
+      "status": "PASSED",
+      "duration_ms": 8.29,
+      "error": null
+    },
+    {
+      "id": "ADV-10",
+      "name": "Missing Root Tag",
+      "category": "Malformed",
+      "status": "PASSED",
+      "duration_ms": 0.39,
+      "error": null
+    },
+    {
+      "id": "ADV-11",
+      "name": "Mixed Case Tag Names",
+      "category": "Case Sensitivity",
+      "status": "PASSED",
+      "duration_ms": 0.28,
+      "error": null
+    },
+    {
+      "id": "ADV-12",
+      "name": "Empty Input",
+      "category": "Edge Case",
+      "status": "PASSED",
+      "duration_ms": 0.03,
+      "error": null
+    },
+    {
+      "id": "ADV-13",
+      "name": "Whitespace Only",
+      "category": "Edge Case",
+      "status": "PASSED",
+      "duration_ms": 0.11,
+      "error": null
+    },
+    {
+      "id": "ADV-14",
+      "name": "Repeated Self-Closing Breaks",
+      "category": "Void Elements",
+      "status": "PASSED",
+      "duration_ms": 0.18,
+      "error": null
+    },
+    {
+      "id": "ADV-15",
+      "name": "Nested Blockquote Hierarchy",
+      "category": "Hierarchy",
+      "status": "PASSED",
+      "duration_ms": 0.28,
+      "error": null
+    }
+  ]
+}

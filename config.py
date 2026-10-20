@@ -1,7 +1,6 @@
 """
 Configuration module for the Agentic AI HTML5 Parser pipeline.
 Manages environment variables, API keys, and system parameters.
-Uses Groq as the AI provider.
 """
 
 import os
@@ -19,9 +18,9 @@ load_dotenv()
 class Config:
     """Configuration class for the agentic pipeline."""
     
-    # API Configuration for Groq
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")  # Groq's flagship model
+    # API Configuration for Claude (Anthropic)
+    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+    CLAUDE_MODEL = "claude-3-5-sonnet-20241022"  # Using Claude 3.5 Sonnet
     MAX_TOKENS = 4096
     TEMPERATURE = 0.7  # Balance between creativity and consistency
     

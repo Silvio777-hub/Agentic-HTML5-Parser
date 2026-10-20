@@ -1,0 +1,30 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint with flake8
+        run: flake8 src/ --max-line-length=120 || true
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+      - name: Run compliance sample tests
+        run: python scripts/run_compliance.py --sample
+        continue-on-error: true

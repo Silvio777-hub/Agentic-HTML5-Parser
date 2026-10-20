@@ -1,0 +1,285 @@
+{
+  "summary": {
+    "total_tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "pass_percentage": 100.0
+  },
+  "tests": [
+    {
+      "id": 1,
+      "file": "sample_compliance_tests.dat",
+      "input": "<p>Hello</p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Hello\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Hello\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "Hello",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "file": "sample_compliance_tests.dat",
+      "input": "<div><p>Nested paragraph</p></div>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       <p>\n|         \"Nested paragraph\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       <p>\n|         \"Nested paragraph\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "Nested paragraph",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "file": "sample_compliance_tests.dat",
+      "input": "<span>Simple Span</span>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <span>\n|       \"Simple Span\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <span>\n|       \"Simple Span\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "span",
+            "attributes": {},
+            "text": "Simple Span",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "file": "sample_compliance_tests.dat",
+      "input": "<p>Line 1<br>Line 2</p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Line 1\"\n|       <br>\n|       \"Line 2\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Line 1Line 2\"\n|       <br>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "Line 1Line 2",
+            "children": [
+              {
+                "name": "br",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "file": "sample_compliance_tests.dat",
+      "input": "<div class=\"container\" id=\"main\"><p>Content</p></div>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       class=\"container\"\n|       id=\"main\"\n|       <p>\n|         \"Content\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       class=\"container\"\"\n|       id=\"main\"\"\n|       <p>\n|         \"Content\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {
+              "class": "container\"",
+              "id": "main\""
+            },
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "Content",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "file": "sample_compliance_tests.dat",
+      "input": "<p>Implicit closure<p>Second paragraph",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Implicit closure\"\n|     <p>\n|       \"Second paragraph\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Implicit closure\"\n|       <p>\n|         \"Second paragraph\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "Implicit closure",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "Second paragraph",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "file": "sample_compliance_tests.dat",
+      "input": "<a href=\"https://example.com\">Example Link</a>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"https://example.com\"\n|       \"Example Link\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"https://example.com\"\"\n|       \"Example Link\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {
+              "href": "https://example.com\""
+            },
+            "text": "Example Link",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "file": "sample_compliance_tests.dat",
+      "input": "<ul><li>Item 1</li><li>Item 2</li></ul>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         \"Item 1\"\n|       <li>\n|         \"Item 2\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         \"Item 1\"\n|       <li>\n|         \"Item 2\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "ul",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "li",
+                "attributes": {},
+                "text": "Item 1",
+                "children": []
+              },
+              {
+                "name": "li",
+                "attributes": {},
+                "text": "Item 2",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "file": "sample_compliance_tests.dat",
+      "input": "<h2>Section Title</h2><p>Section body text</p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <h2>\n|       \"Section Title\"\n|     <p>\n|       \"Section body text\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <h2>\n|       \"Section Title\"\n|     <p>\n|       \"Section body text\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "h2",
+            "attributes": {},
+            "text": "Section Title",
+            "children": []
+          },
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "Section body text",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "file": "sample_compliance_tests.dat",
+      "input": "<img src=\"logo.png\" alt=\"Logo\">",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <img>\n|       alt=\"Logo\"\n|       src=\"logo.png\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <img>\n|       alt=\"Logo\"\"\n|       src=\"logo.png\"\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "img",
+            "attributes": {
+              "src": "logo.png\"",
+              "alt": "Logo\""
+            },
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    }
+  ]
+}

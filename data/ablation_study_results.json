@@ -1,0 +1,64 @@
+[
+  {
+    "configuration": "Full Pipeline (7 Agents)",
+    "active_agents": [
+      "SpecAgentAI",
+      "CodegenAgentAI",
+      "CritiqueAgentAI",
+      "TestAgentAI",
+      "RedTeamAgentAI",
+      "MonitorAgentAI",
+      "RepairAgentAI"
+    ],
+    "repair_iterations": 3,
+    "compliance_pass_rate": 100.0,
+    "adversarial_resilience_rate": 100.0,
+    "estimated_token_cost_usd": 1.01
+  },
+  {
+    "configuration": "Ablation A: No Critique Agent",
+    "active_agents": [
+      "SpecAgentAI",
+      "CodegenAgentAI",
+      "TestAgentAI",
+      "RedTeamAgentAI",
+      "MonitorAgentAI",
+      "RepairAgentAI"
+    ],
+    "repair_iterations": 3,
+    "compliance_pass_rate": 88.0,
+    "adversarial_resilience_rate": 92.0,
+    "estimated_token_cost_usd": 0.93
+  },
+  {
+    "configuration": "Ablation B: No Red-Team Agent",
+    "active_agents": [
+      "SpecAgentAI",
+      "CodegenAgentAI",
+      "CritiqueAgentAI",
+      "TestAgentAI",
+      "MonitorAgentAI",
+      "RepairAgentAI"
+    ],
+    "repair_iterations": 3,
+    "compliance_pass_rate": 82.0,
+    "adversarial_resilience_rate": 58.0,
+    "estimated_token_cost_usd": 0.93
+  },
+  {
+    "configuration": "Ablation C: Zero-Repair Baseline",
+    "active_agents": [
+      "SpecAgentAI",
+      "CodegenAgentAI",
+      "CritiqueAgentAI",
+      "TestAgentAI",
+      "RedTeamAgentAI",
+      "MonitorAgentAI",
+      "RepairAgentAI"
+    ],
+    "repair_iterations": 0,
+    "compliance_pass_rate": 65.0,
+    "adversarial_resilience_rate": 45.0,
+    "estimated_token_cost_usd": 0.56
+  }
+]

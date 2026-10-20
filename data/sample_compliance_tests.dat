@@ -1,0 +1,114 @@
+#data
+<p>Hello</p>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <p>
+|       "Hello"
+
+#data
+<div><p>Nested paragraph</p></div>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <div>
+|       <p>
+|         "Nested paragraph"
+
+#data
+<span>Simple Span</span>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <span>
+|       "Simple Span"
+
+#data
+<p>Line 1<br>Line 2</p>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <p>
+|       "Line 1"
+|       <br>
+|       "Line 2"
+
+#data
+<div class="container" id="main"><p>Content</p></div>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <div>
+|       class="container"
+|       id="main"
+|       <p>
+|         "Content"
+
+#data
+<p>Implicit closure<p>Second paragraph
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <p>
+|       "Implicit closure"
+|     <p>
+|       "Second paragraph"
+
+#data
+<a href="https://example.com">Example Link</a>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <a>
+|       href="https://example.com"
+|       "Example Link"
+
+#data
+<ul><li>Item 1</li><li>Item 2</li></ul>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <ul>
+|       <li>
+|         "Item 1"
+|       <li>
+|         "Item 2"
+
+#data
+<h2>Section Title</h2><p>Section body text</p>
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <h2>
+|       "Section Title"
+|     <p>
+|       "Section body text"
+
+#data
+<img src="logo.png" alt="Logo">
+#errors
+#document
+| <html>
+|   <head>
+|   <body>
+|     <img>
+|       alt="Logo"
+|       src="logo.png"

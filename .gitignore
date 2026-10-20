@@ -99,3 +99,17 @@ Desktop.ini
 # - *.txt (requirements)
 # - *.yml (examples)
 # - *.json (config examples)
+
+# Cache directory
+cache/*.json
+
+# Media and thesis recordings
+*.mpeg
+*.mp4
+*.wav
+*.mp3
+*.mov
+*.avi
+Thesis*
+html5lib-tests/
+
