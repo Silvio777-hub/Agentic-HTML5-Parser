@@ -7,7 +7,7 @@ repair demos, chart generation, and dashboard servers.
 
 Usage Examples:
     python cli.py dashboard            # Launches live dashboard & playground at http://localhost:8080/dashboard/
-    python cli.py test                 # Runs all 39 automated unit & streaming & WHATWG boundary tests
+    python cli.py test                 # Runs all 70 automated unit & streaming & WHATWG boundary tests
     python cli.py compliance           # Runs W3C html5lib compliance test harness
     python cli.py benchmark            # Runs comparative performance benchmarks vs BeautifulSoup & lxml
     python cli.py adversarial          # Runs Red-Team hacker stress tests
@@ -44,7 +44,7 @@ def run_command(cmd_list, description):
 
 
 def cmd_test():
-    """Runs all 34 automated unit, integration, and streaming tests."""
+    """Runs all 70 automated unit, integration, and streaming tests."""
     # Invokes pytest directly using the current Python interpreter environment
     return run_command([sys.executable, "-m", "pytest", "tests/", "-v"], "Automated Test Suite (pytest)")
 
@@ -109,6 +109,11 @@ def cmd_build_thesis():
     return False
 
 
+def cmd_matrix():
+    """Runs full W3C upstream functional compliance matrix across 6 buckets."""
+    return run_command([sys.executable, "scripts/run_upstream_matrix.py"], "W3C Upstream Functional Compliance Matrix")
+
+
 def cmd_dashboard(port=8080, no_browser=False):
     """Starts the local web server and live playground API."""
     # Builds server command line with configurable TCP port
@@ -147,6 +152,13 @@ def cmd_parse(html_string, output_format="tree"):
     if output_format == "json":
         import json
         print(json.dumps(root.serialize(), indent=2))
+        return True
+
+    if output_format == "html":
+        print(f"\n{'='*60}")
+        print("  REVERSE SERIALIZED HTML (to_html)")
+        print(f"{'='*60}")
+        print(root.to_html(pretty=True))
         return True
 
     # Default: tree format
@@ -247,6 +259,7 @@ def cmd_all():
     steps = [
         ("Testing", cmd_test),
         ("Compliance", cmd_compliance),
+        ("W3C Matrix", cmd_matrix),
         ("Adversarial", cmd_adversarial),
         ("Benchmarking", cmd_benchmark),
         ("Ablation Study", cmd_ablation),
@@ -279,8 +292,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Commands:
-  test          Run all 39 automated unit, streaming & WHATWG boundary tests
+  test          Run all 70 automated unit, streaming & WHATWG boundary tests
   compliance    Run W3C compliance test harness
+  matrix        Run 6-bucket W3C functional compliance matrix
   benchmark     Run performance benchmarks vs BeautifulSoup & lxml
   adversarial   Run Red-Team hacker stress tests
   ablation      Run empirical ablation study experiments
@@ -303,13 +317,13 @@ Parse / Lint Examples:
         """
     )
     parser.add_argument("command", choices=[
-        "test", "compliance", "benchmark", "adversarial", "ablation",
+        "test", "compliance", "matrix", "benchmark", "adversarial", "ablation",
         "charts", "carbon", "audit", "repair-demo", "build-thesis",
         "dashboard", "parse", "lint", "all"
     ], help="Command to execute")
     parser.add_argument("--port", type=int, default=8080, help="Port for dashboard server (default: 8080)")
     parser.add_argument("--no-browser", action="store_true", help="Do not open browser on dashboard launch")
-    parser.add_argument("--format", choices=["tree", "json", "tokens"], default="tree",
+    parser.add_argument("--format", choices=["tree", "json", "tokens", "html"], default="tree",
                         help="Output format for parse/lint commands (default: tree)")
     parser.add_argument("html_or_file", nargs="?", default=None,
                         help="HTML string (for parse) or file path (for lint)")
@@ -320,6 +334,8 @@ Parse / Lint Examples:
         cmd_test()
     elif args.command == "compliance":
         cmd_compliance()
+    elif args.command == "matrix":
+        cmd_matrix()
     elif args.command == "benchmark":
         cmd_benchmark()
     elif args.command == "adversarial":

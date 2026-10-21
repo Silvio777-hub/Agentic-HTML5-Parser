@@ -9,9 +9,17 @@ FEATURE 1: Traceable Parser Interface
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple, Set
 from enum import Enum
 import time
+import re
+import html as _html_module
+
+# Standard HTML5 void elements (cannot have children or closing tags)
+VOID_ELEMENTS_SET = {
+    'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+    'link', 'meta', 'param', 'source', 'track', 'wbr'
+}
 
 
 class TokenType(Enum):
@@ -59,7 +67,7 @@ class Token:
 
 @dataclass
 class TreeNode:
-    """Represents a node in the DOM tree."""
+    """Represents a node in the DOM tree with full query, traversal, and HTML serialization."""
     name: str
     attributes: Dict[str, str] = field(default_factory=dict)
     children: List['TreeNode'] = field(default_factory=list)
@@ -83,6 +91,237 @@ class TreeNode:
     def __str__(self) -> str:
         """String representation."""
         return self.name
+
+    # -------------------------------------------------------------
+    # DOM Text Extraction & Navigation Properties
+    # -------------------------------------------------------------
+    def get_text(self, separator: str = "", strip: bool = False) -> str:
+        """
+        Recursively extract all concatenated text from this node and all descendants.
+        
+        Args:
+            separator: String inserted between text chunks
+            strip: If True, whitespace at start/end of each chunk is stripped
+        """
+        chunks: List[str] = []
+        
+        def _collect(node: 'TreeNode'):
+            if node.text_content:
+                t = node.text_content.strip() if strip else node.text_content
+                if t:
+                    chunks.append(t)
+            for child in node.children:
+                _collect(child)
+                
+        _collect(self)
+        result = separator.join(chunks)
+        return result.strip() if strip else result
+
+    @property
+    def text(self) -> str:
+        """Convenience property matching BeautifulSoup's .text attribute."""
+        return self.get_text()
+
+    # -------------------------------------------------------------
+    # DOM Query & Search API (find, find_all, select, select_one)
+    # -------------------------------------------------------------
+    def _matches(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, **kwargs) -> bool:
+        """Helper to determine if this node satisfies given tag name and attribute constraints."""
+        if name is not None:
+            if name != "*" and self.name.lower() != name.lower():
+                return False
+                
+        target_attrs: Dict[str, Any] = {}
+        if attrs:
+            target_attrs.update(attrs)
+        for k, v in kwargs.items():
+            attr_key = "class" if k == "class_" else k
+            target_attrs[attr_key] = v
+            
+        for key, expected_val in target_attrs.items():
+            actual_val = self.attributes.get(key)
+            if actual_val is None:
+                return False
+            if expected_val is True:
+                continue
+            if key == "class" and isinstance(expected_val, str):
+                actual_classes = actual_val.split()
+                expected_classes = expected_val.split()
+                if not all(cls in actual_classes for cls in expected_classes):
+                    return False
+            elif str(actual_val) != str(expected_val):
+                return False
+                
+        return True
+
+    def find(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, recursive: bool = True, **kwargs) -> Optional['TreeNode']:
+        """
+        Find the first matching descendant element in the DOM subtree.
+        
+        Examples:
+            node.find("p")
+            node.find("div", class_="container")
+            node.find(id="header")
+        """
+        results = self.find_all(name=name, attrs=attrs, recursive=recursive, limit=1, **kwargs)
+        return results[0] if results else None
+
+    def find_all(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, recursive: bool = True, limit: Optional[int] = None, **kwargs) -> List['TreeNode']:
+        """
+        Find all matching descendant elements in the DOM subtree.
+        
+        Args:
+            name: Tag name to match ('*' for any tag, None to match attributes only)
+            attrs: Dictionary of attribute names and expected values
+            recursive: If True, search all descendants; if False, search direct children only
+            limit: Maximum number of matches to return
+            **kwargs: Direct attribute lookups (e.g. class_="active", id="btn")
+        """
+        matches: List['TreeNode'] = []
+        
+        def _search(node: 'TreeNode'):
+            for child in node.children:
+                if child._matches(name=name, attrs=attrs, **kwargs):
+                    matches.append(child)
+                    if limit is not None and len(matches) >= limit:
+                        return
+                if recursive:
+                    _search(child)
+                    if limit is not None and len(matches) >= limit:
+                        return
+
+        _search(self)
+        return matches
+
+    def select_one(self, selector: str) -> Optional['TreeNode']:
+        """Find the first element matching a CSS selector."""
+        results = self.select(selector)
+        return results[0] if results else None
+
+    def select(self, selector: str) -> List['TreeNode']:
+        """
+        Query the DOM subtree using CSS selectors.
+        Supports:
+          - Tag selectors ('p', 'div')
+          - ID selectors ('#header', 'div#main')
+          - Class selectors ('.card', 'div.card')
+          - Attribute selectors ('[href]', '[type="text"]')
+          - Descendant combinators ('div p', 'article.post span.author')
+          - Comma-separated selectors ('h1, h2, h3')
+        """
+        if "," in selector:
+            results: List['TreeNode'] = []
+            seen_ids = set()
+            for part in selector.split(","):
+                for node in self.select(part.strip()):
+                    if id(node) not in seen_ids:
+                        seen_ids.add(id(node))
+                        results.append(node)
+            return results
+
+        tokens = selector.strip().split()
+        if not tokens:
+            return []
+
+        candidates = [self]
+        for token in tokens:
+            next_candidates = []
+            for candidate in candidates:
+                matched = candidate._match_selector_token(token)
+                next_candidates.extend(matched)
+            candidates = next_candidates
+            
+        return candidates
+
+    def _match_selector_token(self, token: str) -> List['TreeNode']:
+        """Matches a single selector token (e.g. 'div.container#main[data-active]') against all descendants."""
+        tag_match = re.match(r'^([a-zA-Z0-9_\-]+|\*)?', token)
+        tag_name = tag_match.group(1) if tag_match and tag_match.group(1) else None
+        
+        id_match = re.search(r'#([a-zA-Z0-9_\-]+)', token)
+        target_id = id_match.group(1) if id_match else None
+        
+        classes = re.findall(r'\.([a-zA-Z0-9_\-]+)', token)
+        attr_specs = re.findall('\\[([a-zA-Z0-9_\\-]+)(?:=[\\\'"]?([^\\\'"]*)[\\\'"]?)?\\]', token)
+        
+        attrs_filter: Dict[str, Any] = {}
+        if target_id:
+            attrs_filter["id"] = target_id
+        for attr_name, attr_val in attr_specs:
+            attrs_filter[attr_name] = attr_val if attr_val != "" else True
+            
+        def _matches_token(node: 'TreeNode') -> bool:
+            if not node._matches(name=tag_name, attrs=attrs_filter):
+                return False
+            if classes:
+                node_classes = node.attributes.get("class", "").split()
+                if not all(c in node_classes for c in classes):
+                    return False
+            return True
+
+        matched: List['TreeNode'] = []
+        def _traverse(node: 'TreeNode'):
+            for child in node.children:
+                if _matches_token(child):
+                    matched.append(child)
+                _traverse(child)
+                
+        _traverse(self)
+        return matched
+
+    # -------------------------------------------------------------
+    # Reverse HTML Serialization (to_html)
+    # -------------------------------------------------------------
+    def to_html(self, pretty: bool = False, indent_level: int = 0, indent_step: str = "  ") -> str:
+        """
+        Serialize this DOM subtree back into clean, standard-compliant HTML markup.
+        Supports pretty-printing and proper void element handling.
+        
+        Args:
+            pretty: If True, format with indentation and line breaks
+            indent_level: Current indentation depth
+            indent_step: String used for each indentation level (default 2 spaces)
+            
+        Returns:
+            Rendered HTML string
+        """
+        indent = (indent_step * indent_level) if pretty else ""
+        nl = "\n" if pretty else ""
+
+        if self.name in ("#document",):
+            return "".join(child.to_html(pretty=pretty, indent_level=indent_level, indent_step=indent_step) for child in self.children)
+
+        if self.name == "#text":
+            return self.text_content
+
+        attr_parts = []
+        for k, v in sorted(self.attributes.items()):
+            if v == "" or v is True:
+                attr_parts.append(k)
+            else:
+                escaped_v = str(v).replace('"', '&quot;')
+                attr_parts.append(f'{k}="{escaped_v}"')
+        attr_str = f" {' '.join(attr_parts)}" if attr_parts else ""
+
+        if self.name.lower() in VOID_ELEMENTS_SET:
+            return f"{indent}<{self.name}{attr_str}>{nl}"
+
+        if not self.children:
+            if self.text_content:
+                return f"{indent}<{self.name}{attr_str}>{self.text_content}</{self.name}>{nl}"
+            else:
+                return f"{indent}<{self.name}{attr_str}></{self.name}>{nl}"
+
+        inner_html_parts = []
+        if self.text_content:
+            text_indent = (indent_step * (indent_level + 1)) if pretty else ""
+            inner_html_parts.append(f"{text_indent}{self.text_content}{nl}")
+            
+        for child in self.children:
+            inner_html_parts.append(child.to_html(pretty=pretty, indent_level=indent_level + 1, indent_step=indent_step))
+            
+        inner_str = "".join(inner_html_parts)
+        return f"{indent}<{self.name}{attr_str}>{nl}{inner_str}{indent}</{self.name}>{nl}"
 
 
 @dataclass
@@ -154,6 +393,63 @@ class HTMLTokenizer:
         """Initialize tokenizer with optional trace."""
         self.trace = trace or ParsingTrace()
         self.current_state = self.DATA_STATE
+
+    def _consume_character_reference(self, html: str, index: int) -> Tuple[Optional[str], int]:
+        """
+        Consumes a character reference starting at index (where html[index] == '&').
+        Returns (decoded_char, new_index).
+        If not a valid character reference, returns (None, index).
+        """
+        if index >= len(html) or html[index] != '&':
+            return None, index
+
+        # Decimal or Hex numeric character reference: &#...; or &#x...;
+        if index + 2 < len(html) and html[index + 1] == '#':
+            if index + 3 < len(html) and html[index + 2] in ('x', 'X'):
+                end = index + 3
+                while end < len(html) and (end - index) <= 12:
+                    if html[end] == ';':
+                        hex_str = html[index + 3:end]
+                        try:
+                            code_point = int(hex_str, 16)
+                            if 0 <= code_point <= 0x10FFFF:
+                                return chr(code_point), end + 1
+                        except ValueError:
+                            break
+                        break
+                    elif not html[end].isalnum():
+                        break
+                    end += 1
+            else:
+                end = index + 2
+                while end < len(html) and (end - index) <= 12:
+                    if html[end] == ';':
+                        dec_str = html[index + 2:end]
+                        try:
+                            code_point = int(dec_str, 10)
+                            if 0 <= code_point <= 0x10FFFF:
+                                return chr(code_point), end + 1
+                        except ValueError:
+                            break
+                        break
+                    elif not html[end].isdigit():
+                        break
+                    end += 1
+
+        # Named character reference: &name;
+        end = index + 1
+        while end < len(html) and (end - index) <= 35:
+            if html[end] == ';':
+                entity_substr = html[index:end + 1]
+                val = _html_module.unescape(entity_substr)
+                if val != entity_substr:
+                    return val, end + 1
+                break
+            elif not (html[end].isalnum() or html[end] in ('_', '-')):
+                break
+            end += 1
+
+        return None, index
     
     def tokenize(self, html: str) -> List[Token]:
         """
@@ -165,12 +461,14 @@ class HTMLTokenizer:
         Returns:
             List of Token objects
         """
+        self.current_state = self.DATA_STATE
         tokens: List[Token] = []
         i = 0
         current_token: Optional[Token] = None
         current_attr_name = ""
         current_attr_value = ""
         tag_name = ""
+        quote_char = None
         
         # Track state for tracing
         self.trace.add_event("tokenization_start", {"html_length": len(html)})
@@ -182,8 +480,17 @@ class HTMLTokenizer:
             if self.current_state == self.DATA_STATE:
                 if char == '<':
                     self.current_state = self.TAG_OPEN_STATE
+                elif char == '&':
+                    decoded, next_i = self._consume_character_reference(html, i)
+                    if decoded is not None:
+                        for ch in decoded:
+                            tokens.append(Token(TokenType.CHARACTER, data=ch))
+                            self.trace.add_event("character_reference_decoded", {"char": ch})
+                        i = next_i - 1  # will increment by 1 at end of loop
+                    else:
+                        tokens.append(Token(TokenType.CHARACTER, data=char))
+                        self.trace.add_event("character_emitted", {"char": char})
                 else:
-                    # Emit character token
                     tokens.append(Token(TokenType.CHARACTER, data=char))
                     self.trace.add_event("character_emitted", {"char": char})
             
@@ -282,20 +589,36 @@ class HTMLTokenizer:
             # BEFORE_ATTRIBUTE_VALUE STATE
             elif self.current_state == self.BEFORE_ATTRIBUTE_VALUE_STATE:
                 if char in '"\'':
+                    quote_char = char
                     self.current_state = self.ATTRIBUTE_VALUE_STATE
                     current_attr_value = ""
                 else:
+                    quote_char = None
                     current_attr_value = char
                     self.current_state = self.ATTRIBUTE_VALUE_STATE
             
             # ATTRIBUTE_VALUE STATE
             elif self.current_state == self.ATTRIBUTE_VALUE_STATE:
-                if char == '>' or char in ' \t\n':
+                if quote_char and char == quote_char:
+                    # Closing quote for attribute value
                     if current_token and current_attr_name:
-                        current_token.attributes[current_attr_name] = current_attr_value
+                        decoded_val = _html_module.unescape(current_attr_value)
+                        current_token.attributes[current_attr_name] = decoded_val
                         self.trace.add_event("attribute_parsed", {
                             "name": current_attr_name,
-                            "value": current_attr_value
+                            "value": decoded_val
+                        })
+                    current_attr_name = ""
+                    current_attr_value = ""
+                    quote_char = None
+                    self.current_state = self.BEFORE_ATTRIBUTE_NAME_STATE
+                elif not quote_char and (char == '>' or char in ' \t\n'):
+                    if current_token and current_attr_name:
+                        decoded_val = _html_module.unescape(current_attr_value)
+                        current_token.attributes[current_attr_name] = decoded_val
+                        self.trace.add_event("attribute_parsed", {
+                            "name": current_attr_name,
+                            "value": decoded_val
                         })
                     current_attr_name = ""
                     current_attr_value = ""
@@ -306,8 +629,27 @@ class HTMLTokenizer:
                         current_token = None
                     else:
                         self.current_state = self.BEFORE_ATTRIBUTE_NAME_STATE
+                elif quote_char and char == '>':
+                    # Unclosed quote followed by tag close
+                    if current_token and current_attr_name:
+                        decoded_val = _html_module.unescape(current_attr_value)
+                        current_token.attributes[current_attr_name] = decoded_val
+                    current_attr_name = ""
+                    current_attr_value = ""
+                    quote_char = None
+                    if current_token:
+                        tokens.append(current_token)
+                    self.current_state = self.DATA_STATE
+                    current_token = None
                 else:
                     current_attr_value += char
+
+            # BOGUS_COMMENT STATE: Ingests bogus/standard comments until '>'
+            elif self.current_state == self.BOGUS_COMMENT_STATE:
+                if char == '>':
+                    tokens.append(Token(TokenType.COMMENT))
+                    self.trace.add_event("comment_emitted", {})
+                    self.current_state = self.DATA_STATE
             
             i += 1
         

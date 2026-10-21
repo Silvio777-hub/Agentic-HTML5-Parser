@@ -6,6 +6,8 @@ Ollama (Local Open-Source), and Mock Providers with unified on-disk caching.
 
 import os
 import json
+import urllib.request
+import urllib.error
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, Any, List
 
@@ -95,14 +97,43 @@ class OpenAIProvider(BaseLLMProvider):
 
 
 class OllamaLocalProvider(BaseLLMProvider):
-    """Local Open-Source LLM Provider (Llama 3, DeepSeek via Ollama)."""
+    """
+    Local Open-Source LLM Provider (Llama 3, DeepSeek, Mistral via Ollama).
+    Enables 100% offline, zero-cost neural agent execution without cloud API keys.
+    """
 
-    def __init__(self, model_name: str = "llama3:latest", host: str = "http://localhost:11434", use_cache: bool = True):
+    def __init__(
+        self,
+        model_name: str = "llama3.2:latest",
+        host: Optional[str] = None,
+        timeout: float = 30.0,
+        use_cache: bool = True
+    ):
         super().__init__(model_name, use_cache)
-        self.host = host
+        self.host = (host or os.getenv("OLLAMA_HOST", "http://localhost:11434")).rstrip("/")
+        self.timeout = timeout
+
+    def is_available(self) -> bool:
+        """Check if local Ollama daemon is reachable."""
+        try:
+            req = urllib.request.Request(f"{self.host}/api/tags", headers={"User-Agent": "Agentic-HTML5-Parser"})
+            with urllib.request.urlopen(req, timeout=2.0) as resp:
+                return resp.status == 200
+        except Exception:
+            return False
+
+    def list_models(self) -> List[str]:
+        """List locally pulled models in Ollama."""
+        try:
+            req = urllib.request.Request(f"{self.host}/api/tags", headers={"User-Agent": "Agentic-HTML5-Parser"})
+            with urllib.request.urlopen(req, timeout=3.0) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                return [m.get("name") for m in data.get("models", [])]
+        except Exception:
+            return []
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None, temperature: float = 0.7) -> str:
-        import urllib.request
+        """Call Ollama /api/generate endpoint."""
         payload = {
             "model": self.model_name,
             "prompt": f"{system_prompt}\n\n{prompt}" if system_prompt else prompt,
@@ -114,13 +145,19 @@ class OllamaLocalProvider(BaseLLMProvider):
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"}
         )
-        with urllib.request.urlopen(req) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            return data.get("response", "")
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                return data.get("response", "")
+        except urllib.error.URLError as e:
+            raise ConnectionError(
+                f"Failed to connect to Ollama at {self.host} ({e}). "
+                "Ensure Ollama is running locally: 'ollama serve'."
+            ) from e
 
 
 class MockLLMProvider(BaseLLMProvider):
-    """Deterministic Mock Provider for unit testing without API costs."""
+    """Deterministic Mock Provider for unit testing and offline fallbacks without API costs."""
 
     def __init__(self, default_response: str = "Mocked LLM Response"):
         super().__init__("mock-model", use_cache=False)
@@ -128,3 +165,44 @@ class MockLLMProvider(BaseLLMProvider):
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None, temperature: float = 0.7) -> str:
         return f"[{self.model_name}] {self.default_response}"
+
+
+def get_llm_provider(
+    provider_type: Optional[str] = None,
+    model_name: Optional[str] = None,
+    use_cache: bool = True,
+    **kwargs
+) -> BaseLLMProvider:
+    """
+    Factory function to instantiate the best available LLM provider.
+    
+    Args:
+        provider_type: 'claude', 'openai', 'ollama', 'mock', or 'auto' (default)
+        model_name: Optional override for model identifier
+        use_cache: Whether to use disk response caching
+        **kwargs: Provider-specific arguments (api_key, host, etc.)
+    """
+    p_type = (provider_type or os.getenv("LLM_PROVIDER", "auto")).lower()
+
+    if p_type == "claude":
+        return ClaudeProvider(model_name=model_name or "claude-3-5-sonnet-20241022", use_cache=use_cache, **kwargs)
+    elif p_type == "openai":
+        return OpenAIProvider(model_name=model_name or "gpt-4o", use_cache=use_cache, **kwargs)
+    elif p_type == "ollama":
+        return OllamaLocalProvider(model_name=model_name or "llama3.2:latest", use_cache=use_cache, **kwargs)
+    elif p_type == "mock":
+        return MockLLMProvider(**kwargs)
+
+    # Automatic provider selection based on environment and local availability
+    if os.getenv("ANTHROPIC_API_KEY"):
+        return ClaudeProvider(model_name=model_name or "claude-3-5-sonnet-20241022", use_cache=use_cache, **kwargs)
+    elif os.getenv("OPENAI_API_KEY"):
+        return OpenAIProvider(model_name=model_name or "gpt-4o", use_cache=use_cache, **kwargs)
+
+    # Check if local Ollama daemon is active
+    ollama = OllamaLocalProvider(model_name=model_name or "llama3.2:latest", use_cache=use_cache, **kwargs)
+    if ollama.is_available():
+        return ollama
+
+    # Fallback to deterministic mock provider
+    return MockLLMProvider(**kwargs)

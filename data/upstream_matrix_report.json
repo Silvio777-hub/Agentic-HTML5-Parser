@@ -1,0 +1,261 @@
+{
+  "timestamp": "2026-10-21T20:32:00Z",
+  "total_tests": 31,
+  "passed_tests": 31,
+  "overall_pass_rate_pct": 100.0,
+  "total_wall_clock_seconds": 0.01,
+  "buckets": [
+    {
+      "bucket_name": "Core Structural Hierarchy",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 3.34,
+      "avg_latency_ms": 0.667,
+      "test_cases": [
+        {
+          "name": "Basic html/body structure",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.809
+        },
+        {
+          "name": "Nested container hierarchy",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 1.929
+        },
+        {
+          "name": "Sibling tags under root",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.26
+        },
+        {
+          "name": "Preserve text content",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.132
+        },
+        {
+          "name": "Empty document",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.019
+        }
+      ]
+    },
+    {
+      "bucket_name": "Implicit Tag Closure",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 0.8,
+      "avg_latency_ms": 0.16,
+      "test_cases": [
+        {
+          "name": "<p> closes before <div>",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.168
+        },
+        {
+          "name": "<p> closes before <blockquote>",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.151
+        },
+        {
+          "name": "<p> closes before <section>",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.148
+        },
+        {
+          "name": "<p> closes before <h1>",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.139
+        },
+        {
+          "name": "Cascade multiple unclosed <p>",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.142
+        }
+      ]
+    },
+    {
+      "bucket_name": "Void Elements & Self-Closing",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 0.59,
+      "avg_latency_ms": 0.118,
+      "test_cases": [
+        {
+          "name": "<br> void tag (no children)",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.141
+        },
+        {
+          "name": "<hr> horizontal rule void",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.095
+        },
+        {
+          "name": "<img> with attributes",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.094
+        },
+        {
+          "name": "<input> void tag in form",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.107
+        },
+        {
+          "name": "Self-closing slash <br />",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.093
+        }
+      ]
+    },
+    {
+      "bucket_name": "HTML Entities & Character References",
+      "total_tests": 6,
+      "passed_tests": 6,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 1.13,
+      "avg_latency_ms": 0.189,
+      "test_cases": [
+        {
+          "name": "Named entity &amp; in text",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.104
+        },
+        {
+          "name": "Named entity &lt; and &gt;",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.541
+        },
+        {
+          "name": "Named entity &quot; in text",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.122
+        },
+        {
+          "name": "Numeric decimal entity &#60;",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.1
+        },
+        {
+          "name": "Numeric hex entity &#x26;",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.077
+        },
+        {
+          "name": "Entities decoded in attribute values",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.122
+        }
+      ]
+    },
+    {
+      "bucket_name": "Attributes & Quoting Semantics",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 0.59,
+      "avg_latency_ms": 0.118,
+      "test_cases": [
+        {
+          "name": "Double-quoted attributes",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.112
+        },
+        {
+          "name": "Single-quoted attributes",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.094
+        },
+        {
+          "name": "Unquoted attributes",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.069
+        },
+        {
+          "name": "Multiple attributes on element",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.132
+        },
+        {
+          "name": "Special characters in attributes",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.131
+        }
+      ]
+    },
+    {
+      "bucket_name": "Adversarial Robustness & Malformed Recovery",
+      "total_tests": 5,
+      "passed_tests": 5,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_duration_ms": 3.37,
+      "avg_latency_ms": 0.675,
+      "test_cases": [
+        {
+          "name": "Deep nesting 50 levels",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 2.677
+        },
+        {
+          "name": "Bogus comments recovery",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.157
+        },
+        {
+          "name": "Script injection contained",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.186
+        },
+        {
+          "name": "Extreme unclosed tags cascade",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.126
+        },
+        {
+          "name": "Zero-width spaces & Unicode tags",
+          "status": "PASSED",
+          "passed": true,
+          "duration_ms": 0.147
+        }
+      ]
+    }
+  ]
+}
