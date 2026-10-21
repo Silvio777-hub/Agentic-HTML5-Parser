@@ -1,13 +1,45 @@
 # Agentic AI HTML5 Parser — Complete Implementation Guide
 
 > **Author:** Opoka JM Silvio | **Degree:** MSc Computer Science | **Academic Year:** 2026/2027
-> **Python:** 3.9+ (tested on 3.11 and 3.13) | **Model:** Claude 3.5 Sonnet | **Port:** 8082 (default)
+> **Python:** 3.9+ (tested on 3.11 and 3.13) | **Model:** Claude 3.5 Sonnet | **Port:** 8080 (default)
+
+[![CI Pipeline](https://github.com/Silvio777-hub/Agentic-HTML5-Parser/actions/workflows/ci.yml/badge.svg)](https://github.com/Silvio777-hub/Agentic-HTML5-Parser/actions/workflows/ci.yml)
+
+---
+
+## ⚡ Quick Start
+
+```bash
+git clone https://github.com/Silvio777-hub/Agentic-HTML5-Parser.git
+cd Agentic-HTML5-Parser
+pip install -r requirements.txt
+python cli.py test          # 34/34 unit tests
+python cli.py adversarial   # 15/15 attack vectors
+python cli.py compliance    # W3C compliance suite
+python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
+```
+
+→ See [QUICKSTART.md](QUICKSTART.md) for full setup instructions including the LLM pipeline.
+
+---
+
+## 📊 Key Results
+
+| Metric | Result |
+|---|---|
+| Automated Tests | ✅ **34/34 passed** |
+| Adversarial Resilience | ✅ **15/15 (100%)** |
+| W3C Core Subset Compliance | ✅ **10/10 (100%)** |
+| Parallel Stage Speedup | **~42% wall-clock reduction** (Critique + Red-Team concurrent) |
+| Self-Repair Loops | **3 iterations max** — automated trace-guided patching |
+| Parser Benchmark vs BeautifulSoup4 | **352 ms/doc** vs 237 ms/doc (pure Python, no C extensions) |
+| Parser Benchmark vs lxml (C) | 83× slower — expected; lxml uses native C code |
 
 ---
 
 ## Project Overview
 
-This project implements a **trustworthy HTML5 parser development pipeline** using **agentic AI** (Claude 3.5 Sonnet). The system orchestrates **7 specialized AI agents** that collaboratively design, implement, test, and self-repair an HTML5 parser component — benchmarked against BeautifulSoup4 and lxml, validated against the W3C `html5lib` official test suite, and protected by a Robustness Wrapper security layer.
+This project implements a **trustworthy HTML5 parser development pipeline** using **agentic AI** (Claude 3.5 Sonnet). The system orchestrates **7 specialized AI agents** that collaboratively design, implement, test, and self-repair an HTML5 parser component — benchmarked against BeautifulSoup4 and lxml, validated against the W3C `html5lib` official test suite.
 
 ### Key Innovation: Artifact-Based Agentic Assembly Line
 
@@ -15,11 +47,13 @@ Rather than treating AI as a black-box code generator, this system:
 - Breaks development into **discrete AI-assisted stages** (Spec → Code → Review → Test → Attack → Monitor → Repair)
 - Uses **intermediate artifacts** (specs, patches, tests) for full transparency and auditability
 - Implements **iterative self-repair loops** driven by real execution traces and test failures
-- Achieves **100% compliance on core subset specifications** (`sample_compliance_tests.dat`) and **100% adversarial resilience** (15/15 attack vectors)
+- Achieves **100% compliance on core structural subset** (`sample_compliance_tests.dat`) and **100% adversarial resilience** (15/15 attack vectors)
 - Employs **concurrency via ThreadPoolExecutor** for independent agent evaluations (Critique & Red-Team)
-- Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8082/dashboard/`
+- Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8080/dashboard/`
 
-> **Detailed Architecture Reference:** See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, concurrency specifications, and agent contracts.
+> ⚠️ **Scope Note:** The parser implements an HTML5 structural subset. Full WHATWG spec compliance (adoption agency algorithm, full foster parenting, foreign content) is identified as future work. See [ARCHITECTURE.md](ARCHITECTURE.md) for scope details.
+
+> 📐 **Architecture Reference:** See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, concurrency specifications, and agent contracts.
 
 ---
 
@@ -783,3 +817,35 @@ tree.name
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
 **Docker Base Image:** Python 3.11-slim · Default Port: 8082
 **Test Suite:** 34 automated tests · 100% passing
+
+---
+
+## ⚠️ Limitations & Future Work
+
+### Current Scope
+This parser implements an **HTML5 structural subset** designed to validate the agentic pipeline methodology. The following WHATWG specification features are identified as future work:
+
+| Feature | Status | Notes |
+|---|---|---|
+| Core tag tree construction | ✅ Implemented | Tags, attributes, nesting, text nodes |
+| Implicit tag closures (p, li, heading) | ✅ Implemented | p closes before div/h1-h6 etc. |
+| Void/self-closing elements | ✅ Implemented | br, img, hr, input etc. |
+| Raw text elements (script, style) | ✅ Implemented | Content treated as raw text |
+| DOCTYPE handling | ✅ Implemented | Basic doctype recognition |
+| Comment nodes | ✅ Implemented | Standard, bogus comments |
+| Table auto-wrapping (tbody, tr) | ✅ Implemented | Basic table structure |
+| **Adoption Agency Algorithm** | 🔜 Future Work | Complex misnested formatting elements |
+| **Foster Parenting** | 🔜 Future Work | Text/elements misplaced in tables |
+| **Foreign Content** (SVG, MathML) | 🔜 Future Work | Requires namespace handling |
+| **Full Tokenizer States** (80+) | 🔜 Future Work | Only core states implemented |
+
+### Why This Scope Is Academically Valid
+The research contribution is the **agentic pipeline methodology** — not the completeness of the parser itself. The parser serves as the target system demonstrating that the multi-agent assembly line can:
+1. Interpret a specification via `SpecAgentAI`
+2. Generate conformant code via `CodegenAgentAI`
+3. Validate quality via `CritiqueAgentAI`
+4. Probe for failures via `RedTeamAgentAI`
+5. Detect anomalies via `MonitorAgentAI`
+6. Autonomously repair bugs via `RepairAgentAI`
+
+Full WHATWG compliance is left as future work and is acknowledged in Chapter 6 of the thesis.

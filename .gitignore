@@ -113,3 +113,8 @@ cache/*.json
 Thesis*
 html5lib-tests/
 
+
+# Scratch / temporary workspace files
+scratch/
+data/tests1.dat
+html5lib-tests/

@@ -11,7 +11,7 @@
       "name": "Deeply Nested 200 Levels",
       "category": "Nesting",
       "status": "PASSED",
-      "duration_ms": 12.62,
+      "duration_ms": 14.08,
       "error": null
     },
     {
@@ -19,7 +19,7 @@
       "name": "Unclosed Paragraphs Cascade",
       "category": "Implicit Closure",
       "status": "PASSED",
-      "duration_ms": 0.39,
+      "duration_ms": 0.31,
       "error": null
     },
     {
@@ -35,7 +35,7 @@
       "name": "Script Injection Attack Vector",
       "category": "Security / XSS",
       "status": "PASSED",
-      "duration_ms": 0.22,
+      "duration_ms": 0.21,
       "error": null
     },
     {
@@ -43,7 +43,7 @@
       "name": "Unquoted Complex Attributes",
       "category": "Attributes",
       "status": "PASSED",
-      "duration_ms": 0.18,
+      "duration_ms": 0.17,
       "error": null
     },
     {
@@ -51,7 +51,7 @@
       "name": "Unicode RTL & Emoji Tags",
       "category": "Internationalization",
       "status": "PASSED",
-      "duration_ms": 0.22,
+      "duration_ms": 0.21,
       "error": null
     },
     {
@@ -59,7 +59,7 @@
       "name": "Zero-Width Spaces in Tag Names",
       "category": "Unicode",
       "status": "PASSED",
-      "duration_ms": 0.55,
+      "duration_ms": 0.45,
       "error": null
     },
     {
@@ -75,7 +75,7 @@
       "name": "Extreme Long Attribute (5000 chars)",
       "category": "Stress",
       "status": "PASSED",
-      "duration_ms": 8.29,
+      "duration_ms": 8.35,
       "error": null
     },
     {
@@ -83,7 +83,7 @@
       "name": "Missing Root Tag",
       "category": "Malformed",
       "status": "PASSED",
-      "duration_ms": 0.39,
+      "duration_ms": 0.31,
       "error": null
     },
     {
@@ -91,7 +91,7 @@
       "name": "Mixed Case Tag Names",
       "category": "Case Sensitivity",
       "status": "PASSED",
-      "duration_ms": 0.28,
+      "duration_ms": 0.21,
       "error": null
     },
     {
@@ -99,7 +99,7 @@
       "name": "Empty Input",
       "category": "Edge Case",
       "status": "PASSED",
-      "duration_ms": 0.03,
+      "duration_ms": 0.02,
       "error": null
     },
     {
@@ -107,7 +107,7 @@
       "name": "Whitespace Only",
       "category": "Edge Case",
       "status": "PASSED",
-      "duration_ms": 0.11,
+      "duration_ms": 0.1,
       "error": null
     },
     {
@@ -115,7 +115,7 @@
       "name": "Repeated Self-Closing Breaks",
       "category": "Void Elements",
       "status": "PASSED",
-      "duration_ms": 0.18,
+      "duration_ms": 0.16,
       "error": null
     },
     {
@@ -123,7 +123,7 @@
       "name": "Nested Blockquote Hierarchy",
       "category": "Hierarchy",
       "status": "PASSED",
-      "duration_ms": 0.28,
+      "duration_ms": 0.25,
       "error": null
     }
   ]

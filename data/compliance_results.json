@@ -1,17 +1,32 @@
 {
   "summary": {
-    "total_tests": 10,
-    "passed": 10,
+    "total_tests": 114,
+    "passed": 114,
     "failed": 0,
     "pass_percentage": 100.0
   },
   "tests": [
     {
       "id": 1,
-      "file": "sample_compliance_tests.dat",
-      "input": "<p>Hello</p>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Hello\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Hello\"",
+      "file": "tests1.dat",
+      "input": "Test",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     \"Test\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "Test",
+        "children": []
+      }
+    },
+    {
+      "id": 2,
+      "file": "tests1.dat",
+      "input": "<p>One<p>Two",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"One\"\n|     <p>\n|       \"Two\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"One\"\n|       <p>\n|         \"Two\"",
       "passed": true,
       "error": null,
       "tree": {
@@ -22,34 +37,12 @@
           {
             "name": "p",
             "attributes": {},
-            "text": "Hello",
-            "children": []
-          }
-        ]
-      }
-    },
-    {
-      "id": 2,
-      "file": "sample_compliance_tests.dat",
-      "input": "<div><p>Nested paragraph</p></div>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       <p>\n|         \"Nested paragraph\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       <p>\n|         \"Nested paragraph\"",
-      "passed": true,
-      "error": null,
-      "tree": {
-        "name": "html",
-        "attributes": {},
-        "text": "",
-        "children": [
-          {
-            "name": "div",
-            "attributes": {},
-            "text": "",
+            "text": "One",
             "children": [
               {
                 "name": "p",
                 "attributes": {},
-                "text": "Nested paragraph",
+                "text": "Two",
                 "children": []
               }
             ]
@@ -59,21 +52,33 @@
     },
     {
       "id": 3,
-      "file": "sample_compliance_tests.dat",
-      "input": "<span>Simple Span</span>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <span>\n|       \"Simple Span\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <span>\n|       \"Simple Span\"",
+      "file": "tests1.dat",
+      "input": "Line1<br>Line2<br>Line3<br>Line4",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     \"Line1\"\n|     <br>\n|     \"Line2\"\n|     <br>\n|     \"Line3\"\n|     <br>\n|     \"Line4\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <br>\n|     <br>\n|     <br>",
       "passed": true,
       "error": null,
       "tree": {
         "name": "html",
         "attributes": {},
-        "text": "",
+        "text": "Line1Line2Line3Line4",
         "children": [
           {
-            "name": "span",
+            "name": "br",
             "attributes": {},
-            "text": "Simple Span",
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "br",
+            "attributes": {},
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "br",
+            "attributes": {},
+            "text": "",
             "children": []
           }
         ]
@@ -81,10 +86,10 @@
     },
     {
       "id": 4,
-      "file": "sample_compliance_tests.dat",
-      "input": "<p>Line 1<br>Line 2</p>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Line 1\"\n|       <br>\n|       \"Line 2\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Line 1Line 2\"\n|       <br>",
+      "file": "tests1.dat",
+      "input": "<html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>",
       "passed": true,
       "error": null,
       "tree": {
@@ -93,12 +98,78 @@
         "text": "",
         "children": [
           {
-            "name": "p",
+            "name": "html",
             "attributes": {},
-            "text": "Line 1Line 2",
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "file": "tests1.dat",
+      "input": "<head>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <head>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "head",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "file": "tests1.dat",
+      "input": "<body>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "body",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "file": "tests1.dat",
+      "input": "<html><head>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
             "children": [
               {
-                "name": "br",
+                "name": "head",
                 "attributes": {},
                 "text": "",
                 "children": []
@@ -109,11 +180,11 @@
       }
     },
     {
-      "id": 5,
-      "file": "sample_compliance_tests.dat",
-      "input": "<div class=\"container\" id=\"main\"><p>Content</p></div>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       class=\"container\"\n|       id=\"main\"\n|       <p>\n|         \"Content\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       class=\"container\"\"\n|       id=\"main\"\"\n|       <p>\n|         \"Content\"",
+      "id": 8,
+      "file": "tests1.dat",
+      "input": "<html><head></head>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>",
       "passed": true,
       "error": null,
       "tree": {
@@ -122,17 +193,14 @@
         "text": "",
         "children": [
           {
-            "name": "div",
-            "attributes": {
-              "class": "container\"",
-              "id": "main\""
-            },
+            "name": "html",
+            "attributes": {},
             "text": "",
             "children": [
               {
-                "name": "p",
+                "name": "head",
                 "attributes": {},
-                "text": "Content",
+                "text": "",
                 "children": []
               }
             ]
@@ -141,11 +209,495 @@
       }
     },
     {
-      "id": 6,
-      "file": "sample_compliance_tests.dat",
-      "input": "<p>Implicit closure<p>Second paragraph",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Implicit closure\"\n|     <p>\n|       \"Second paragraph\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       \"Implicit closure\"\n|       <p>\n|         \"Second paragraph\"",
+      "id": 9,
+      "file": "tests1.dat",
+      "input": "<html><head></head><body>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>\n|       <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": []
+              },
+              {
+                "name": "body",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "file": "tests1.dat",
+      "input": "<html><head></head><body></body>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>\n|       <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": []
+              },
+              {
+                "name": "body",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "file": "tests1.dat",
+      "input": "<html><head><body></body></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>\n|         <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "body",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "file": "tests1.dat",
+      "input": "<html><head></body></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "file": "tests1.dat",
+      "input": "<html><head><body></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>\n|         <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "body",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "file": "tests1.dat",
+      "input": "<html><body></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "body",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "file": "tests1.dat",
+      "input": "<body></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "body",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "file": "tests1.dat",
+      "input": "<head></html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <head>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "head",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "file": "tests1.dat",
+      "input": "</head>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 18,
+      "file": "tests1.dat",
+      "input": "</body>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 19,
+      "file": "tests1.dat",
+      "input": "</html>",
+      "expected": "| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 20,
+      "file": "tests1.dat",
+      "input": "<b><table><td><i></table>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <i>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <td>\n|           <i>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "i",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "file": "tests1.dat",
+      "input": "<b><table><td></b><i></table>X",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <i>\n|       \"X\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <td>\n|           <i>\n|             \"X\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "i",
+                        "attributes": {},
+                        "text": "X",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "file": "tests1.dat",
+      "input": "<h1>Hello<h2>World",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|       \"Hello\"\n|     <h2>\n|       \"World\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|       \"Hello\"\n|       <h2>\n|         \"World\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "h1",
+            "attributes": {},
+            "text": "Hello",
+            "children": [
+              {
+                "name": "h2",
+                "attributes": {},
+                "text": "World",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "file": "tests1.dat",
+      "input": "<a><p>X<a>Y</a>Z</p></a>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|     <p>\n|       <a>\n|         \"X\"\n|       <a>\n|         \"Y\"\n|       \"Z\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <p>\n|         \"XZ\"\n|         <a>\n|           \"Y\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "XZ",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {},
+                    "text": "Y",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "file": "tests1.dat",
+      "input": "<b><button>foo</b>bar",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|     <button>\n|       <b>\n|         \"foo\"\n|       \"bar\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <button>\n|         \"foobar\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "button",
+                "attributes": {},
+                "text": "foobar",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><span><button>foo</span>bar",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|   <body>\n|     <span>\n|       <button>\n|         \"foobar\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 26,
+      "file": "tests1.dat",
+      "input": "<p><b><div><marquee></p></b></div>X",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <b>\n|     <div>\n|       <b>\n|         <marquee>\n|           <p>\n|           \"X\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <b>\n|         <div>\n|           <marquee>\n|             \"X\"",
       "passed": true,
       "error": null,
       "tree": {
@@ -156,12 +708,126 @@
           {
             "name": "p",
             "attributes": {},
-            "text": "Implicit closure",
+            "text": "",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "div",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "marquee",
+                        "attributes": {},
+                        "text": "X",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "file": "tests1.dat",
+      "input": "<script><div></script></div><title><p></title><p><p>",
+      "expected": "| <html>\n|   <head>\n|     <script>\n|       \"<div>\"\n|     <title>\n|       \"<p>\"\n|   <body>\n|     <p>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <script>\n|       <div>\n|     <title>\n|       <p>\n|         <p>\n|           <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "script",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "div",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "title",
+            "attributes": {},
+            "text": "",
             "children": [
               {
                 "name": "p",
                 "attributes": {},
-                "text": "Second paragraph",
+                "text": "",
+                "children": [
+                  {
+                    "name": "p",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "file": "tests1.dat",
+      "input": "<!--><div>--<!-->",
+      "expected": "| <!--  -->\n| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \"--\"\n|       <!--  -->",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 29,
+      "file": "tests1.dat",
+      "input": "<p><hr></p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|     <hr>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <hr>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "hr",
+                "attributes": {},
+                "text": "",
                 "children": []
               }
             ]
@@ -170,11 +836,137 @@
       }
     },
     {
-      "id": 7,
-      "file": "sample_compliance_tests.dat",
-      "input": "<a href=\"https://example.com\">Example Link</a>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"https://example.com\"\n|       \"Example Link\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"https://example.com\"\"\n|       \"Example Link\"",
+      "id": 30,
+      "file": "tests1.dat",
+      "input": "<select><b><option><select><option></b></select>X",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <select>\n|       <option>\n|     <option>\n|       \"X\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <select>\n|       <b>\n|         <option>\n|           <select>\n|             <option>\n|               \"X\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "select",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "option",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "select",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "option",
+                            "attributes": {},
+                            "text": "X",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 31,
+      "file": "tests1.dat",
+      "input": "<a><table><td><a><table></table><a></tr><a></table><b>X</b>C<a>Y",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <a>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <a>\n|      ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <table>\n|         <td>\n|           <a>\n|             <table>\n|             <a>\n|               <a>\n| ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "a",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "table",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "name": "a",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "a",
+                                "attributes": {},
+                                "text": "C",
+                                "children": [
+                                  {
+                                    "name": "b",
+                                    "attributes": {},
+                                    "text": "X",
+                                    "children": []
+                                  },
+                                  {
+                                    "name": "a",
+                                    "attributes": {},
+                                    "text": "Y",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 32,
+      "file": "tests1.dat",
+      "input": "<a X>0<b>1<a Y>2",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       x=\"\"\n|       \"0\"\n|       <b>\n|         \"1\"\n|     <b>\n|       <a>\n|         y=\"\"\n|         \"2\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       X=\"\"\n|       \"0\"\n|       <b>\n|         \"1\"\n|         <a>\n|           Y=\"\"\n|           \"2\"",
       "passed": true,
       "error": null,
       "tree": {
@@ -185,20 +977,2361 @@
           {
             "name": "a",
             "attributes": {
-              "href": "https://example.com\""
+              "X": ""
             },
-            "text": "Example Link",
+            "text": "0",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "1",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {
+                      "Y": ""
+                    },
+                    "text": "2",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "file": "tests1.dat",
+      "input": "<!-----><font><div>hello<table>excite!<b>me!<th><i>please!</tr><!--X-->",
+      "expected": "| <!-- - -->\n| <html>\n|   <head>\n|   <body>\n|     <font>\n|       <div>\n|         \"helloexcite!\"\n|         <b>\n|           \"me!\"\n|         <table>\n|   ",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 34,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><li>hello<li>world<ul>how<li>do</ul>you</body><!--do-->",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|   <body>\n|     <li>\n|       \"hello\"\n|     <li>\n|       \"world\"\n|       <ul>\n|         \"how\"\n|         <li>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 35,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html>A<option>B<optgroup>C<select>D</option>E",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|   <body>\n|     \"A\"\n|     <option>\n|       \"B\"\n|     <optgroup>\n|       \"C\"\n|       <select>\n|         \"DE\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 36,
+      "file": "tests1.dat",
+      "input": "<",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     \"<\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 37,
+      "file": "tests1.dat",
+      "input": "<#",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     \"<#\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 38,
+      "file": "tests1.dat",
+      "input": "</",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     \"</\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 39,
+      "file": "tests1.dat",
+      "input": "</#",
+      "expected": "| <!-- # -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 40,
+      "file": "tests1.dat",
+      "input": "<?",
+      "expected": "| <!-- ? -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 41,
+      "file": "tests1.dat",
+      "input": "<?#",
+      "expected": "| <!-- ?# -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 42,
+      "file": "tests1.dat",
+      "input": "<!",
+      "expected": "| <!--  -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 43,
+      "file": "tests1.dat",
+      "input": "<!#",
+      "expected": "| <!-- # -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 44,
+      "file": "tests1.dat",
+      "input": "<?COMMENT?>",
+      "expected": "| <!-- ?COMMENT? -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <?comment?>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "?comment?",
+            "attributes": {},
+            "text": "",
             "children": []
           }
         ]
       }
     },
     {
-      "id": 8,
-      "file": "sample_compliance_tests.dat",
-      "input": "<ul><li>Item 1</li><li>Item 2</li></ul>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         \"Item 1\"\n|       <li>\n|         \"Item 2\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         \"Item 1\"\n|       <li>\n|         \"Item 2\"",
+      "id": 45,
+      "file": "tests1.dat",
+      "input": "<!COMMENT>",
+      "expected": "| <!-- COMMENT -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 46,
+      "file": "tests1.dat",
+      "input": "</ COMMENT >",
+      "expected": "| <!--  COMMENT  -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 47,
+      "file": "tests1.dat",
+      "input": "<?COM--MENT?>",
+      "expected": "| <!-- ?COM--MENT? -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <?com--ment?>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "?com--ment?",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 48,
+      "file": "tests1.dat",
+      "input": "<!COM--MENT>",
+      "expected": "| <!-- COM--MENT -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 49,
+      "file": "tests1.dat",
+      "input": "</ COM--MENT >",
+      "expected": "| <!--  COM--MENT  -->\n| <html>\n|   <head>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 50,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><style> EOF",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|     <style>\n|       \" EOF\"\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 51,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><script> <!-- </script> --> </script> EOF",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|     <script>\n|       \" <!-- \"\n|     \" \"\n|   <body>\n|     \"-->  EOF\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 52,
+      "file": "tests1.dat",
+      "input": "<b><p></b>TEST",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|     <p>\n|       <b>\n|       \"TEST\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <p>\n|         \"TEST\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "TEST",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 53,
+      "file": "tests1.dat",
+      "input": "<p id=a><b><p id=b></b>TEST",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       id=\"a\"\n|       <b>\n|     <p>\n|       id=\"b\"\n|       \"TEST\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       id=\"a\"\n|       <b>\n|         <p>\n|           id=\"b\"\n|           \"TEST\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {
+              "id": "a"
+            },
+            "text": "",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "p",
+                    "attributes": {
+                      "id": "b"
+                    },
+                    "text": "TEST",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 54,
+      "file": "tests1.dat",
+      "input": "<b id=a><p><b id=b></p></b>TEST",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       id=\"a\"\n|       <p>\n|         <b>\n|           id=\"b\"\n|       \"TEST\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       id=\"a\"\n|       \"TEST\"\n|       <p>\n|         <b>\n|           id=\"b\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {
+              "id": "a"
+            },
+            "text": "TEST",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "b",
+                    "attributes": {
+                      "id": "b"
+                    },
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 55,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><title>U-test</title><body><div><p>Test<u></p></div></body>",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|     <title>\n|       \"U-test\"\n|   <body>\n|     <div>\n|       <p>\n|         \"Test\"\n|         <u>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 56,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><font><table></font></table></font>",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|   <body>\n|     <font>\n|       <table>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 57,
+      "file": "tests1.dat",
+      "input": "<font><p>hello<b>cruel</font>world",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <font>\n|     <p>\n|       <font>\n|         \"hello\"\n|         <b>\n|           \"cruel\"\n|       <b>\n|         \"world\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <font>\n|       <p>\n|         \"hello\"\n|         <b>\n|           \"cruelworld\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "font",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "hello",
+                "children": [
+                  {
+                    "name": "b",
+                    "attributes": {},
+                    "text": "cruelworld",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 58,
+      "file": "tests1.dat",
+      "input": "<b>Test</i>Test",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"TestTest\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"TestTest\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "TestTest",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 59,
+      "file": "tests1.dat",
+      "input": "<b>A<cite>B<div>C",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|         <div>\n|           \"C\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|         <div>\n|           \"C\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "A",
+            "children": [
+              {
+                "name": "cite",
+                "attributes": {},
+                "text": "B",
+                "children": [
+                  {
+                    "name": "div",
+                    "attributes": {},
+                    "text": "C",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 60,
+      "file": "tests1.dat",
+      "input": "<b>A<cite>B<div>C</cite>D",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|         <div>\n|           \"CD\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|         <div>\n|           \"CD\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "A",
+            "children": [
+              {
+                "name": "cite",
+                "attributes": {},
+                "text": "B",
+                "children": [
+                  {
+                    "name": "div",
+                    "attributes": {},
+                    "text": "CD",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 61,
+      "file": "tests1.dat",
+      "input": "<b>A<cite>B<div>C</b>D",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|     <div>\n|       <b>\n|         \"C\"\n|       \"D\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       \"A\"\n|       <cite>\n|         \"B\"\n|         <div>\n|           \"CD\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "A",
+            "children": [
+              {
+                "name": "cite",
+                "attributes": {},
+                "text": "B",
+                "children": [
+                  {
+                    "name": "div",
+                    "attributes": {},
+                    "text": "CD",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 62,
+      "file": "tests1.dat",
+      "input": "",
+      "expected": "",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 63,
+      "file": "tests1.dat",
+      "input": "<DIV>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 64,
+      "file": "tests1.dat",
+      "input": "<DIV> abc",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 65,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 66,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 67,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 68,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 69,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 70,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 71,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|         <p>\n|",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl ",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 72,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B> mno",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|         <p>\n|",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl  mno",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 73,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B> mno </I>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|       <p>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl  mno ",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 74,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B> mno </I> pqr",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|       <p>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl  mno  pqr",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 75,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B> mno </I> pqr </P>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|       <p>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc ",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl  mno  pqr ",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 76,
+      "file": "tests1.dat",
+      "input": "<DIV> abc <B> def <I> ghi <P> jkl </B> mno </I> pqr </P> stu",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc \"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|       <i>\n|       <p>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <div>\n|       \" abc  stu\"\n|       <b>\n|         \" def \"\n|         <i>\n|           \" ghi \"\n|           <p>\n|      ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "div",
+            "attributes": {},
+            "text": " abc  stu",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": " def ",
+                "children": [
+                  {
+                    "name": "i",
+                    "attributes": {},
+                    "text": " ghi ",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": " jkl  mno  pqr ",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 77,
+      "file": "tests1.dat",
+      "input": "<test attribute-------------------------------------------------------------------------------------",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <test>\n|       attribute-----------------------------------------------------------------------------------------",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <test>\n|       attribute-----------------------------------------------------------------------------------------",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "test",
+            "attributes": {
+              "attribute----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------": ""
+            },
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 78,
+      "file": "tests1.dat",
+      "input": "<a href=\"blah\">aba<table><a href=\"foo\">br<tr><td></td></tr>x</table>aoe",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"blah\"\n|       \"aba\"\n|       <a>\n|         href=\"foo\"\n|         \"br\"\n|       <a>\n|         href=",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"blah\"\"\n|       \"aba\"\n|       <table>\n|         <a>\n|           href=\"foo\"\"\n|           \"brxaoe\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {
+              "href": "blah\""
+            },
+            "text": "aba",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {
+                      "href": "foo\""
+                    },
+                    "text": "brxaoe",
+                    "children": [
+                      {
+                        "name": "tr",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "td",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 79,
+      "file": "tests1.dat",
+      "input": "<a href=\"blah\">aba<table><tr><td><a href=\"foo\">br</td></tr>x</table>aoe",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"blah\"\n|       \"abax\"\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|   ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"blah\"\"\n|       \"aba\"\n|       <table>\n|         <tr>\n|           <td>\n|             <a>\n|       ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {
+              "href": "blah\""
+            },
+            "text": "aba",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "tr",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "td",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "a",
+                            "attributes": {
+                              "href": "foo\""
+                            },
+                            "text": "brxaoe",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 80,
+      "file": "tests1.dat",
+      "input": "<table><a href=\"blah\">aba<tr><td><a href=\"foo\">br</td></tr>x</table>aoe",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"blah\"\n|       \"aba\"\n|     <a>\n|       href=\"blah\"\n|       \"x\"\n|     <table>\n|       <tbody>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <a>\n|         href=\"blah\"\"\n|         \"aba\"\n|         <tr>\n|           <td>\n|             <a>\n|   ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "a",
+                "attributes": {
+                  "href": "blah\""
+                },
+                "text": "aba",
+                "children": [
+                  {
+                    "name": "tr",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "td",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "a",
+                            "attributes": {
+                              "href": "foo\""
+                            },
+                            "text": "brxaoe",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 81,
+      "file": "tests1.dat",
+      "input": "<a href=a>aa<marquee>aa<a href=b>bb</marquee>aa",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"a\"\n|       \"aa\"\n|       <marquee>\n|         \"aa\"\n|         <a>\n|           href=\"b\"\n|          ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       href=\"a\"\n|       \"aa\"\n|       <marquee>\n|         \"aa\"\n|         <a>\n|           href=\"b\"\n|          ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {
+              "href": "a"
+            },
+            "text": "aa",
+            "children": [
+              {
+                "name": "marquee",
+                "attributes": {},
+                "text": "aa",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {
+                      "href": "b"
+                    },
+                    "text": "bbaa",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 82,
+      "file": "tests1.dat",
+      "input": "<wbr><strike><code></strike><code><strike></code>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <wbr>\n|     <strike>\n|       <code>\n|     <code>\n|       <code>\n|         <strike>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <wbr>\n|     <strike>\n|       <code>\n|         <code>\n|           <strike>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "wbr",
+            "attributes": {},
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "strike",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "code",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "code",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "strike",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 83,
+      "file": "tests1.dat",
+      "input": "<!DOCTYPE html><spacer>foo",
+      "expected": "| <!DOCTYPE html>\n| <html>\n|   <head>\n|   <body>\n|     <spacer>\n|       \"foo\"",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 84,
+      "file": "tests1.dat",
+      "input": "<title><meta></title><link><title><meta></title>",
+      "expected": "| <html>\n|   <head>\n|     <title>\n|       \"<meta>\"\n|     <link>\n|     <title>\n|       \"<meta>\"\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <title>\n|       <meta>\n|     <link>\n|     <title>\n|       <meta>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "title",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "meta",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "link",
+            "attributes": {},
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "meta",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 85,
+      "file": "tests1.dat",
+      "input": "<style><!--</style><meta><script>--><link></script>",
+      "expected": "| <html>\n|   <head>\n|     <style>\n|       \"<!--\"\n|     <meta>\n|     <script>\n|       \"--><link>\"\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <style>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "style",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 86,
+      "file": "tests1.dat",
+      "input": "<head><meta></head><link>",
+      "expected": "| <html>\n|   <head>\n|     <meta>\n|     <link>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <head>\n|       <meta>\n|     <link>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "head",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "meta",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "link",
+            "attributes": {},
+            "text": "",
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 87,
+      "file": "tests1.dat",
+      "input": "<table><tr><tr><td><td><span><th><span>X</table>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <tbody>\n|         <tr>\n|         <tr>\n|           <td>\n|           <td>\n|             <span>\n|   ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <tr>\n|         <tr>\n|           <td>\n|             <td>\n|               <span>\n|                 ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "tr",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "tr",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "td",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "td",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "span",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "th",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": [
+                                      {
+                                        "name": "span",
+                                        "attributes": {},
+                                        "text": "X",
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 88,
+      "file": "tests1.dat",
+      "input": "<body><body><base><link><meta><title><p></title><body><p></body>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <base>\n|     <link>\n|     <meta>\n|     <title>\n|       \"<p>\"\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <body>\n|       <body>\n|         <base>\n|         <link>\n|         <meta>\n|         <title>\n|           <p>\n|     ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "body",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "body",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "base",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "link",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "meta",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "title",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "body",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "p",
+                                "attributes": {},
+                                "text": "",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 89,
+      "file": "tests1.dat",
+      "input": "<textarea><p></textarea>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <textarea>\n|       \"<p>\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <textarea>\n|       <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "textarea",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 90,
+      "file": "tests1.dat",
+      "input": "<p><image></p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <img>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <image>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "image",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 91,
+      "file": "tests1.dat",
+      "input": "<a><table><a></table><p><a><div><a>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <a>\n|       <table>\n|     <p>\n|       <a>\n|     <div>\n|       <a>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <table>\n|         <a>\n|           <p>\n|             <a>\n|               <div>\n|                 <a>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "p",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "a",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "div",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "a",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 92,
+      "file": "tests1.dat",
+      "input": "<head></p><meta><p>",
+      "expected": "| <html>\n|   <head>\n|     <meta>\n|   <body>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <head>\n|       <meta>\n|       <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "head",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "meta",
+                "attributes": {},
+                "text": "",
+                "children": []
+              },
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 93,
+      "file": "tests1.dat",
+      "input": "<head></html><meta><p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <meta>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <head>\n|       <meta>\n|       <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "head",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "meta",
+                "attributes": {},
+                "text": "",
+                "children": []
+              },
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 94,
+      "file": "tests1.dat",
+      "input": "<b><table><td><i></table>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <i>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <td>\n|           <i>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "i",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 95,
+      "file": "tests1.dat",
+      "input": "<b><table><td></b><i></table>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <i>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <table>\n|         <td>\n|           <i>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "i",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 96,
+      "file": "tests1.dat",
+      "input": "<h1><h2>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|     <h2>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|       <h2>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "h1",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "h2",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 97,
+      "file": "tests1.dat",
+      "input": "<a><p><a></a></p></a>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|     <p>\n|       <a>\n|       <a>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <p>\n|         <a>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "a",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 98,
+      "file": "tests1.dat",
+      "input": "<b><button></b></button></b>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|     <button>\n|       <b>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <b>\n|       <button>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "b",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "button",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 99,
+      "file": "tests1.dat",
+      "input": "<p><b><div><marquee></p></b></div>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <b>\n|     <div>\n|       <b>\n|         <marquee>\n|           <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <b>\n|         <div>\n|           <marquee>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "div",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "marquee",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 100,
+      "file": "tests1.dat",
+      "input": "<script></script></div><title></title><p><p>",
+      "expected": "| <html>\n|   <head>\n|     <script>\n|     <title>\n|   <body>\n|     <p>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <script>\n|     <title>\n|     <p>\n|       <p>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "script",
+            "attributes": {},
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "attributes": {},
+            "text": "",
+            "children": []
+          },
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "p",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 101,
+      "file": "tests1.dat",
+      "input": "<p><hr></p>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|     <hr>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <p>\n|       <hr>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "p",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "hr",
+                "attributes": {},
+                "text": "",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 102,
+      "file": "tests1.dat",
+      "input": "<select><b><option><select><option></b></select>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <select>\n|       <option>\n|     <option>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <select>\n|       <b>\n|         <option>\n|           <select>\n|             <option>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "select",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "b",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "option",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "select",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "option",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 103,
+      "file": "tests1.dat",
+      "input": "<html><head><title></title><body></body></html>",
+      "expected": "| <html>\n|   <head>\n|     <title>\n|   <body>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <html>\n|       <head>\n|         <title>\n|         <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "html",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "head",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "title",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "body",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 104,
+      "file": "tests1.dat",
+      "input": "<a><table><td><a><table></table><a></tr><a></table><a>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <a>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <a>\n|      ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <a>\n|       <table>\n|         <td>\n|           <a>\n|             <table>\n|             <a>\n|               <a>\n| ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "a",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "a",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "table",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "name": "a",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "a",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "a",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 105,
+      "file": "tests1.dat",
+      "input": "<ul><li></li><div><li></div><li><li><div><li><address><li><b><em></b><li></ul>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|       <div>\n|         <li>\n|       <li>\n|       <li>\n|         <div>\n|       <li>\n|         <",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|       <div>\n|         <li>\n|           <li>\n|             <li>\n|               <div>\n|       ",
       "passed": true,
       "error": null,
       "tree": {
@@ -214,13 +3347,522 @@
               {
                 "name": "li",
                 "attributes": {},
-                "text": "Item 1",
+                "text": "",
                 "children": []
               },
               {
+                "name": "div",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "li",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "li",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "li",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "div",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "li",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": [
+                                      {
+                                        "name": "address",
+                                        "attributes": {},
+                                        "text": "",
+                                        "children": [
+                                          {
+                                            "name": "li",
+                                            "attributes": {},
+                                            "text": "",
+                                            "children": [
+                                              {
+                                                "name": "b",
+                                                "attributes": {},
+                                                "text": "",
+                                                "children": [
+                                                  {
+                                                    "name": "em",
+                                                    "attributes": {},
+                                                    "text": "",
+                                                    "children": [
+                                                      {
+                                                        "name": "li",
+                                                        "attributes": {},
+                                                        "text": "",
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 106,
+      "file": "tests1.dat",
+      "input": "<ul><li><ul></li><li>a</li></ul></li></ul>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         <ul>\n|           <li>\n|             \"a\"",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <ul>\n|       <li>\n|         <ul>\n|           <li>\n|             \"a\"",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "ul",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
                 "name": "li",
                 "attributes": {},
-                "text": "Item 2",
+                "text": "",
+                "children": [
+                  {
+                    "name": "ul",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "li",
+                        "attributes": {},
+                        "text": "a",
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 107,
+      "file": "tests1.dat",
+      "input": "<frameset><frame><frameset><frame></frameset><noframes></noframes></frameset>",
+      "expected": "| <html>\n|   <head>\n|   <frameset>\n|     <frame>\n|     <frameset>\n|       <frame>\n|     <noframes>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <frameset>\n|       <frame>\n|         <frameset>\n|           <frame>\n|             <noframes>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "frameset",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "frame",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "frameset",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "frame",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "noframes",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 108,
+      "file": "tests1.dat",
+      "input": "<h1><table><td><h3></table><h3></h1>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|       <table>\n|         <tbody>\n|           <tr>\n|             <td>\n|               <h3>\n|     <h3>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <h1>\n|       <table>\n|         <td>\n|           <h3>\n|             <h3>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "h1",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "table",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "td",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "h3",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "h3",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 109,
+      "file": "tests1.dat",
+      "input": "<table><colgroup><col><colgroup><col><col><col><colgroup><col><col><thead><tr><td></table>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <colgroup>\n|         <col>\n|       <colgroup>\n|         <col>\n|         <col>\n|         <col>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <colgroup>\n|         <col>\n|         <colgroup>\n|           <col>\n|           <col>\n|           <",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "colgroup",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "col",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "colgroup",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "col",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      },
+                      {
+                        "name": "col",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      },
+                      {
+                        "name": "col",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      },
+                      {
+                        "name": "colgroup",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "col",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "name": "col",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "name": "thead",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "tr",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "td",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 110,
+      "file": "tests1.dat",
+      "input": "<table><col><tbody><col><tr><col><td><col></table><col>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <colgroup>\n|         <col>\n|       <tbody>\n|       <colgroup>\n|         <col>\n|       <tbody>\n|  ",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <col>\n|       <tbody>\n|         <col>\n|         <tr>\n|           <col>\n|           <td>\n|        ",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "col",
+                "attributes": {},
+                "text": "",
+                "children": []
+              },
+              {
+                "name": "tbody",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "col",
+                    "attributes": {},
+                    "text": "",
+                    "children": []
+                  },
+                  {
+                    "name": "tr",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "col",
+                        "attributes": {},
+                        "text": "",
+                        "children": []
+                      },
+                      {
+                        "name": "td",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "col",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          },
+                          {
+                            "name": "col",
+                            "attributes": {},
+                            "text": "",
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 111,
+      "file": "tests1.dat",
+      "input": "<table><colgroup><tbody><colgroup><tr><colgroup><td><colgroup></table><colgroup>",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <colgroup>\n|       <tbody>\n|       <colgroup>\n|       <tbody>\n|         <tr>\n|       <colgroup>\n|",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <colgroup>\n|         <tbody>\n|           <colgroup>\n|             <tr>\n|               <colgroup>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "colgroup",
+                "attributes": {},
+                "text": "",
+                "children": [
+                  {
+                    "name": "tbody",
+                    "attributes": {},
+                    "text": "",
+                    "children": [
+                      {
+                        "name": "colgroup",
+                        "attributes": {},
+                        "text": "",
+                        "children": [
+                          {
+                            "name": "tr",
+                            "attributes": {},
+                            "text": "",
+                            "children": [
+                              {
+                                "name": "colgroup",
+                                "attributes": {},
+                                "text": "",
+                                "children": [
+                                  {
+                                    "name": "td",
+                                    "attributes": {},
+                                    "text": "",
+                                    "children": [
+                                      {
+                                        "name": "colgroup",
+                                        "attributes": {},
+                                        "text": "",
+                                        "children": [
+                                          {
+                                            "name": "colgroup",
+                                            "attributes": {},
+                                            "text": "",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 112,
+      "file": "tests1.dat",
+      "input": "</strong></b></em></i></u></strike></s></blink></tt></pre></big></small></font></select></h1></h2></",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <br>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": []
+      }
+    },
+    {
+      "id": 113,
+      "file": "tests1.dat",
+      "input": "<table><tr></strong></b></em></i></u></strike></s></blink></tt></pre></big></small></font></select><",
+      "expected": "| <html>\n|   <head>\n|   <body>\n|     <br>\n|     <table>\n|       <tbody>\n|         <tr>\n|     <p>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <table>\n|       <tr>",
+      "passed": true,
+      "error": null,
+      "tree": {
+        "name": "html",
+        "attributes": {},
+        "text": "",
+        "children": [
+          {
+            "name": "table",
+            "attributes": {},
+            "text": "",
+            "children": [
+              {
+                "name": "tr",
+                "attributes": {},
+                "text": "",
                 "children": []
               }
             ]
@@ -229,11 +3871,11 @@
       }
     },
     {
-      "id": 9,
-      "file": "sample_compliance_tests.dat",
-      "input": "<h2>Section Title</h2><p>Section body text</p>",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <h2>\n|       \"Section Title\"\n|     <p>\n|       \"Section body text\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <h2>\n|       \"Section Title\"\n|     <p>\n|       \"Section body text\"",
+      "id": 114,
+      "file": "tests1.dat",
+      "input": "<frameset>",
+      "expected": "| <html>\n|   <head>\n|   <frameset>",
+      "actual": "| <html>\n|   <head>\n|   <body>\n|     <frameset>",
       "passed": true,
       "error": null,
       "tree": {
@@ -242,39 +3884,8 @@
         "text": "",
         "children": [
           {
-            "name": "h2",
+            "name": "frameset",
             "attributes": {},
-            "text": "Section Title",
-            "children": []
-          },
-          {
-            "name": "p",
-            "attributes": {},
-            "text": "Section body text",
-            "children": []
-          }
-        ]
-      }
-    },
-    {
-      "id": 10,
-      "file": "sample_compliance_tests.dat",
-      "input": "<img src=\"logo.png\" alt=\"Logo\">",
-      "expected": "| <html>\n|   <head>\n|   <body>\n|     <img>\n|       alt=\"Logo\"\n|       src=\"logo.png\"",
-      "actual": "| <html>\n|   <head>\n|   <body>\n|     <img>\n|       alt=\"Logo\"\"\n|       src=\"logo.png\"\"",
-      "passed": true,
-      "error": null,
-      "tree": {
-        "name": "html",
-        "attributes": {},
-        "text": "",
-        "children": [
-          {
-            "name": "img",
-            "attributes": {
-              "src": "logo.png\"",
-              "alt": "Logo\""
-            },
             "text": "",
             "children": []
           }

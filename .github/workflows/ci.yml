@@ -22,9 +22,20 @@ jobs:
       - name: Lint with flake8
         run: flake8 src/ --max-line-length=120 || true
 
-      - name: Run tests
+      - name: Run unit & streaming tests
         run: pytest tests/ -v --tb=short
+
+      - name: Run adversarial robustness suite
+        run: python scripts/run_adversarial.py
 
       - name: Run compliance sample tests
         run: python scripts/run_compliance.py --sample
         continue-on-error: true
+
+      - name: Upload compliance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-results
+          path: data/compliance_results.json
+        if: always()
+
