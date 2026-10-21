@@ -6,18 +6,20 @@ Provides easy 1-command access to all verification, benchmarking,
 repair demos, chart generation, and dashboard servers.
 
 Usage Examples:
-    python cli.py dashboard       # Launches live dashboard & playground at http://localhost:8080/dashboard/
-    python cli.py test            # Runs all 34 automated unit & streaming tests
-    python cli.py compliance      # Runs W3C html5lib compliance test harness
-    python cli.py benchmark       # Runs comparative performance benchmarks vs BeautifulSoup & lxml
-    python cli.py adversarial     # Runs Red-Team hacker stress tests
-    python cli.py ablation        # Runs empirical ablation study experiments
-    python cli.py charts          # Generates all 300-DPI thesis figures
-    python cli.py carbon          # Runs Green AI carbon footprint assessment
-    python cli.py audit           # Runs AST security analysis & STRIDE audit
-    python cli.py repair-demo     # Runs the live self-repair showcase demonstration
-    python cli.py build-thesis    # Verifies all 7 thesis chapters in thesis/
-    python cli.py all             # Executes the entire pipeline and builds all assets
+    python cli.py dashboard            # Launches live dashboard & playground at http://localhost:8080/dashboard/
+    python cli.py test                 # Runs all 39 automated unit & streaming & WHATWG boundary tests
+    python cli.py compliance           # Runs W3C html5lib compliance test harness
+    python cli.py benchmark            # Runs comparative performance benchmarks vs BeautifulSoup & lxml
+    python cli.py adversarial          # Runs Red-Team hacker stress tests
+    python cli.py ablation             # Runs empirical ablation study experiments
+    python cli.py charts               # Generates all 300-DPI thesis figures
+    python cli.py carbon               # Runs Green AI carbon footprint assessment
+    python cli.py audit                # Runs AST security analysis & STRIDE audit
+    python cli.py repair-demo          # Runs the live self-repair showcase demonstration
+    python cli.py build-thesis         # Verifies all 7 thesis chapters in thesis/
+    python cli.py parse "<html>..."    # Parse inline HTML and print DOM tree / JSON / tokens
+    python cli.py lint <file.html>     # Lint an HTML file and report structural issues
+    python cli.py all                  # Executes the entire pipeline and builds all assets
 """
 
 import os
@@ -117,6 +119,125 @@ def cmd_dashboard(port=8080, no_browser=False):
     return run_command(cmd, "Live Quality Dashboard & API Server")
 
 
+def cmd_parse(html_string, output_format="tree"):
+    """
+    Parse an inline HTML string and print the result in the requested format.
+
+    Args:
+        html_string:   HTML markup to parse
+        output_format: 'tree' (default), 'json', or 'tokens'
+    """
+    import sys
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
+    from src.parser import parse, tokenize
+
+    if output_format == "tokens":
+        tokens = tokenize(html_string)
+        print(f"\n{'='*60}")
+        print(f"  TOKEN STREAM ({len(tokens)} tokens)")
+        print(f"{'='*60}")
+        for i, tok in enumerate(tokens, 1):
+            attrs = f"  attrs={tok.attributes}" if tok.attributes else ""
+            data = f"  data={repr(tok.data)}" if tok.data else ""
+            print(f"  [{i:02d}] {tok.type.value:<14} name={tok.name or '':<16}{attrs}{data}")
+        return True
+
+    root = parse(html_string)
+
+    if output_format == "json":
+        import json
+        print(json.dumps(root.serialize(), indent=2))
+        return True
+
+    # Default: tree format
+    def _print_tree(node, indent=0):
+        prefix = "  " * indent
+        if node.name == "#text":
+            print(f"{prefix}|-- #text: {repr(node.text_content)}")
+        else:
+            attrs = ""
+            if node.attributes:
+                attrs = " " + " ".join(f'{k}="{v}"' for k, v in node.attributes.items())
+            print(f"{prefix}|-- <{node.name}{attrs}>")
+        for child in node.children:
+            _print_tree(child, indent + 1)
+
+    print(f"\n{'='*60}")
+    print("  PARSED DOM TREE")
+    print(f"{'='*60}")
+    _print_tree(root)
+    return True
+
+
+def cmd_lint(filepath, output_format="tree"):
+    """
+    Lint an HTML file and report structural issues and DOM outline.
+
+    Args:
+        filepath:      Path to HTML file to lint
+        output_format: 'tree' (default), 'json', or 'tokens'
+    """
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
+    from src.parser import parse, tokenize
+
+    fpath = _Path(filepath)
+    if not fpath.exists():
+        print(f"[ERROR] File not found: {filepath}")
+        return False
+
+    html_string = fpath.read_text(encoding="utf-8", errors="replace")
+    print(f"\n{'='*60}")
+    print(f"  HTML LINTER: {fpath.name}")
+    print(f"  File size:   {len(html_string)} characters")
+    print(f"{'='*60}")
+
+    root = parse(html_string)
+    tokens = tokenize(html_string)
+
+    # Structural checks
+    warnings = []
+
+    def _collect_tags(node, seen=None):
+        if seen is None:
+            seen = []
+        seen.append(node.name)
+        for c in node.children:
+            _collect_tags(c, seen)
+        return seen
+
+    all_tags = _collect_tags(root)
+    if "html" not in all_tags:
+        warnings.append("Missing <html> root element")
+    if "head" not in all_tags:
+        warnings.append("Missing <head> element")
+    if "body" not in all_tags:
+        warnings.append("Missing <body> element")
+    if "title" not in all_tags:
+        warnings.append("Missing <title> element inside <head>")
+
+    # Check for unclosed implicit paragraphs heuristic
+    open_p = sum(1 for tok in tokens if tok.type.value == "StartTag" and tok.name == "p")
+    close_p = sum(1 for tok in tokens if tok.type.value == "EndTag" and tok.name == "p")
+    if open_p > close_p:
+        warnings.append(f"Implicit <p> closure: {open_p} opened, {close_p} explicit closes (W3C auto-closure applied)")
+
+    if warnings:
+        print(f"\n  [!]  {len(warnings)} structural notice(s):")
+        for w in warnings:
+            print(f"     - {w}")
+    else:
+        print("\n  [OK] No structural issues detected.")
+
+    print(f"\n  Tokens emitted: {len(tokens)}")
+    print(f"  DOM nodes:      {len(all_tags)}")
+
+    # Print the DOM tree
+    print()
+    return cmd_parse(html_string, output_format=output_format)
+
+
 def cmd_all():
     """Runs the entire verification, benchmarking, and asset generation pipeline."""
     print("=" * 75)
@@ -144,8 +265,10 @@ def cmd_all():
 
     print("\n" + "=" * 75)
     print("  [OK] COMPLETE PIPELINE EXECUTED SUCCESSFULLY WITH ZERO ERRORS!")
-    print("  [NOTE] Live Dashboard: python cli.py dashboard")
-    print("  [NOTE] Thesis Chapters: thesis/ (All 7 chapters present)")
+    print("  [NOTE] Live Dashboard:   python cli.py dashboard")
+    print("  [NOTE] Parse Utility:    python cli.py parse \"<p>Hello</p>\" --format tree|json|tokens")
+    print("  [NOTE] Lint Utility:     python cli.py lint <file.html>")
+    print("  [NOTE] Thesis Chapters:  thesis/ (All 7 chapters present)")
     print("=" * 75 + "\n")
     return True
 
@@ -156,7 +279,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Commands:
-  test          Run all 34 automated unit & streaming tests
+  test          Run all 39 automated unit, streaming & WHATWG boundary tests
   compliance    Run W3C compliance test harness
   benchmark     Run performance benchmarks vs BeautifulSoup & lxml
   adversarial   Run Red-Team hacker stress tests
@@ -167,15 +290,29 @@ Commands:
   repair-demo   Run the live self-repair showcase demonstration
   build-thesis  Verify all 7 thesis chapters in thesis/
   dashboard     Launch live dashboard & playground server
+  parse         Parse inline HTML and print DOM tree / JSON / tokens
+  lint          Lint an HTML file and report structural issues
   all           Run complete pipeline end-to-end
+
+Parse / Lint Examples:
+  python cli.py parse "<p>Hello <b>World</b></p>"
+  python cli.py parse "<p>Hello</p>" --format json
+  python cli.py parse "<p>Hello</p>" --format tokens
+  python cli.py lint index.html
+  python cli.py lint index.html --format json
         """
     )
     parser.add_argument("command", choices=[
         "test", "compliance", "benchmark", "adversarial", "ablation",
-        "charts", "carbon", "audit", "repair-demo", "build-thesis", "dashboard", "all"
+        "charts", "carbon", "audit", "repair-demo", "build-thesis",
+        "dashboard", "parse", "lint", "all"
     ], help="Command to execute")
     parser.add_argument("--port", type=int, default=8080, help="Port for dashboard server (default: 8080)")
     parser.add_argument("--no-browser", action="store_true", help="Do not open browser on dashboard launch")
+    parser.add_argument("--format", choices=["tree", "json", "tokens"], default="tree",
+                        help="Output format for parse/lint commands (default: tree)")
+    parser.add_argument("html_or_file", nargs="?", default=None,
+                        help="HTML string (for parse) or file path (for lint)")
 
     args = parser.parse_args()
 
@@ -201,6 +338,16 @@ Commands:
         cmd_build_thesis()
     elif args.command == "dashboard":
         cmd_dashboard(port=args.port, no_browser=args.no_browser)
+    elif args.command == "parse":
+        if not args.html_or_file:
+            print("[ERROR] provide an HTML string: python cli.py parse \"<p>Hello</p>\"")
+            sys.exit(1)
+        cmd_parse(args.html_or_file, output_format=args.format)
+    elif args.command == "lint":
+        if not args.html_or_file:
+            print("[ERROR] provide an HTML file path: python cli.py lint index.html")
+            sys.exit(1)
+        cmd_lint(args.html_or_file, output_format=args.format)
     elif args.command == "all":
         cmd_all()
 

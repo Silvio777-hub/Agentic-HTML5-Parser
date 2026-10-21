@@ -5,7 +5,9 @@ This script launches a lightweight Python HTTP server that:
 1. Serves the static Quality Dashboard (HTML, CSS, JS) at http://localhost:8080/dashboard/
 2. Provides a live REST API endpoint (POST /api/parse) that accepts raw HTML and
    executes our Python parser with full execution tracing in real-time.
-3. Automatically runs sample compliance tests on startup so fresh data is always present.
+3. Provides a differential diff endpoint (POST /api/diff) that compares our parser's
+   DOM tree side-by-side against BeautifulSoup4 as a differential oracle.
+4. Automatically runs sample compliance tests on startup so fresh data is always present.
 
 Usage:
     python scripts/serve_dashboard.py [--port 8080] [--no-browser]
@@ -14,6 +16,7 @@ Usage:
 import os
 import sys
 import json
+import time
 import argparse
 import subprocess
 import webbrowser
@@ -28,33 +31,140 @@ if PROJECT_ROOT not in sys.path:
 # Import our custom HTML5 parser and tracing functions
 from src.parser import parse_with_trace, tokenize, parse
 
+# Import BeautifulSoup4 for differential oracle comparisons
+try:
+    from bs4 import BeautifulSoup, Tag, NavigableString
+    BS4_AVAILABLE = True
+except ImportError:
+    BS4_AVAILABLE = False
+
+
+def serialize_bs4_node(node):
+    """
+    Recursively serialize a BeautifulSoup node into our standard tree dict format.
+    Compatible with how our parser serializes TreeNode objects.
+    """
+    if isinstance(node, NavigableString):
+        text = str(node).strip()
+        if not text:
+            return None
+        return {"name": "#text", "attributes": {}, "text_content": text, "children": []}
+    elif isinstance(node, Tag):
+        children = []
+        for child in node.children:
+            sc = serialize_bs4_node(child)
+            if sc:
+                children.append(sc)
+        attrs = {}
+        for k, v in node.attrs.items():
+            attrs[k] = " ".join(v) if isinstance(v, list) else str(v)
+        return {
+            "name": node.name,
+            "attributes": attrs,
+            "text_content": "",
+            "children": children
+        }
+    return None
+
+
+def parse_with_bs4_structured(html_str):
+    """
+    Parse HTML with BeautifulSoup4 using html.parser backend and return
+    a tree dict compatible with our parser's serialized format.
+    """
+    soup = BeautifulSoup(html_str, "html.parser")
+    children = [sc for child in soup.children if (sc := serialize_bs4_node(child))]
+    return {"name": "html", "attributes": {}, "text_content": "", "children": children}
+
+
+def tree_signature(node):
+    """
+    Compute a compact structural signature string from a tree dict,
+    used to compare DOM topology between parsers.
+    """
+    if not isinstance(node, dict):
+        return ""
+    name = node.get("name", "")
+    children = node.get("children", [])
+    return f"{name}({'|'.join(tree_signature(c) for c in children)})"
+
 
 class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
     """
     Custom HTTP Request Handler that serves static files and handles
     live parsing POST requests from the interactive dashboard playground.
+
+    Endpoints:
+        GET  /dashboard/   — Serves the static HTML5 dashboard
+        POST /api/parse    — Parse HTML with our parser, return DOM + trace
+        POST /api/diff     — Differential oracle: compare our parser vs BS4 side-by-side
     """
 
     def do_POST(self):
-        """Handle incoming POST requests for live HTML parsing."""
+        """Handle incoming POST requests for live HTML parsing and differential oracle."""
         parsed_url = urlparse(self.path)
 
-        # Handle POST /api/parse — Live Interactive Playground REST endpoint
-        # Accepts JSON payload: {"html": "<markup>"} and returns parsed DOM + telemetry
-        if parsed_url.path == "/api/parse":
+        # -------------------------------------------------------
+        # POST /api/diff — Differential DOM Visualizer Endpoint
+        # Compares our Agentic parser vs BeautifulSoup4 oracle
+        # -------------------------------------------------------
+        if parsed_url.path == "/api/diff":
             try:
-                # Step 1: Read incoming request payload length from HTTP headers
                 content_length = int(self.headers.get("Content-Length", 0))
                 post_data = self.rfile.read(content_length).decode("utf-8")
-                
-                # 2. Parse request JSON payload
                 payload = json.loads(post_data) if post_data else {}
                 raw_html = payload.get("html", "")
 
-                # 3. Execute our Agentic AI HTML5 Parser with execution tracing
+                # Time our parser
+                t0 = time.perf_counter()
+                our_res = parse_with_trace(raw_html)
+                t_our = round((time.perf_counter() - t0) * 1000.0, 3)
+                our_tree = our_res.get("tree", {})
+
+                # Time BeautifulSoup4 parser
+                if BS4_AVAILABLE:
+                    t1 = time.perf_counter()
+                    bs4_tree = parse_with_bs4_structured(raw_html)
+                    t_bs4 = round((time.perf_counter() - t1) * 1000.0, 3)
+                else:
+                    bs4_tree = {"name": "N/A", "attributes": {}, "text_content": "BeautifulSoup4 not installed.", "children": []}
+                    t_bs4 = 0.0
+
+                our_sig = tree_signature(our_tree)
+                bs4_sig = tree_signature(bs4_tree)
+
+                response_payload = {
+                    "success": True,
+                    "input_html": raw_html,
+                    "our_tree": our_tree,
+                    "bs4_tree": bs4_tree,
+                    "our_duration_ms": t_our,
+                    "bs4_duration_ms": t_bs4,
+                    "is_match": (our_sig == bs4_sig),
+                    "our_signature": our_sig,
+                    "bs4_signature": bs4_sig
+                }
+                self._send_json(200, response_payload)
+
+            except Exception as exc:
+                self._send_json(500, {"success": False, "error": str(exc)})
+            return
+
+        # -------------------------------------------------------
+        # POST /api/parse — Live Interactive Playground Endpoint
+        # Accepts JSON: {"html": "<markup>"} → DOM + trace + tokens
+        # -------------------------------------------------------
+        if parsed_url.path == "/api/parse":
+            try:
+                # Read incoming request payload
+                content_length = int(self.headers.get("Content-Length", 0))
+                post_data = self.rfile.read(content_length).decode("utf-8")
+                payload = json.loads(post_data) if post_data else {}
+                raw_html = payload.get("html", "")
+
+                # Execute our Agentic AI HTML5 Parser with execution tracing
                 result = parse_with_trace(raw_html)
 
-                # 4. Prepare JSON response payload
                 response_payload = {
                     "success": True,
                     "input_length": len(raw_html),
@@ -63,29 +173,24 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
                     "trace": result.get("trace", {}),
                     "duration_ms": round(result.get("trace", {}).get("duration", 0) * 1000.0, 3)
                 }
-                response_bytes = json.dumps(response_payload, indent=2).encode("utf-8")
-
-                # 5. Send HTTP 200 OK headers
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Content-Length", str(len(response_bytes)))
-                self.send_header("Access-Control-Allow-Origin", "*")  # Allow cross-origin if needed
-                self.end_headers()
-
-                # 6. Write response body
-                self.wfile.write(response_bytes)
+                self._send_json(200, response_payload)
 
             except Exception as exc:
-                # Handle any parser or JSON decoding errors gracefully
-                error_response = json.dumps({"success": False, "error": str(exc)}).encode("utf-8")
-                self.send_response(500)
-                self.send_header("Content-Type", "application/json")
-                self.send_header("Content-Length", str(len(error_response)))
-                self.end_headers()
-                self.wfile.write(error_response)
-        else:
-            # For unhandled POST routes, return 404 Not Found
-            self.send_error(404, "Endpoint Not Found")
+                self._send_json(500, {"success": False, "error": str(exc)})
+            return
+
+        # Unhandled POST route
+        self.send_error(404, "Endpoint Not Found")
+
+    def _send_json(self, status_code, payload):
+        """Helper: serialize payload to JSON and send HTTP response."""
+        response_bytes = json.dumps(payload, indent=2).encode("utf-8")
+        self.send_response(status_code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(response_bytes)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(response_bytes)
 
     def do_OPTIONS(self):
         """Handle pre-flight CORS OPTIONS requests for API endpoints."""
@@ -94,6 +199,11 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+
+    def log_message(self, format, *args):
+        """Suppress verbose request logs unless there is an error."""
+        if args and len(args) >= 2 and str(args[1]).startswith(("4", "5")):
+            super().log_message(format, *args)
 
 
 def run_initial_compliance():
@@ -121,12 +231,12 @@ def start_server(port: int = 8080, open_browser: bool = True):
     dashboard_url = f"http://localhost:{port}/dashboard/"
     print("\n" + "=" * 70)
     print(f"  [OK] Compliance Dashboard & Live API Server Running!")
-    print(f"  --> Dashboard URL: {dashboard_url}")
-    print(f"  --> Live Parse API: POST http://localhost:{port}/api/parse")
+    print(f"  --> Dashboard URL:        {dashboard_url}")
+    print(f"  --> Live Parse API:       POST http://localhost:{port}/api/parse")
+    print(f"  --> Differential Diff:    POST http://localhost:{port}/api/diff")
     print("=" * 70)
     print("  Press Ctrl+C in terminal to stop the server.\n")
 
-    # Automatically launch user's default browser if requested
     if open_browser:
         try:
             webbrowser.open(dashboard_url)
@@ -146,8 +256,5 @@ if __name__ == "__main__":
     parser.add_argument("--no-browser", action="store_true", help="Do not automatically open browser")
     args = parser.parse_args()
 
-    # Step 1: Ensure compliance results exist
     run_initial_compliance()
-    
-    # Step 2: Start server
     start_server(port=args.port, open_browser=not args.no_browser)

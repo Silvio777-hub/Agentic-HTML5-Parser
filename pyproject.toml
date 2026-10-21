@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "agentic-html5-parser"
+version = "1.4.0"
+description = "Trustworthy HTML5 Parser via Agentic AI: a multi-agent, self-healing pipeline"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Opoka JM Silvio", email = "silvio@example.com" }
+]
+keywords = [
+    "html5", "parser", "agentic-ai", "multi-agent", "self-healing",
+    "llm", "claude", "groq", "tokenizer", "dom", "w3c"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "anthropic>=0.23.0",
+    "groq>=0.4.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=4.9.0",
+    "matplotlib>=3.7.0",
+    "python-docx>=1.1.0",
+    "python-pptx>=0.6.21",
+    "jinja2>=3.1.0",
+    "pyyaml>=6.0",
+    "pytest>=7.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-anyio>=0.0.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+notebook = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.0.0",
+]
+
+[project.scripts]
+# After `pip install -e .`, use `agentic-html5-parser` as a CLI alias for `python cli.py`
+agentic-html5-parser = "cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Silvio777-hub/Agentic-HTML5-Parser"
+Repository = "https://github.com/Silvio777-hub/Agentic-HTML5-Parser"
+Documentation = "https://github.com/Silvio777-hub/Agentic-HTML5-Parser/blob/main/README.md"
+"Bug Tracker" = "https://github.com/Silvio777-hub/Agentic-HTML5-Parser/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yml", "*.yaml", "*.json", "*.dat", "*.html", "*.css"]
+
+# ── Ruff (linting) ──────────────────────────────────────────
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+# ── Pytest ───────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
