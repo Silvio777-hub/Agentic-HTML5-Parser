@@ -26,6 +26,7 @@ class ClaudeAgent:
     """
     Wrapper around Claude API for use by all specialized agents.
     Provides unified interface for calling Claude with different prompts.
+    Features on-disk SHA-256 caching for zero-cost repeat evaluations.
     """
     
     def __init__(self, use_cache: bool = True):
@@ -59,7 +60,7 @@ class ClaudeAgent:
         agent_name = self.__class__.__name__
         cache_key = f"{system_prompt or ''}::{user_message}"
 
-        # Phase 1: Check cache
+        # Phase 1: Check SHA-256 on-disk response cache to eliminate API costs on repeat prompts
         if self.use_cache and _GLOBAL_CACHE:
             cached_response = _GLOBAL_CACHE.get(agent_name, cache_key)
             if cached_response is not None:
@@ -67,7 +68,7 @@ class ClaudeAgent:
                 return cached_response
 
         try:
-            # Build messages
+            # Phase 2: Cache miss — construct payload and dispatch to Anthropic Messages API
             messages = [{"role": "user", "content": user_message}]
             
             # Call Claude API
@@ -139,7 +140,9 @@ class ClaudeAgent:
 
 
 class SpecAgentAI:
-    """AI component for Spec Agent - generates structured specifications."""
+    """AI component for Spec Agent (Architect).
+    Translates informal human HTML5 feature descriptions into structured YAML grammar blueprints.
+    """
     
     def __init__(self):
         """Initialize Spec Agent AI."""
@@ -185,7 +188,9 @@ Requirements:
 
 
 class CodegenAgentAI:
-    """AI component for Codegen Agent - generates implementation patches."""
+    """AI component for Codegen Agent (Lead Implementer).
+    Translates YAML specifications into unified diff (.patch) code changes.
+    """
     
     def __init__(self):
         """Initialize Codegen Agent AI."""
@@ -342,7 +347,9 @@ Requirements:
 
 
 class RedTeamAgentAI:
-    """AI component for Red-Team Agent - generates adversarial tests."""
+    """AI component for Red-Team Agent (Ethical Hacker).
+    Adversarially probes parser robustness with malformed markup, XSS, and deep recursion.
+    """
     
     def __init__(self):
         """Initialize Red-Team Agent AI."""
@@ -395,7 +402,9 @@ Ensure tests verify:
 
 
 class MonitorAgentAI:
-    """AI component for Monitor Agent - analyzes execution metrics."""
+    """AI component for Monitor Agent (DevOps Safety Watchdog).
+    Analyzes execution traces to detect performance bottlenecks, timeouts, and memory spikes.
+    """
     
     def __init__(self):
         """Initialize Monitor Agent AI."""

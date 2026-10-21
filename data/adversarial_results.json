@@ -11,7 +11,7 @@
       "name": "Deeply Nested 200 Levels",
       "category": "Nesting",
       "status": "PASSED",
-      "duration_ms": 14.08,
+      "duration_ms": 15.07,
       "error": null
     },
     {
@@ -19,7 +19,7 @@
       "name": "Unclosed Paragraphs Cascade",
       "category": "Implicit Closure",
       "status": "PASSED",
-      "duration_ms": 0.31,
+      "duration_ms": 0.68,
       "error": null
     },
     {
@@ -27,7 +27,7 @@
       "name": "Bogus Comment Syntax",
       "category": "Comments",
       "status": "PASSED",
-      "duration_ms": 0.09,
+      "duration_ms": 0.11,
       "error": null
     },
     {
@@ -43,7 +43,7 @@
       "name": "Unquoted Complex Attributes",
       "category": "Attributes",
       "status": "PASSED",
-      "duration_ms": 0.17,
+      "duration_ms": 0.15,
       "error": null
     },
     {
@@ -51,7 +51,7 @@
       "name": "Unicode RTL & Emoji Tags",
       "category": "Internationalization",
       "status": "PASSED",
-      "duration_ms": 0.21,
+      "duration_ms": 0.19,
       "error": null
     },
     {
@@ -59,7 +59,7 @@
       "name": "Zero-Width Spaces in Tag Names",
       "category": "Unicode",
       "status": "PASSED",
-      "duration_ms": 0.45,
+      "duration_ms": 12.39,
       "error": null
     },
     {
@@ -67,7 +67,7 @@
       "name": "Self-Closing Non-Void Tag",
       "category": "Void Elements",
       "status": "PASSED",
-      "duration_ms": 0.12,
+      "duration_ms": 0.09,
       "error": null
     },
     {
@@ -75,7 +75,7 @@
       "name": "Extreme Long Attribute (5000 chars)",
       "category": "Stress",
       "status": "PASSED",
-      "duration_ms": 8.35,
+      "duration_ms": 5.37,
       "error": null
     },
     {
@@ -83,7 +83,7 @@
       "name": "Missing Root Tag",
       "category": "Malformed",
       "status": "PASSED",
-      "duration_ms": 0.31,
+      "duration_ms": 0.42,
       "error": null
     },
     {
@@ -107,7 +107,7 @@
       "name": "Whitespace Only",
       "category": "Edge Case",
       "status": "PASSED",
-      "duration_ms": 0.1,
+      "duration_ms": 0.09,
       "error": null
     },
     {
@@ -115,7 +115,7 @@
       "name": "Repeated Self-Closing Breaks",
       "category": "Void Elements",
       "status": "PASSED",
-      "duration_ms": 0.16,
+      "duration_ms": 0.18,
       "error": null
     },
     {
@@ -123,7 +123,7 @@
       "name": "Nested Blockquote Hierarchy",
       "category": "Hierarchy",
       "status": "PASSED",
-      "duration_ms": 0.25,
+      "duration_ms": 0.23,
       "error": null
     }
   ]

@@ -30,16 +30,18 @@ SAMPLE_DOCUMENTS = [
 ]
 
 
+# Benchmark execution harness: profiles latency (avg/p95) and heap memory across iterations
 def benchmark_parser(parser_name: str, parse_fn, iterations: int = 20) -> Dict[str, Any]:
     latencies = []
     
-    # Warmup
+    # Warmup phase: execute one pass over corpus to ensure module bytecode is compiled in memory
     for _, doc in SAMPLE_DOCUMENTS:
         try:
             parse_fn(doc)
         except Exception:
             pass
 
+    # Enable Python memory tracing to record peak heap allocation during benchmark
     tracemalloc.start()
     start_wall = time.perf_counter()
     

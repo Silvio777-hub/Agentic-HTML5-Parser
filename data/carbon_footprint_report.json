@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-21T00:13:50Z",
+  "timestamp": "2026-10-21T02:23:07Z",
   "parser_metrics": {
     "iterations": 100,
-    "total_time_seconds": 2.1476,
-    "avg_time_per_doc_ms": 21.476,
-    "energy_joules": 96.6442,
-    "energy_kwh": 2.685e-05,
-    "co2_grams_eu": 0.007383,
-    "co2_per_doc_milligrams": 0.0738
+    "total_time_seconds": 0.9939,
+    "avg_time_per_doc_ms": 9.939,
+    "energy_joules": 44.7248,
+    "energy_kwh": 1.242e-05,
+    "co2_grams_eu": 0.003416,
+    "co2_per_doc_milligrams": 0.0342
   },
   "pipeline_metrics": {
     "uncached_run": {

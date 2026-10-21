@@ -13,6 +13,7 @@ import pytest
 from parser import tokenize_stream, parse_stream, TokenType
 
 
+# Validates that tokenize_stream yields tokens incrementally across arbitrary chunk splits
 def test_tokenize_stream_basic():
     chunks = ["<div", " class='test'", ">", "<span>Hello", "</span></div>"]
     tokens = list(tokenize_stream(chunks))
@@ -22,6 +23,7 @@ def test_tokenize_stream_basic():
     assert "span" in tag_names
 
 
+# Validates that parse_stream yields continuous DOM tree snapshots as network chunks arrive
 def test_parse_stream_incremental_build():
     chunks = [
         "<html><head><title>Streaming Test</title></head>",

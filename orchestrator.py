@@ -57,18 +57,19 @@ class PipelineOrchestrator:
         self.run_dir = Config.RUNS_DIR / run_id
         self.artifact_manager = ArtifactManager(run_id, self.run_dir)
         
-        # Initialize agents
-        self.spec_agent = SpecAgentAI()
-        self.codegen_agent = CodegenAgentAI()
-        self.critique_agent = CritiqueAgentAI()
-        self.test_agent = TestAgentAI()
-        self.red_team_agent = RedTeamAgentAI()
-        self.monitor_agent = MonitorAgentAI()
-        self.repair_agent = RepairAgentAI()
+        # Instantiate the 7 core specialized AI agents in the assembly line
+        self.spec_agent = SpecAgentAI()          # Stage 1: Extracts structured YAML grammar from human requirements
+        self.codegen_agent = CodegenAgentAI()    # Stage 2: Synthesizes unified Python code patch implementing spec
+        self.critique_agent = CritiqueAgentAI()  # Stage 3a: Audits code quality, style, and specification adherence
+        self.test_agent = TestAgentAI()          # Stage 4: Generates pytest conformance test suite
+        self.red_team_agent = RedTeamAgentAI()  # Stage 3b: Attacks parser with adversarial stress vectors (runs concurrent with Critique)
+        self.monitor_agent = MonitorAgentAI()    # Stage 5: Inspects runtime trace metrics for algorithmic bottlenecks
+        self.repair_agent = RepairAgentAI()      # Stage 6: Trace-guided automated self-repair mechanic (≤ 3 iterations)
         
-        # Pipeline state
+        # Pipeline state tracking
         self.specification = {}
         self.iteration = 0
+        # Safety guard: enforce strict iteration ceiling to prevent infinite self-repair loops
         self.max_iterations = 3
         
         print(f"\n{'='*60}")

@@ -77,26 +77,36 @@ def run_agents_parallel(agent_funcs: List[Callable[[], Any]], timeout: int = 120
     Exception
         Re-raises the first exception thrown by any agent callable.
     """
+    # Allocate a fixed-size results list indexed by the original call order.
+    # This guarantees that outputs match agent_funcs ordering regardless of completion order.
     results: List[Any] = [None] * len(agent_funcs)
 
+    # Dispatch tasks using Python's concurrent ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=len(agent_funcs)) as executor:
-        # Map future → original index so we can restore ordering.
+        # Submit each agent callable to the worker pool and track its original index.
+        # future_to_index maps each Future instance back to its position (0 to N-1).
         future_to_index = {
             executor.submit(fn): idx
             for idx, fn in enumerate(agent_funcs)
         }
 
         try:
+            # Yield completed futures as soon as they finish execution (as_completed).
+            # The timeout parameter enforces a strict global ceiling on stage wall-clock time.
             for future in as_completed(future_to_index, timeout=timeout):
+                # Retrieve the original input index for this completed future
                 idx = future_to_index[future]
-                # Propagate any exception raised inside the thread.
+                
+                # future.result() retrieves the return value or re-raises any exception thrown inside the worker thread
                 results[idx] = future.result()
         except FuturesTimeoutError:
+            # Handle timeout breach gracefully by raising a descriptive TimeoutError
             raise TimeoutError(
                 f"run_agents_parallel: one or more agents did not finish "
                 f"within the {timeout}s timeout."
             )
 
+    # Return ordered list of results matching the input callables
     return results
 
 

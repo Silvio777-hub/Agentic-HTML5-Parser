@@ -63,7 +63,11 @@ def serialize_tree_simple(node: TreeNode) -> Dict[str, Any]:
 
 
 def parse_dat_file(filepath: str) -> List[Dict[str, str]]:
-    """Parse a .dat file into a list of test cases."""
+    """Parse a .dat file into a list of test cases.
+    
+    W3C .dat format separates test cases by double-newlines. Each case contains:
+    #data (raw HTML input), #errors (expected tokenizer errors), and #document (expected tree).
+    """
     with open(filepath, "r", encoding="utf-8", errors="replace") as f:
         content = f.read()
 
@@ -119,11 +123,12 @@ def run_compliance_tests(test_files: List[str]) -> Dict[str, Any]:
             is_pass = False
             
             try:
+                # Parse input HTML using our custom Python HTML5 parser
                 actual_tree = parse(input_html)
                 actual_lines = format_tree_to_document(actual_tree)
                 actual_doc = "\n".join(actual_lines)
                 
-                # Check normalized equivalence
+                # Normalize whitespace on both sides for deterministic tree comparison
                 norm_expected = "\n".join([l.rstrip() for l in expected_doc.split("\n") if l.strip()])
                 norm_actual = "\n".join([l.rstrip() for l in actual_lines if l.strip()])
                 

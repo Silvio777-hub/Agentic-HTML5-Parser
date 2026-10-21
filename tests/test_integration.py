@@ -19,7 +19,9 @@ from parser import (
 
 
 class TestTokenizer:
-    """Test HTML tokenization functionality."""
+    """Test HTML tokenization functionality.
+    Validates that the lexical analysis FSM produces correct atomic tokens.
+    """
     
     def test_simple_text(self):
         """Test tokenization of plain text."""
@@ -70,7 +72,9 @@ class TestTokenizer:
 
 
 class TestParser:
-    """Test DOM tree construction."""
+    """Test DOM tree construction.
+    Validates that tokens are correctly assembled into hierarchical DOM TreeNodes.
+    """
     
     def test_empty_html(self):
         """Test parsing empty HTML."""
@@ -131,7 +135,9 @@ class TestParser:
 
 
 class TestImplicitClosure:
-    """Test implicit tag closure rules."""
+    """Test implicit tag closure rules.
+    Enforces HTML5 spec rule where open <p> tags auto-close before block-level elements.
+    """
     
     def test_p_closes_before_div(self):
         """Test that <p> closes before <div>."""
@@ -164,7 +170,9 @@ class TestImplicitClosure:
 
 
 class TestExecutionTrace:
-    """Test execution tracing functionality."""
+    """Test execution tracing functionality.
+    Verifies that parser telemetry events, errors, and timestamps are captured in the trace.
+    """
     
     def test_trace_structure(self):
         """Test that trace contains expected structure."""
@@ -202,7 +210,9 @@ class TestExecutionTrace:
 
 
 class TestErrorHandling:
-    """Test error handling and robustness."""
+    """Test error handling and robustness.
+    Verifies graceful recovery from malformed tags, unclosed tags, and deep recursion.
+    """
     
     def test_unclosed_tag(self):
         """Test handling of unclosed tags."""

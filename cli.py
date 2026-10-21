@@ -32,7 +32,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 def run_command(cmd_list, description):
     """Helper function to execute a sub-process command and handle errors."""
     print(f"\n>>> [CLI] Executing: {description} ...")
+    # Execute the requested script in a subprocess with working directory pinned to project root
     result = subprocess.run(cmd_list, cwd=str(PROJECT_ROOT))
+    # Non-zero return code indicates test failure, crash, or execution exception
     if result.returncode != 0:
         print(f"[FAIL] [CLI] Command failed with returncode {result.returncode}")
         return False
@@ -41,51 +43,61 @@ def run_command(cmd_list, description):
 
 def cmd_test():
     """Runs all 34 automated unit, integration, and streaming tests."""
+    # Invokes pytest directly using the current Python interpreter environment
     return run_command([sys.executable, "-m", "pytest", "tests/", "-v"], "Automated Test Suite (pytest)")
 
 
 def cmd_compliance():
     """Runs W3C html5lib compliance test harness."""
+    # Executes the compliance harness against bundled sample W3C test cases
     return run_command([sys.executable, "scripts/run_compliance.py", "--sample"], "W3C Compliance Test Runner")
 
 
 def cmd_benchmark():
     """Runs comparative benchmarks against BeautifulSoup4 and lxml."""
+    # Measures document parsing latency, throughput, and memory consumption
     return run_command([sys.executable, "scripts/compare_benchmarks.py"], "Comparative Benchmark Suite")
 
 
 def cmd_adversarial():
     """Runs Red-Team adversarial security tests."""
+    # Probes the parser with 15 malicious attack vectors (XSS, nesting, zero-width chars)
     return run_command([sys.executable, "scripts/run_adversarial.py"], "Red-Team Adversarial Robustness Suite")
 
 
 def cmd_ablation():
     """Runs empirical multi-agent ablation study."""
+    # Systematically disables agents (Critique, Red-Team, Repair) to measure their empirical impact
     return run_command([sys.executable, "scripts/run_ablation_study.py"], "Empirical Ablation Study Runner")
 
 
 def cmd_charts():
     """Generates all 300-DPI publication figures."""
+    # Renders high-resolution vector and raster charts in figures/ for the thesis document
     return run_command([sys.executable, "scripts/generate_thesis_charts.py"], "300-DPI Publication Figure Generator")
 
 
 def cmd_carbon():
     """Runs computational carbon footprint & energy assessment."""
+    # Quantifies Joules and estimated CO2 emissions for uncached vs cached LLM operations
     return run_command([sys.executable, "scripts/estimate_carbon.py"], "Green AI Carbon Footprint Estimator")
 
 
 def cmd_audit():
     """Runs AST static security analysis and STRIDE threat modeling."""
+    # Scans Python AST for dangerous functions (eval, exec) and audits against STRIDE threats
     return run_command([sys.executable, "scripts/run_security_audit.py"], "Static Security & STRIDE Auditor")
 
 
 def cmd_repair_demo():
     """Runs the live self-repair showcase demo."""
+    # Demonstrates an automated end-to-end failure detection and trace-guided patching cycle
     return run_command([sys.executable, "scripts/demo_self_repair.py"], "Autonomous Self-Repair Showcase Demo")
 
 
 def cmd_build_thesis():
     """Verifies that all 7 thesis chapters exist in thesis/."""
+    # Checks that all 7 numbered chapter Markdown documents are present in thesis/
     thesis_dir = Path("thesis")
     chapters = list(thesis_dir.glob("0*.md"))
     if len(chapters) == 7:
@@ -97,8 +109,10 @@ def cmd_build_thesis():
 
 def cmd_dashboard(port=8080, no_browser=False):
     """Starts the local web server and live playground API."""
+    # Builds server command line with configurable TCP port
     cmd = [sys.executable, "scripts/serve_dashboard.py", "--port", str(port)]
     if no_browser:
+        # Suppress automatic browser tab opening if requested (e.g. in headless environments)
         cmd.append("--no-browser")
     return run_command(cmd, "Live Quality Dashboard & API Server")
 
@@ -125,13 +139,13 @@ def cmd_all():
     for name, step_fn in steps:
         success = step_fn()
         if not success:
-            print(f"\n❌ Pipeline failed during step: {name}")
+            print(f"\n[FAIL] Pipeline failed during step: {name}")
             return False
 
     print("\n" + "=" * 75)
-    print("  🎉 COMPLETE PIPELINE EXECUTED SUCCESSFULLY WITH ZERO ERRORS!")
-    print("  👉 Live Dashboard: python cli.py dashboard")
-    print("  👉 Thesis Chapters: thesis/ (All 7 chapters present)")
+    print("  [OK] COMPLETE PIPELINE EXECUTED SUCCESSFULLY WITH ZERO ERRORS!")
+    print("  [NOTE] Live Dashboard: python cli.py dashboard")
+    print("  [NOTE] Thesis Chapters: thesis/ (All 7 chapters present)")
     print("=" * 75 + "\n")
     return True
 

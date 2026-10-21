@@ -381,21 +381,22 @@ class HTMLParser:
         """
         tag_name = token.name
         
-        # Implicit <p> closure before block elements
+        # HTML5 Spec Rule: An open <p> element must implicitly close before
+        # block-level container elements (div, h1-h6, blockquote, table, etc.)
         if tag_name in self.SPECIAL_END_TAGS and self._is_open("p"):
             self._close_element("p")
             self.trace.add_event("implicit_p_closed", {
                 "before_tag": tag_name
             })
         
-        # Create new node
+        # Instantiate a new DOM TreeNode with parsed element attributes
         new_node = TreeNode(tag_name or "", attributes=token.attributes or {})
         
-        # Add to current open element
+        # Attach the new node as a child of the currently active open element (stack top)
         if self.open_elements:
             self.open_elements[-1].add_child(new_node)
         
-        # Add to open elements stack (unless self-closing)
+        # Push to the open elements stack only if this element has children (non-void, non-self-closing)
         if not token.self_closing:
             self.open_elements.append(new_node)
         
@@ -409,11 +410,13 @@ class HTMLParser:
         """Process an end tag token."""
         tag_name = token.name
         if tag_name:
+            # Search open stack backwards from top and pop matching element to close scope
             self._close_element(tag_name)
         self.trace.add_event("end_tag_processed", {"tag": tag_name})
     
     def _process_character(self, token: Token) -> None:
         """Process a character token."""
+        # Append textual character data directly to the currently open container element
         if self.open_elements and token.data:
             current = self.open_elements[-1]
             current.text_content += token.data
@@ -423,6 +426,7 @@ class HTMLParser:
         """Close an open element by tag name."""
         if not tag_name:
             return
+        # Traverse stack from top to bottom (LIFO) to find and pop the most recent matching tag
         for i in range(len(self.open_elements) - 1, -1, -1):
             if self.open_elements[i].name == tag_name:
                 self.open_elements.pop(i)

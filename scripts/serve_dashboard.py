@@ -39,10 +39,11 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
         """Handle incoming POST requests for live HTML parsing."""
         parsed_url = urlparse(self.path)
 
-        # Handle POST /api/parse — Live Interactive Playground endpoint
+        # Handle POST /api/parse — Live Interactive Playground REST endpoint
+        # Accepts JSON payload: {"html": "<markup>"} and returns parsed DOM + telemetry
         if parsed_url.path == "/api/parse":
             try:
-                # 1. Read the length of the incoming JSON body
+                # Step 1: Read incoming request payload length from HTTP headers
                 content_length = int(self.headers.get("Content-Length", 0))
                 post_data = self.rfile.read(content_length).decode("utf-8")
                 

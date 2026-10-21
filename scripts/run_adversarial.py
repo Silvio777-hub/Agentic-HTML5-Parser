@@ -34,6 +34,7 @@ ADVERSARIAL_TESTS = [
 ]
 
 
+# Executes the 15 red-team adversarial attacks and records response times and resilience rates
 def run_adversarial_suite() -> Dict[str, Any]:
     print("=" * 70)
     print("  RED-TEAM ADVERSARIAL ROBUSTNESS SUITE")
@@ -44,11 +45,13 @@ def run_adversarial_suite() -> Dict[str, Any]:
     crashed = 0
 
     for test in ADVERSARIAL_TESTS:
+        # High-resolution monotonic timing before sending malicious payload
         t0 = time.perf_counter()
         status = "PASSED"
         error_msg = None
         
         try:
+            # Feed adversarial markup into parser and verify it recovers without throwing unhandled exceptions
             tree = parse(test["html"])
             elapsed = (time.perf_counter() - t0) * 1000.0
             passed += 1
