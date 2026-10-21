@@ -118,3 +118,6 @@ html5lib-tests/
 scratch/
 data/tests1.dat
 html5lib-tests/
+
+# Local-only thesis drafts
+thesis/
