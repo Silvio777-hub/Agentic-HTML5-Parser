@@ -9,7 +9,7 @@ services:
   html5-parser-dashboard:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: agentic_html5_parser_dashboard
     restart: unless-stopped
     ports:

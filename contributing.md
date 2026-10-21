@@ -24,7 +24,7 @@ python cli.py benchmark    # Latency benchmarks
 
 ## Project Structure
 
-See [QUICKSTART.md](QUICKSTART.md) and [ARCHITECTURE.md](ARCHITECTURE.md) for full documentation.
+See [quickstart.md](quickstart.md) and [architecture.md](architecture.md) for full documentation.
 
 ## Code Style
 

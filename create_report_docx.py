@@ -227,8 +227,8 @@ def main():
         "a concrete blueprint for autonomous software engineering."
     )
 
-    doc.save("REPORT.docx")
-    print("[+] Comprehensive technical report generated: REPORT.docx")
+    doc.save("report.docx")
+    print("[+] Comprehensive technical report generated: report.docx")
 
 
 if __name__ == "__main__":

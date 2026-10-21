@@ -122,7 +122,7 @@ python scripts/run_compliance.py
 ├── orchestrator.py       # Main 7-agent pipeline runner
 ├── cli.py                # Unified CLI entry point
 ├── config.py             # Configuration constants
-└── ARCHITECTURE.md       # Detailed system design documentation
+└── architecture.md       # Detailed system design documentation
 ```
 
 ---

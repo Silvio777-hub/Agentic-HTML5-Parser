@@ -419,8 +419,8 @@ def main():
         r2.font.size = Pt(13)
         r2.font.color.rgb = RGBColor(51, 65, 85)
 
-    prs.save("FINAL_PRESENTATION.pptx")
-    print("[+] Professional 12-slide presentation generated: FINAL_PRESENTATION.pptx")
+    prs.save("final_presentation.pptx")
+    print("[+] Professional 12-slide presentation generated: final_presentation.pptx")
 
 
 if __name__ == "__main__":

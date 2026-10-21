@@ -19,7 +19,7 @@ python cli.py compliance    # W3C compliance suite
 python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
 ```
 
-→ See [QUICKSTART.md](QUICKSTART.md) for full setup instructions including the LLM pipeline.
+→ See [quickstart.md](quickstart.md) for full setup instructions including the LLM pipeline.
 
 ---
 
@@ -51,9 +51,9 @@ Rather than treating AI as a black-box code generator, this system:
 - Employs **concurrency via ThreadPoolExecutor** for independent agent evaluations (Critique & Red-Team)
 - Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8080/dashboard/`
 
-> ⚠️ **Scope Note:** The parser implements an HTML5 structural subset. Full WHATWG spec compliance (adoption agency algorithm, full foster parenting, foreign content) is identified as future work. See [ARCHITECTURE.md](ARCHITECTURE.md) for scope details.
+> ⚠️ **Scope Note:** The parser implements an HTML5 structural subset. Full WHATWG spec compliance (adoption agency algorithm, full foster parenting, foreign content) is identified as future work. See [architecture.md](architecture.md) for scope details.
 
-> 📐 **Architecture Reference:** See [ARCHITECTURE.md](ARCHITECTURE.md) for full system diagrams, concurrency specifications, and agent contracts.
+> 📐 **Architecture Reference:** See [architecture.md](architecture.md) for full system diagrams, concurrency specifications, and agent contracts.
 
 ---
 
@@ -318,11 +318,11 @@ Agentic AI HTML5 Parser/
 ├── cli.py                          # Master CLI (one command to run everything)
 ├── orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
 ├── config.py                       # Configuration: API keys, model names, paths
-├── Dockerfile                      # Multi-stage Python container
+├── dockerfile                      # Multi-stage Python container
 ├── docker-compose.yml              # Docker Compose (port 8082)
 ├── requirements.txt                # Python dependencies
 ├── .env.example                    # API key template — copy to .env and fill in keys
-└── README.md                       # This file
+└── readme.md                       # This file
 ```
 
 ---

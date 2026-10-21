@@ -206,8 +206,8 @@ def create_notes_docx():
         "Academic Year: 2026/2027"
     )
 
-    doc.save("Notes.docx")
-    print("[+] Notes.docx successfully generated with full 7-agent suite documentation!")
+    doc.save("notes.docx")
+    print("[+] notes.docx successfully generated with full 7-agent suite documentation!")
 
 
 if __name__ == "__main__":

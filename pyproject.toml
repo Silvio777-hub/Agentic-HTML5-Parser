@@ -6,7 +6,7 @@ build-backend = "setuptools.backends.legacy:build"
 name = "agentic-html5-parser"
 version = "1.4.0"
 description = "Trustworthy HTML5 Parser via Agentic AI: a multi-agent, self-healing pipeline"
-readme = "README.md"
+readme = "readme.md"
 license = { text = "MIT" }
 authors = [
     { name = "Opoka JM Silvio", email = "silvio@example.com" }
