@@ -25,6 +25,9 @@ from src.claude_integration import (
     SpecAgentAI, CodegenAgentAI, CritiqueAgentAI, TestAgentAI,
     RedTeamAgentAI, MonitorAgentAI, RepairAgentAI
 )
+import functools
+import time
+from src.parallel_runner import run_agents_parallel
 
 
 class PipelineOrchestrator:
@@ -108,23 +111,19 @@ class PipelineOrchestrator:
             print("="*60)
             self._run_codegen_agent(report)
             
-            # Stage 3: Critique Agent
+            # Stage 3+5 (CONCURRENT): Critique & Red-Team agents run in parallel
+            # Both agents need only the generated code as input, so neither depends
+            # on the other — ThreadPoolExecutor halves wall-clock time for this stage.
             print("\n" + "="*60)
-            print("STAGE 3: CRITIQUE AGENT")
+            print("STAGE 3+5 (PARALLEL): CRITIQUE  ||  RED-TEAM AGENTS")
             print("="*60)
-            self._run_critique_agent(report)
-            
-            # Stage 4: Test Agent
+            self._run_critique_and_redteam_parallel(report)
+
+            # Stage 4: Test Agent (must run after Critique, before Monitor)
             print("\n" + "="*60)
             print("STAGE 4: TEST AGENT")
             print("="*60)
             self._run_test_agent(report)
-            
-            # Stage 5: Red-Team Agent
-            print("\n" + "="*60)
-            print("STAGE 5: RED-TEAM AGENT")
-            print("="*60)
-            self._run_red_team_agent(report)
             
             # Stage 6: Execute Tests & Generate Reports
             print("\n" + "="*60)
@@ -132,13 +131,21 @@ class PipelineOrchestrator:
             print("="*60)
             test_report = self._run_tests_and_monitor(report)
             
-            # Stage 7: Repair (if needed)
-            if test_report["summary"]["failed"] > 0:
+            # Stage 7: Iterative Self-Repair Loop (≤ max_iterations)
+            # The repair agent generates a patch, which PatchManager applies to
+            # src/parser.py.  Tests re-run after each patch.  The loop exits when
+            # all tests pass or the iteration ceiling is reached.
+            while (test_report["summary"]["failed"] > 0
+                   and self.iteration < self.max_iterations):
                 print("\n" + "="*60)
-                print("STAGE 7: REPAIR AGENT")
+                print(f"STAGE 7: REPAIR AGENT  (iteration {self.iteration + 1}/{self.max_iterations})")
                 print("="*60)
                 self._run_repair_agent(report, test_report)
-            
+                # Re-run tests to check convergence
+                test_report = self._run_tests_and_monitor(report)
+                print(f"  Post-repair: {test_report['summary']['passed']} passed, "
+                      f"{test_report['summary']['failed']} failed")
+
             report["status"] = "success"
             report["final_test_report"] = test_report
             
@@ -217,6 +224,75 @@ class PipelineOrchestrator:
             report["stages"]["codegen_agent"] = {"status": "failed", "error": str(e)}
             print(f"✗ Codegen Agent failed: {e}")
     
+    def _run_critique_and_redteam_parallel(self, report: Dict[str, Any]) -> None:
+        """Execute Critique and Red-Team agents concurrently via ThreadPoolExecutor.
+
+        Both agents operate independently on the same generated patch, so they can
+        be dispatched in parallel.  Wall-clock savings ≈ max(t_critique, t_redteam)
+        instead of t_critique + t_redteam.
+        """
+        patch_path = self.artifact_manager.patch_dir / "code.patch"
+        patch_content = patch_path.read_text() if patch_path.exists() else ""
+        spec_str = json.dumps(self.specification)
+
+        # Bind each agent call to a zero-argument callable using functools.partial
+        critique_fn = functools.partial(
+            self.critique_agent.critique_patch,
+            patch_content,
+            spec_str,
+            "Pending test execution"
+        )
+        red_team_fn = functools.partial(
+            self.red_team_agent.generate_adversarial_tests,
+            self._load_parser_interface(),
+            "Focus on malformed HTML and deeply nested structures"
+        )
+
+        t0 = time.perf_counter()
+        try:
+            critique_result, red_team_result = run_agents_parallel(
+                [critique_fn, red_team_fn],
+                timeout=180
+            )
+            elapsed = time.perf_counter() - t0
+            print(f"  Parallel stage completed in {elapsed:.2f}s")
+
+            # Process Critique result
+            report["stages"]["critique_agent"] = {
+                "status": "success",
+                "critique": critique_result,
+                "parallel": True
+            }
+            approval = critique_result.get("approval", False) if isinstance(critique_result, dict) else False
+            confidence = critique_result.get("confidence_score", 0) if isinstance(critique_result, dict) else 0
+            print(f"  [Critique] Approval: {approval}  Confidence: {confidence}%")
+
+            # Process Red-Team result
+            red_team_file = self.artifact_manager.tests_dir / "test_red_team.py" if hasattr(self.artifact_manager, "tests_dir") else None
+            if red_team_file is None:
+                red_team_file = self.run_dir / "test_red_team.py"
+            try:
+                from config import Config
+                (Config.TESTS_DIR / "test_red_team.py").write_text(red_team_result or "# no tests")
+            except Exception:
+                pass
+            report["stages"]["red_team_agent"] = {
+                "status": "success",
+                "test_code_size": len(red_team_result or ""),
+                "parallel": True
+            }
+            print(f"  [Red-Team] {len(red_team_result or '')} chars of adversarial tests generated")
+
+        except TimeoutError as exc:
+            elapsed = time.perf_counter() - t0
+            print(f"  [WARN] Parallel stage timed out after {elapsed:.2f}s: {exc}")
+            report["stages"]["critique_agent"] = {"status": "timeout"}
+            report["stages"]["red_team_agent"] = {"status": "timeout"}
+        except Exception as exc:
+            print(f"  [WARN] Parallel stage error: {exc}")
+            report["stages"]["critique_agent"] = {"status": "failed", "error": str(exc)}
+            report["stages"]["red_team_agent"] = {"status": "failed", "error": str(exc)}
+
     def _run_critique_agent(self, report: Dict[str, Any]) -> None:
         """Execute Critique Agent to validate patches."""
         print("\nCritiquing generated patches...")

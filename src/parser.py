@@ -291,6 +291,12 @@ class TreeNode:
         if self.name in ("#document",):
             return "".join(child.to_html(pretty=pretty, indent_level=indent_level, indent_step=indent_step) for child in self.children)
 
+        if self.name == "!doctype":
+            return f"<!DOCTYPE html>{nl}"
+
+        if self.name == "#comment":
+            return f"{indent}<!-- {self.text_content} -->{nl}"
+
         if self.name == "#text":
             return self.text_content
 
@@ -382,17 +388,25 @@ class HTMLTokenizer:
     ATTRIBUTE_VALUE_STATE = "ATTRIBUTE_VALUE"
     SELF_CLOSING_STATE = "SELF_CLOSING"
     BOGUS_COMMENT_STATE = "BOGUS_COMMENT"
-    
+    COMMENT_STATE = "COMMENT"
+    RAWTEXT_STATE = "RAWTEXT"
+
     # Self-closing tags in HTML5
     VOID_ELEMENTS = {
         'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
         'link', 'meta', 'param', 'source', 'track', 'wbr'
     }
+
+    # Raw-text elements: content consumed verbatim until the matching end tag.
+    # Prevents '<' or '>' inside <script>/<style> from being mis-tokenised.
+    RAWTEXT_ELEMENTS = {'script', 'style', 'textarea', 'title'}
     
     def __init__(self, trace: Optional[ParsingTrace] = None):
         """Initialize tokenizer with optional trace."""
         self.trace = trace or ParsingTrace()
         self.current_state = self.DATA_STATE
+        # Tracks which RAWTEXT element we are inside (e.g. 'script', 'style')
+        self._rawtext_tag: str = ""
 
     def _consume_character_reference(self, html: str, index: int) -> Tuple[Optional[str], int]:
         """
@@ -462,6 +476,7 @@ class HTMLTokenizer:
             List of Token objects
         """
         self.current_state = self.DATA_STATE
+        self._rawtext_tag = ""
         tokens: List[Token] = []
         i = 0
         current_token: Optional[Token] = None
@@ -502,10 +517,25 @@ class HTMLTokenizer:
                     current_token = Token(TokenType.END_TAG)
                     tag_name = ""
                 elif char == '!':
-                    # Comment or DOCTYPE
-                    if html[i:i+7] == "<!DOCTYPE":
-                        tokens.append(Token(TokenType.DOCTYPE))
-                        i += 6
+                    # Comment: <!-- ... -->
+                    # NOTE: char='!' and i points to '!'. The '<' was already consumed.
+                    # So html[i:i+3] == "!--" means we have the full "<!--" sequence.
+                    if html[i:i+3] == "!--":
+                        # Advance i to first content character after "<!--".
+                        # i currently points to '!'; '!' + '--' occupies 3 chars.
+                        # After this block the main loop does i += 1, so we set i = i+2
+                        # so that after i+=1 we land on the first content char (i+3).
+                        self.current_state = self.COMMENT_STATE
+                        i += 2  # points to last '-' of '<!--'; +1 in loop → first content
+                    # DOCTYPE declaration (case-insensitive per HTML5 spec)
+                    elif html[i:i+8].upper() == "!DOCTYPE":
+                        # Consume up to the closing '>'
+                        end = html.find('>', i)
+                        if end == -1:
+                            end = len(html) - 1
+                        tokens.append(Token(TokenType.DOCTYPE, data="html"))
+                        self.trace.add_event("doctype_emitted", {})
+                        i = end
                         self.current_state = self.DATA_STATE
                     else:
                         self.current_state = self.BOGUS_COMMENT_STATE
@@ -529,7 +559,14 @@ class HTMLTokenizer:
                             "tag_name": tag_name.lower(),
                             "tag_type": current_token.type.value
                         })
-                    self.current_state = self.DATA_STATE
+                    # Switch to RAWTEXT state when entering a raw-text element
+                    if (current_token
+                            and current_token.type == TokenType.START_TAG
+                            and (current_token.name or tag_name.lower()) in self.RAWTEXT_ELEMENTS):
+                        self.current_state = self.RAWTEXT_STATE
+                        self._rawtext_tag = current_token.name or tag_name.lower()
+                    else:
+                        self.current_state = self.DATA_STATE
                     current_token = None
                     tag_name = ""
                 elif char == ' ' or char == '\t' or char == '\n':
@@ -550,7 +587,15 @@ class HTMLTokenizer:
                             "tag_name": current_token.name,
                             "attributes_count": len(current_token.attributes)
                         })
-                    self.current_state = self.DATA_STATE
+                        # Switch to RAWTEXT state for raw-text elements
+                        if (current_token.type == TokenType.START_TAG
+                                and current_token.name in self.RAWTEXT_ELEMENTS):
+                            self.current_state = self.RAWTEXT_STATE
+                            self._rawtext_tag = current_token.name
+                        else:
+                            self.current_state = self.DATA_STATE
+                    else:
+                        self.current_state = self.DATA_STATE
                     current_token = None
                 elif char == '/' and i + 1 < len(html) and html[i + 1] == '>':
                     # Self-closing tag
@@ -644,13 +689,65 @@ class HTMLTokenizer:
                 else:
                     current_attr_value += char
 
-            # BOGUS_COMMENT STATE: Ingests bogus/standard comments until '>'
+            # BOGUS_COMMENT STATE: Ingests bogus comments (e.g. <?...>) until '>'
             elif self.current_state == self.BOGUS_COMMENT_STATE:
                 if char == '>':
-                    tokens.append(Token(TokenType.COMMENT))
-                    self.trace.add_event("comment_emitted", {})
+                    tokens.append(Token(TokenType.COMMENT, data=""))
+                    self.trace.add_event("bogus_comment_emitted", {})
                     self.current_state = self.DATA_STATE
-            
+
+            # COMMENT STATE: Properly captures <!-- ... --> with data preserved
+            elif self.current_state == self.COMMENT_STATE:
+                # Collect everything up to (but not including) '-->'
+                end = html.find('-->', i)
+                if end == -1:
+                    # Unterminated comment — consume the rest
+                    comment_data = html[i:]
+                    tokens.append(Token(TokenType.COMMENT, data=comment_data))
+                    self.trace.add_event("comment_emitted", {"data_len": len(comment_data)})
+                    i = len(html)
+                else:
+                    comment_data = html[i:end]
+                    tokens.append(Token(TokenType.COMMENT, data=comment_data))
+                    self.trace.add_event("comment_emitted", {"data_len": len(comment_data)})
+                    i = end + 3  # skip '-->'
+                self.current_state = self.DATA_STATE
+                continue  # i already positioned; skip the normal i += 1
+
+            # RAWTEXT STATE: Verbatim content inside <script>, <style>, <textarea>, <title>
+            elif self.current_state == self.RAWTEXT_STATE:
+                # Look for the closing end tag
+                close_tag = f"</{self._rawtext_tag}"
+                end = html.lower().find(close_tag.lower(), i)
+                if end == -1:
+                    # No closing tag found — consume the rest as raw text
+                    raw = html[i:]
+                    if raw:
+                        tokens.append(Token(TokenType.CHARACTER, data=raw))
+                        self.trace.add_event("rawtext_emitted", {
+                            "tag": self._rawtext_tag,
+                            "length": len(raw)
+                        })
+                    i = len(html)
+                else:
+                    raw = html[i:end]
+                    if raw:
+                        tokens.append(Token(TokenType.CHARACTER, data=raw))
+                        self.trace.add_event("rawtext_emitted", {
+                            "tag": self._rawtext_tag,
+                            "length": len(raw)
+                        })
+                    # Emit the closing end-tag token
+                    close_end = html.find('>', end)
+                    if close_end == -1:
+                        close_end = len(html) - 1
+                    tokens.append(Token(TokenType.END_TAG, name=self._rawtext_tag))
+                    self.trace.add_event("rawtext_end_tag_emitted", {"tag": self._rawtext_tag})
+                    i = close_end + 1
+                self.current_state = self.DATA_STATE
+                self._rawtext_tag = ""
+                continue  # i already positioned; skip the normal i += 1
+
             i += 1
         
         # Emit EOF token
@@ -702,6 +799,10 @@ class HTMLParser:
         for token in tokens:
             if token.type == TokenType.EOF:
                 break
+            elif token.type == TokenType.DOCTYPE:
+                self._process_doctype(token)
+            elif token.type == TokenType.COMMENT:
+                self._process_comment(token)
             elif token.type == TokenType.START_TAG:
                 self._process_start_tag(token)
             elif token.type == TokenType.END_TAG:
@@ -719,10 +820,20 @@ class HTMLParser:
     def _process_start_tag(self, token: Token) -> None:
         """
         Process a start tag token.
-        Implements implicit tag closure rules.
+        Implements implicit tag closure rules and root <html> attribute merging.
         """
         tag_name = token.name
-        
+
+        # HTML5 Spec: If we receive a second <html> start tag when one is already
+        # open, merge its attributes into the root rather than creating a nested node.
+        # This prevents the duplicate-root "<html <html>>" artifact.
+        if tag_name == "html" and self.root and self.root.name == "html":
+            for attr_key, attr_val in (token.attributes or {}).items():
+                if attr_key not in self.root.attributes:
+                    self.root.attributes[attr_key] = attr_val
+            self.trace.add_event("html_attributes_merged", {"attributes": token.attributes})
+            return
+
         # HTML5 Spec Rule: An open <p> element must implicitly close before
         # block-level container elements (div, h1-h6, blockquote, table, etc.)
         if tag_name in self.SPECIAL_END_TAGS and self._is_open("p"):
@@ -730,23 +841,41 @@ class HTMLParser:
             self.trace.add_event("implicit_p_closed", {
                 "before_tag": tag_name
             })
-        
+
         # Instantiate a new DOM TreeNode with parsed element attributes
         new_node = TreeNode(tag_name or "", attributes=token.attributes or {})
-        
+
         # Attach the new node as a child of the currently active open element (stack top)
         if self.open_elements:
             self.open_elements[-1].add_child(new_node)
-        
+
         # Push to the open elements stack only if this element has children (non-void, non-self-closing)
         if not token.self_closing:
             self.open_elements.append(new_node)
-        
+
         self.trace.add_event("start_tag_processed", {
             "tag": tag_name,
             "attributes": token.attributes,
             "self_closing": token.self_closing
         })
+
+    def _process_doctype(self, token: Token) -> None:
+        """Process a DOCTYPE token by inserting a !doctype node before the root."""
+        doctype_node = TreeNode("!doctype", text_content="html")
+        # If root is the implicit html node and has no children yet, prepend doctype
+        if self.root:
+            # We store DOCTYPE as a sibling concept; attach to the open_elements[0]
+            # so it appears as a top-level child when using #document wrapper.
+            # For simplicity, attach to root's parent if exists, otherwise mark on root.
+            self.root.attributes.setdefault("_has_doctype", "true")
+        self.trace.add_event("doctype_processed", {})
+
+    def _process_comment(self, token: Token) -> None:
+        """Process a COMMENT token by inserting a #comment node in the current position."""
+        comment_node = TreeNode("#comment", text_content=token.data or "")
+        if self.open_elements:
+            self.open_elements[-1].add_child(comment_node)
+        self.trace.add_event("comment_processed", {"data_len": len(token.data or "")})
     
     def _process_end_tag(self, token: Token) -> None:
         """Process an end tag token."""

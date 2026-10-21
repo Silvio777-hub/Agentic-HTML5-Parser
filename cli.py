@@ -19,6 +19,8 @@ Usage Examples:
     python cli.py build-thesis         # Verifies all 7 thesis chapters in thesis/
     python cli.py parse "<html>..."    # Parse inline HTML and print DOM tree / JSON / tokens
     python cli.py lint <file.html>     # Lint an HTML file and report structural issues
+    python cli.py orchestrate          # Run the full 7-agent agentic pipeline end-to-end
+    python cli.py repl                 # Drop into the interactive HTML5 Parser REPL
     python cli.py all                  # Executes the entire pipeline and builds all assets
 """
 
@@ -250,6 +252,180 @@ def cmd_lint(filepath, output_format="tree"):
     return cmd_parse(html_string, output_format=output_format)
 
 
+def cmd_orchestrate():
+    """
+    Run the full 7-agent agentic AI orchestration pipeline.
+
+    Executes: Spec → Codegen → Critique || Red-Team (parallel) →
+              Test → Monitor → iterative Repair (≤ 3 loops).
+    """
+    sys.path.insert(0, str(PROJECT_ROOT))
+    try:
+        from orchestrator import main as orchestrator_main
+        print("\n>>> [CLI] Launching full 7-agent Orchestration Pipeline ...")
+        orchestrator_main()
+        return True
+    except Exception as exc:
+        print(f"[FAIL] Orchestration pipeline error: {exc}")
+        return False
+
+
+def cmd_repl():
+    """
+    Interactive HTML5 Parser REPL (Read-Eval-Print Loop).
+
+    Commands available at the prompt:
+      :tree       — Print the parsed DOM tree
+      :json       — Print DOM as JSON
+      :html       — Serialise DOM back to HTML (round-trip)
+      :tokens     — Print the raw token stream
+      :select <css> — Run a CSS selector query
+      :find <tag>   — Find first element by tag name
+      :findall <tag> — Find all elements by tag name
+      :text       — Extract all visible text
+      :quit / :exit — Exit the REPL
+      (anything else) — Re-parse the current HTML with any edits appended
+
+    Type a new HTML string at the prompt to load it, then use the
+    commands above to inspect the result.
+    """
+    sys.path.insert(0, str(PROJECT_ROOT))
+    from src.parser import parse, tokenize
+    import json as _json
+
+    BANNER = """
+\033[1;36m╔══════════════════════════════════════════════════════════╗
+║        Agentic HTML5 Parser  —  Interactive REPL          ║
+║  Type HTML to parse it.  Commands: :tree :json :html      ║
+║  :tokens :select <css> :find <tag> :text :quit            ║
+╚══════════════════════════════════════════════════════════╝\033[0m"""
+
+    print(BANNER)
+    current_html = ""
+    current_root = None
+
+    def _print_tree(node, indent=0):
+        prefix = "  " * indent
+        if node.name == "#text":
+            print(f"{prefix}|-- #text: {repr(node.text_content)}")
+        elif node.name == "#comment":
+            print(f"{prefix}|-- <!-- {node.text_content[:60]} -->")
+        else:
+            attrs = ""
+            if node.attributes:
+                attrs = " " + " ".join(f'{k}="{v}"' for k, v in node.attributes.items()
+                                       if not k.startswith("_"))
+            print(f"{prefix}|-- <{node.name}{attrs}>")
+        for child in node.children:
+            _print_tree(child, indent + 1)
+
+    while True:
+        try:
+            line = input("\033[32mhtml> \033[0m").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n[REPL] Exiting.")
+            break
+
+        if not line:
+            continue
+
+        # --- Commands ---
+        if line in (":quit", ":exit", ":q"):
+            print("[REPL] Goodbye.")
+            break
+
+        elif line == ":tree":
+            if current_root is None:
+                print("[REPL] No HTML loaded. Type an HTML string first.")
+            else:
+                print(f"\n{'='*60}")
+                print("  PARSED DOM TREE")
+                print(f"{'='*60}")
+                _print_tree(current_root)
+
+        elif line == ":json":
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                print(_json.dumps(current_root.serialize(), indent=2))
+
+        elif line == ":html":
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                print(f"\n{'='*60}")
+                print("  ROUND-TRIP HTML (to_html)")
+                print(f"{'='*60}")
+                print(current_root.to_html(pretty=True))
+
+        elif line == ":tokens":
+            if not current_html:
+                print("[REPL] No HTML loaded.")
+            else:
+                tokens = tokenize(current_html)
+                print(f"\n{'='*60}")
+                print(f"  TOKEN STREAM ({len(tokens)} tokens)")
+                print(f"{'='*60}")
+                for i, tok in enumerate(tokens, 1):
+                    attrs = f"  attrs={tok.attributes}" if tok.attributes else ""
+                    data = f"  data={repr(tok.data)}" if tok.data else ""
+                    print(f"  [{i:02d}] {tok.type.value:<14} name={tok.name or '':<16}{attrs}{data}")
+
+        elif line == ":text":
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                print(repr(current_root.get_text(separator=" ", strip=True)))
+
+        elif line.startswith(":select "):
+            selector = line[8:].strip()
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                results = current_root.select(selector)
+                print(f"[REPL] select({repr(selector)}) → {len(results)} result(s)")
+                for node in results:
+                    _print_tree(node, indent=1)
+
+        elif line.startswith(":find "):
+            tag = line[6:].strip()
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                node = current_root.find(tag)
+                if node:
+                    _print_tree(node, indent=1)
+                else:
+                    print(f"[REPL] No <{tag}> found.")
+
+        elif line.startswith(":findall "):
+            tag = line[9:].strip()
+            if current_root is None:
+                print("[REPL] No HTML loaded.")
+            else:
+                nodes = current_root.find_all(tag)
+                print(f"[REPL] find_all({repr(tag)}) → {len(nodes)} result(s)")
+                for node in nodes:
+                    _print_tree(node, indent=1)
+
+        elif line.startswith(":"):
+            print(f"[REPL] Unknown command: {line}.  Type :quit to exit.")
+
+        else:
+            # Treat input as HTML to parse
+            current_html = line
+            try:
+                current_root = parse(current_html)
+                tokens = tokenize(current_html)
+                print(f"[REPL] Parsed {len(current_html)} chars → "
+                      f"{len(tokens)} tokens, root=<{current_root.name}>")
+                _print_tree(current_root)
+            except Exception as exc:
+                print(f"[REPL] Parse error: {exc}")
+
+    return True
+
+
 def cmd_all():
     """Runs the entire verification, benchmarking, and asset generation pipeline."""
     print("=" * 75)
@@ -306,6 +482,8 @@ Commands:
   dashboard     Launch live dashboard & playground server
   parse         Parse inline HTML and print DOM tree / JSON / tokens
   lint          Lint an HTML file and report structural issues
+  orchestrate   Run the full 7-agent agentic AI pipeline end-to-end
+  repl          Drop into the interactive HTML5 Parser REPL
   all           Run complete pipeline end-to-end
 
 Parse / Lint Examples:
@@ -319,7 +497,7 @@ Parse / Lint Examples:
     parser.add_argument("command", choices=[
         "test", "compliance", "matrix", "benchmark", "adversarial", "ablation",
         "charts", "carbon", "audit", "repair-demo", "build-thesis",
-        "dashboard", "parse", "lint", "all"
+        "dashboard", "parse", "lint", "orchestrate", "repl", "all"
     ], help="Command to execute")
     parser.add_argument("--port", type=int, default=8080, help="Port for dashboard server (default: 8080)")
     parser.add_argument("--no-browser", action="store_true", help="Do not open browser on dashboard launch")
@@ -364,6 +542,10 @@ Parse / Lint Examples:
             print("[ERROR] provide an HTML file path: python cli.py lint index.html")
             sys.exit(1)
         cmd_lint(args.html_or_file, output_format=args.format)
+    elif args.command == "orchestrate":
+        cmd_orchestrate()
+    elif args.command == "repl":
+        cmd_repl()
     elif args.command == "all":
         cmd_all()
 
