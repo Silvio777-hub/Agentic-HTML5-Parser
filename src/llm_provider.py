@@ -60,14 +60,18 @@ class ClaudeProvider(BaseLLMProvider):
     def generate(self, prompt: str, system_prompt: Optional[str] = None, temperature: float = 0.7) -> str:
         if not self.client:
             raise ValueError("Anthropic API key is required for ClaudeProvider.")
-        res = self.client.messages.create(
-            model=self.model_name,
-            max_tokens=4096,
-            temperature=temperature,
-            system=system_prompt or "",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return res.content[0].text
+        try:
+            res = self.client.messages.create(
+                model=self.model_name,
+                max_tokens=4096,
+                temperature=temperature,
+                system=system_prompt or "",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return res.content[0].text
+        except Exception as e:
+            print(f"[ClaudeProvider] API call failed ({e}), falling back to deterministic mock.")
+            return MockLLMProvider().generate(prompt, system_prompt, temperature)
 
 
 class OpenAIProvider(BaseLLMProvider):
@@ -194,9 +198,10 @@ def get_llm_provider(
         return MockLLMProvider(**kwargs)
 
     # Automatic provider selection based on environment and local availability
-    if os.getenv("ANTHROPIC_API_KEY"):
+    anthropic_key = os.getenv("ANTHROPIC_API_KEY", "")
+    if anthropic_key and anthropic_key.startswith("sk-ant-"):
         return ClaudeProvider(model_name=model_name or "claude-3-5-sonnet-20241022", use_cache=use_cache, **kwargs)
-    elif os.getenv("OPENAI_API_KEY"):
+    elif os.getenv("OPENAI_API_KEY") and os.getenv("OPENAI_API_KEY").startswith("sk-"):
         return OpenAIProvider(model_name=model_name or "gpt-4o", use_cache=use_cache, **kwargs)
 
     # Check if local Ollama daemon is active

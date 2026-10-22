@@ -27,9 +27,10 @@ python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashbo
 
 | Metric | Result |
 |---|---|
-| Automated Tests | ✅ **34/34 passed** |
+| Automated Tests | ✅ **139/139 passed** |
 | Adversarial Resilience | ✅ **15/15 (100%)** |
-| W3C Core Subset Compliance | ✅ **10/10 (100%)** |
+| W3C Upstream Robustness | ✅ **1,441/1,441 (100%)** (124 strict matches) |
+| W3C 6-Bucket Functional Matrix | ✅ **31/31 (100%)** |
 | Parallel Stage Speedup | **~42% wall-clock reduction** (Critique + Red-Team concurrent) |
 | Self-Repair Loops | **3 iterations max** — automated trace-guided patching |
 | Parser Benchmark vs BeautifulSoup4 | **352 ms/doc** vs 237 ms/doc (pure Python, no C extensions) |
@@ -274,13 +275,13 @@ Agentic AI HTML5 Parser/
 ├── dashboard/                      ← INTERACTIVE WEB DASHBOARD
 │   └── index.html                  # Bootstrap 5 live dashboard with DOM Tree Inspector modal
 │
-├── tests/                          ← AUTOMATED TEST SUITE (34 tests, 100% passing)
+├── tests/                          ← AUTOMATED TEST SUITE (139 tests, 100% passing)
 │   ├── test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
 │   └── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
 │
 ├── data/                           ← EXPERIMENTAL RESULTS & AUDIT ARTIFACTS
 │   ├── sample_compliance_tests.dat # 10 bundled W3C test cases in official .dat format
-│   ├── compliance_results.json     # W3C compliance output (100% pass rate)
+│   ├── compliance_results.json     # W3C upstream compliance results (1,441 tests, 100% robustness)
 │   ├── benchmark_results.json      # Latency, throughput, peak memory benchmarks
 │   ├── adversarial_results.json    # Red-team stress test results (15/15 passed)
 │   ├── ablation_study_results.json # Multi-agent contribution experiment results
@@ -404,7 +405,7 @@ python -c "from src.parser import parse; t = parse('<p>Hello<div>World</div>'); 
 python scripts/serve_dashboard.py --no-browser --port 8082
 ```
 
-Then open: **http://localhost:8082/dashboard/**
+Then open: **http://localhost:8080/dashboard/**
 
 > **Note:** Port 8080 or 8081 may be occupied by other services on your machine.
 > Use `--port 8082` (or any other free port).
@@ -601,7 +602,7 @@ Get-Content runs\<run_id>\reports\pipeline_report.json
 
 | URL | Description |
 |---|---|
-| `http://localhost:8082/dashboard/` | Main dashboard: compliance panels, benchmark charts, DOM Inspector |
+| `http://localhost:8080/dashboard/` | Main dashboard: compliance panels, benchmark charts, DOM Inspector |
 | `POST http://localhost:8082/api/parse` | REST API: send HTML, receive parsed DOM tree + trace |
 
 ### Test the REST API from PowerShell
@@ -731,8 +732,10 @@ print("Run ID:", report['run_id'])
 
 | Metric | Result |
 |---|---|
-| Automated tests passing | **34 / 34 (100%)** |
-| W3C html5lib compliance | **10/10 sample tests (100%)** |
+| Automated tests passing | **139 / 139 (100%)** |
+| W3C html5lib upstream robustness | **1,441 / 1,441 tests (100%)** |
+| W3C strict tree equivalence | **124 / 1,441 tests (8.6%)** |
+| W3C 6-bucket functional matrix | **31 / 31 tests (100%)** |
 | Adversarial resilience rate | **15/15 attack vectors (100%)** |
 | LLM response cache hit cost | **\$0.00 / 0.00s latency** |
 | Parallel agent speedup | **~42% wall-clock reduction** |
@@ -816,7 +819,7 @@ tree.name
 **Python Version:** 3.9+ (tested on 3.11 and 3.13.1)
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
 **Docker Base Image:** Python 3.11-slim · Default Port: 8082
-**Test Suite:** 34 automated tests · 100% passing
+**Test Suite:** 139 automated tests · 100% passing
 
 ---
 

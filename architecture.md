@@ -138,7 +138,7 @@ The generated parser is a pure-Python, zero-dependency HTML5 parser implementing
 
 ### A. Automated Integration & Streaming Tests
 - **Location:** `tests/test_integration.py` and `tests/test_streaming.py`
-- **Scope:** 34 automated unit and integration tests covering:
+- **Scope:** 139 automated unit and integration tests covering:
   - Basic and nested tag structures
   - Implicit tag closures
   - Attribute parsing variations (single, double, unquoted, boolean)
