@@ -15,8 +15,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TARGET_DIR = PROJECT_ROOT / "html5lib-tests"
+BRANCH = "newtests"
 REPO_URL = "https://github.com/html5lib/html5lib-tests.git"
-ZIP_URL = "https://github.com/html5lib/html5lib-tests/archive/refs/heads/master.zip"
+ZIP_URL = f"https://github.com/html5lib/html5lib-tests/archive/refs/heads/{BRANCH}.zip"
 
 
 def sync_upstream_tests(force: bool = False) -> bool:
@@ -24,10 +25,10 @@ def sync_upstream_tests(force: bool = False) -> bool:
     print("  Official html5lib-tests Downloader & Setup")
     print("=" * 65)
 
-    if TARGET_DIR.exists() and not force:
-        tree_dir = TARGET_DIR / "tree-construction"
-        if tree_dir.exists():
-            test_files = list(tree_dir.glob("*.dat"))
+    tree_dir = TARGET_DIR / "tree-construction"
+    if tree_dir.exists() and not force:
+        test_files = list(tree_dir.glob("*.dat"))
+        if test_files:
             print(f"[OK] html5lib-tests already present at: {TARGET_DIR}")
             print(f"[OK] Found {len(test_files)} .dat compliance test suites.")
             print("  (Use --force to re-download or update)")
@@ -37,41 +38,46 @@ def sync_upstream_tests(force: bool = False) -> bool:
         print(f"Removing existing directory: {TARGET_DIR}")
         shutil.rmtree(TARGET_DIR, ignore_errors=True)
 
-    # Method 1: Git clone
+    tree_dir.mkdir(parents=True, exist_ok=True)
+
+    # Method 1: Git clone with newtests branch
     try:
-        print(f"Attempting git clone from {REPO_URL} ...")
-        res = subprocess.run(["git", "clone", "--depth", "1", REPO_URL, str(TARGET_DIR)],
-                             cwd=str(PROJECT_ROOT), capture_output=True, text=True)
-        if res.returncode == 0 and TARGET_DIR.exists():
-            print("[OK] Successfully cloned html5lib-tests via git!")
+        print(f"Attempting git clone ({BRANCH} branch) from {REPO_URL} ...")
+        res = subprocess.run(
+            ["git", "clone", "--depth", "1", "--branch", BRANCH, REPO_URL, str(TARGET_DIR)],
+            cwd=str(PROJECT_ROOT), capture_output=True, text=True
+        )
+        if res.returncode == 0 and (TARGET_DIR / "tree-construction").exists():
+            test_files = list((TARGET_DIR / "tree-construction").glob("*.dat"))
+            print(f"[OK] Successfully cloned html5lib-tests ({len(test_files)} .dat files found)!")
             return True
         else:
-            print(f"Git clone failed or git not on PATH: {res.stderr.strip()}")
+            print(f"Git clone not successful or git not on PATH: {res.stderr.strip() or res.stdout.strip()}")
     except Exception as e:
         print(f"Git execution exception: {e}")
 
-    # Method 2: Fallback ZIP download
+    # Method 2: Direct ZIP download from newtests branch
     try:
         print(f"Falling back to direct ZIP download from {ZIP_URL} ...")
-        zip_path = PROJECT_ROOT / "html5lib_tests_temp.zip"
-        urllib.request.urlretrieve(ZIP_URL, str(zip_path))
-        
-        with zipfile.ZipFile(str(zip_path), 'r') as zip_ref:
-            zip_ref.extractall(str(PROJECT_ROOT))
-            
-        extracted_dir = PROJECT_ROOT / "html5lib-tests-master"
-        if extracted_dir.exists():
-            if TARGET_DIR.exists():
-                shutil.rmtree(TARGET_DIR, ignore_errors=True)
-            shutil.move(str(extracted_dir), str(TARGET_DIR))
-            
-        if zip_path.exists():
-            zip_path.unlink()
-            
-        print("[OK] Successfully downloaded and extracted html5lib-tests ZIP!")
-        return True
+        req = urllib.request.Request(ZIP_URL, headers={"User-Agent": "html5parser-thesis"})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = resp.read()
+
+        import io
+        with zipfile.ZipFile(io.BytesIO(data)) as z:
+            for member in z.namelist():
+                if "tree-construction/" in member and member.endswith(".dat"):
+                    fname = os.path.basename(member)
+                    if fname:
+                        out_path = tree_dir / fname
+                        with open(out_path, "wb") as f:
+                            f.write(z.read(member))
+
+        test_files = list(tree_dir.glob("*.dat"))
+        print(f"[OK] Successfully extracted {len(test_files)} .dat test suites to {tree_dir}!")
+        return len(test_files) > 0
     except Exception as e:
-        print(f"[ERROR] Failed to download zip archive: {e}")
+        print(f"[ERROR] Failed to download and extract zip archive: {e}")
         return False
 
 

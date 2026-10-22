@@ -53,8 +53,10 @@ def cmd_test():
 
 def cmd_compliance():
     """Runs W3C html5lib compliance test harness."""
-    # Executes the compliance harness against bundled sample W3C test cases
-    return run_command([sys.executable, "scripts/run_compliance.py", "--sample"], "W3C Compliance Test Runner")
+    upstream_dir = os.path.join(os.path.dirname(__file__), "html5lib-tests", "tree-construction")
+    if os.path.exists(upstream_dir) and any(os.scandir(upstream_dir)):
+        return run_command([sys.executable, "scripts/run_compliance.py"], "W3C Compliance Test Runner (Official Upstream)")
+    return run_command([sys.executable, "scripts/run_compliance.py", "--sample"], "W3C Compliance Test Runner (Sample)")
 
 
 def cmd_benchmark():

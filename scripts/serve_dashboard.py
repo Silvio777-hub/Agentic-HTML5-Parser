@@ -285,10 +285,14 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
 
 
 def run_initial_compliance():
-    """Run compliance test runner on startup to ensure data/compliance_results.json is fresh."""
-    print("Running initial compliance check on sample test cases...")
+    """Ensure data/compliance_results.json is present without clobbering existing benchmark data."""
+    target_json = os.path.join(PROJECT_ROOT, "data", "compliance_results.json")
+    if os.path.exists(target_json) and os.path.getsize(target_json) > 100:
+        print(f"[OK] Existing compliance results found at {target_json} - keeping current results.")
+        return
+    print("Running initial compliance check on test cases...")
     runner_script = os.path.join(PROJECT_ROOT, "scripts", "run_compliance.py")
-    result = subprocess.run([sys.executable, runner_script, "--sample"], cwd=PROJECT_ROOT)
+    result = subprocess.run([sys.executable, runner_script], cwd=PROJECT_ROOT)
     if result.returncode != 0:
         print("[Warning] Compliance runner reported an issue during initial run.")
 

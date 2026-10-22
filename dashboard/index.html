@@ -320,7 +320,7 @@
                 <div class="card-container p-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                         <div>
-                            <h5 class="fw-bold mb-1"><i class="bi bi-file-diff me-2 text-warning"></i>Differential DOM Visualizer — Our Parser vs BeautifulSoup4</h5>
+                            <h5 class="fw-bold mb-1"><i class="bi bi-file-diff me-2 text-warning"></i>Differential DOM Visualizer - Our Parser vs BeautifulSoup4</h5>
                             <p class="text-muted small mb-0">Enter any HTML snippet below to compare the DOM tree produced by our Agentic parser against BeautifulSoup4 (differential oracle) side-by-side.</p>
                         </div>
                         <button class="btn btn-warning btn-sm fw-semibold px-3" onclick="diffDOM()">
@@ -340,7 +340,7 @@
                             <div class="p-3 bg-light border rounded">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="fw-bold mb-0"><i class="bi bi-cpu me-1 text-primary"></i> Our Agentic Parser</h6>
-                                    <span id="diff-our-time" class="badge bg-primary">– ms</span>
+                                    <span id="diff-our-time" class="badge bg-primary">-- ms</span>
                                 </div>
                                 <pre id="diff-our-tree" class="tree-viewer mb-0">// Click "Compare Parsers" to view...</pre>
                             </div>
@@ -349,7 +349,7 @@
                             <div class="p-3 bg-light border rounded">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="fw-bold mb-0"><i class="bi bi-box me-1 text-success"></i> BeautifulSoup4 (Oracle)</h6>
-                                    <span id="diff-bs4-time" class="badge bg-success">– ms</span>
+                                    <span id="diff-bs4-time" class="badge bg-success">-- ms</span>
                                 </div>
                                 <pre id="diff-bs4-tree" class="tree-viewer mb-0">// Click "Compare Parsers" to view...</pre>
                             </div>
@@ -364,11 +364,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p class="text-muted small mb-1">Our Parser Signature:</p>
-                                        <pre id="diff-our-sig" class="bg-white border rounded p-2 small font-monospace text-primary mb-0" style="word-break:break-all;white-space:pre-wrap;">–</pre>
+                                        <pre id="diff-our-sig" class="bg-white border rounded p-2 small font-monospace text-primary mb-0" style="word-break:break-all;white-space:pre-wrap;">-</pre>
                                     </div>
                                     <div class="col-md-6">
                                         <p class="text-muted small mb-1">BeautifulSoup4 Signature:</p>
-                                        <pre id="diff-bs4-sig" class="bg-white border rounded p-2 small font-monospace text-success mb-0" style="word-break:break-all;white-space:pre-wrap;">–</pre>
+                                        <pre id="diff-bs4-sig" class="bg-white border rounded p-2 small font-monospace text-success mb-0" style="word-break:break-all;white-space:pre-wrap;">-</pre>
                                     </div>
                                 </div>
                             </div>
@@ -672,7 +672,7 @@
         }
 
         /**
-         * Differential DOM Visualizer — calls /api/diff and renders side-by-side trees
+         * Differential DOM Visualizer - calls /api/diff and renders side-by-side trees
          */
         async function diffDOM() {
             const htmlContent = document.getElementById('diff-input').value;
@@ -694,14 +694,14 @@
                 bs4Tree.innerText = JSON.stringify(data.bs4_tree, null, 2);
                 document.getElementById('diff-our-time').innerText = data.our_duration_ms + ' ms';
                 document.getElementById('diff-bs4-time').innerText = data.bs4_duration_ms + ' ms';
-                document.getElementById('diff-our-sig').innerText = data.our_signature || '–';
-                document.getElementById('diff-bs4-sig').innerText = data.bs4_signature || '–';
+                document.getElementById('diff-our-sig').innerText = data.our_signature || '--';
+                document.getElementById('diff-bs4-sig').innerText = data.bs4_signature || '--';
                 banner.className = data.is_match
                     ? 'alert alert-success mb-3 fw-semibold'
                     : 'alert alert-warning mb-3 fw-semibold';
                 banner.innerHTML = data.is_match
-                    ? '<i class="bi bi-check-circle-fill me-2"></i>? DOM structures match — Our parser is structurally identical to BeautifulSoup4 oracle.'
-                    : '<i class="bi bi-exclamation-triangle-fill me-2"></i>?? Structural divergence detected — trees differ between parsers. See signatures below.';
+                    ? '<i class="bi bi-check-circle-fill me-2"></i>DOM structures match - Our parser is structurally identical to BeautifulSoup4 oracle.'
+                    : '<i class="bi bi-exclamation-triangle-fill me-2"></i>Structural divergence detected - trees differ between parsers. See signatures below.';
             } catch (err) {
                 ourTree.innerText = '// Error: ensure python scripts/serve_dashboard.py is running.';
                 bs4Tree.innerText = '// Error: ensure python scripts/serve_dashboard.py is running.';

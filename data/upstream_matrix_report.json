@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-21T20:32:00Z",
+  "timestamp": "2026-10-22T00:45:54Z",
   "total_tests": 31,
   "passed_tests": 31,
   "overall_pass_rate_pct": 100.0,
-  "total_wall_clock_seconds": 0.01,
+  "total_wall_clock_seconds": 0.012,
   "buckets": [
     {
       "bucket_name": "Core Structural Hierarchy",
@@ -11,38 +11,38 @@
       "passed_tests": 5,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 3.34,
-      "avg_latency_ms": 0.667,
+      "total_duration_ms": 1.07,
+      "avg_latency_ms": 0.213,
       "test_cases": [
         {
           "name": "Basic html/body structure",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.809
+          "duration_ms": 0.266
         },
         {
           "name": "Nested container hierarchy",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 1.929
+          "duration_ms": 0.294
         },
         {
           "name": "Sibling tags under root",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.26
+          "duration_ms": 0.239
         },
         {
           "name": "Preserve text content",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.132
+          "duration_ms": 0.153
         },
         {
           "name": "Empty document",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.019
+          "duration_ms": 0.021
         }
       ]
     },
@@ -52,38 +52,38 @@
       "passed_tests": 5,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 0.8,
-      "avg_latency_ms": 0.16,
+      "total_duration_ms": 1.01,
+      "avg_latency_ms": 0.203,
       "test_cases": [
         {
           "name": "<p> closes before <div>",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.168
+          "duration_ms": 0.189
         },
         {
           "name": "<p> closes before <blockquote>",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.151
+          "duration_ms": 0.242
         },
         {
           "name": "<p> closes before <section>",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.148
+          "duration_ms": 0.17
         },
         {
           "name": "<p> closes before <h1>",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.139
+          "duration_ms": 0.171
         },
         {
           "name": "Cascade multiple unclosed <p>",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.142
+          "duration_ms": 0.169
         }
       ]
     },
@@ -93,38 +93,38 @@
       "passed_tests": 5,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 0.59,
-      "avg_latency_ms": 0.118,
+      "total_duration_ms": 4.57,
+      "avg_latency_ms": 0.914,
       "test_cases": [
         {
           "name": "<br> void tag (no children)",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.141
+          "duration_ms": 0.185
         },
         {
           "name": "<hr> horizontal rule void",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.095
+          "duration_ms": 0.111
         },
         {
           "name": "<img> with attributes",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.094
+          "duration_ms": 0.107
         },
         {
           "name": "<input> void tag in form",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.107
+          "duration_ms": 0.332
         },
         {
           "name": "Self-closing slash <br />",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.093
+          "duration_ms": 2.099
         }
       ]
     },
@@ -134,44 +134,44 @@
       "passed_tests": 6,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 1.13,
-      "avg_latency_ms": 0.189,
+      "total_duration_ms": 1.33,
+      "avg_latency_ms": 0.222,
       "test_cases": [
         {
           "name": "Named entity &amp; in text",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.104
+          "duration_ms": 0.655
         },
         {
           "name": "Named entity &lt; and &gt;",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.541
+          "duration_ms": 0.149
         },
         {
           "name": "Named entity &quot; in text",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.122
+          "duration_ms": 0.13
         },
         {
           "name": "Numeric decimal entity &#60;",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.1
+          "duration_ms": 0.103
         },
         {
           "name": "Numeric hex entity &#x26;",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.077
+          "duration_ms": 0.092
         },
         {
           "name": "Entities decoded in attribute values",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.122
+          "duration_ms": 0.127
         }
       ]
     },
@@ -181,38 +181,38 @@
       "passed_tests": 5,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 0.59,
-      "avg_latency_ms": 0.118,
+      "total_duration_ms": 0.58,
+      "avg_latency_ms": 0.117,
       "test_cases": [
         {
           "name": "Double-quoted attributes",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.112
+          "duration_ms": 0.114
         },
         {
           "name": "Single-quoted attributes",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.094
+          "duration_ms": 0.097
         },
         {
           "name": "Unquoted attributes",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.069
+          "duration_ms": 0.07
         },
         {
           "name": "Multiple attributes on element",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.132
+          "duration_ms": 0.135
         },
         {
           "name": "Special characters in attributes",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.131
+          "duration_ms": 0.119
         }
       ]
     },
@@ -222,38 +222,38 @@
       "passed_tests": 5,
       "failed_tests": 0,
       "pass_rate_pct": 100.0,
-      "total_duration_ms": 3.37,
-      "avg_latency_ms": 0.675,
+      "total_duration_ms": 3.1,
+      "avg_latency_ms": 0.621,
       "test_cases": [
         {
           "name": "Deep nesting 50 levels",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 2.677
+          "duration_ms": 2.167
         },
         {
           "name": "Bogus comments recovery",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.157
+          "duration_ms": 0.196
         },
         {
           "name": "Script injection contained",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.186
+          "duration_ms": 0.121
         },
         {
           "name": "Extreme unclosed tags cascade",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.126
+          "duration_ms": 0.129
         },
         {
           "name": "Zero-width spaces & Unicode tags",
           "status": "PASSED",
           "passed": true,
-          "duration_ms": 0.147
+          "duration_ms": 0.358
         }
       ]
     }
