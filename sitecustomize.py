@@ -1,0 +1,1 @@
+# Ensure project root is on PYTHONPATH for test discovery\nimport os, sys\n_root = os.path.abspath(os.path.dirname(__file__))\nif _root not in sys.path:\n    sys.path.insert(0, _root)\n

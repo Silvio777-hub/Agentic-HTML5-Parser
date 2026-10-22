@@ -98,6 +98,7 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
         GET  /dashboard/   — Serves the static HTML5 dashboard
         POST /api/parse    — Parse HTML with our parser, return DOM + trace
         POST /api/diff     — Differential oracle: compare our parser vs BS4 side-by-side
+        POST /api/run_tests — Run pytest suite and return pass/fail counts
     """
 
     def do_POST(self):
@@ -115,10 +116,20 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
                 payload = json.loads(post_data) if post_data else {}
                 raw_html = payload.get("html", "")
 
-                # Time our parser
+                # Measure tokenizer stage separately
+                t_tok0 = time.perf_counter()
+                tokenize(raw_html)
+                tokenizer_ms = round((time.perf_counter() - t_tok0) * 1000.0, 3)
+
+                # Measure parser stage separately
+                t_par0 = time.perf_counter()
+                parse(raw_html)
+                parser_ms = round((time.perf_counter() - t_par0) * 1000.0, 3)
+
+                # Time our full parser with trace
                 t0 = time.perf_counter()
                 our_res = parse_with_trace(raw_html)
-                t_our = round((time.perf_counter() - t0) * 1000.0, 3)
+                diff_ms = round((time.perf_counter() - t0) * 1000.0, 3)
                 our_tree = our_res.get("tree", {})
 
                 # Time BeautifulSoup4 parser
@@ -138,7 +149,10 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
                     "input_html": raw_html,
                     "our_tree": our_tree,
                     "bs4_tree": bs4_tree,
-                    "our_duration_ms": t_our,
+                    "diff_ms": diff_ms,
+                    "tokenizer_ms": tokenizer_ms,
+                    "parser_ms": parser_ms,
+                    "our_duration_ms": diff_ms,
                     "bs4_duration_ms": t_bs4,
                     "is_match": (our_sig == bs4_sig),
                     "our_signature": our_sig,
@@ -153,6 +167,7 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
         # -------------------------------------------------------
         # POST /api/parse — Live Interactive Playground Endpoint
         # Accepts JSON: {"html": "<markup>"} → DOM + trace + tokens
+        # Returns per-stage timing: tokenizer_ms, parser_ms, duration_ms
         # -------------------------------------------------------
         if parsed_url.path == "/api/parse":
             try:
@@ -162,7 +177,17 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
                 payload = json.loads(post_data) if post_data else {}
                 raw_html = payload.get("html", "")
 
-                # Execute our Agentic AI HTML5 Parser with execution tracing
+                # Measure tokenizer stage independently
+                t_tok0 = time.perf_counter()
+                tokenize(raw_html)
+                tokenizer_ms = round((time.perf_counter() - t_tok0) * 1000.0, 3)
+
+                # Measure parser stage independently (tree-building only)
+                t_par0 = time.perf_counter()
+                parse(raw_html)
+                parser_ms = round((time.perf_counter() - t_par0) * 1000.0, 3)
+
+                # Execute our Agentic AI HTML5 Parser with full execution tracing
                 result = parse_with_trace(raw_html)
 
                 response_payload = {
@@ -171,10 +196,63 @@ class DashboardAndAPIRequestHandler(SimpleHTTPRequestHandler):
                     "tokens": result.get("tokens", []),
                     "tree": result.get("tree", {}),
                     "trace": result.get("trace", {}),
-                    "duration_ms": round(result.get("trace", {}).get("duration", 0) * 1000.0, 3)
+                    "duration_ms": round(result.get("trace", {}).get("duration", 0) * 1000.0, 3),
+                    "tokenizer_ms": tokenizer_ms,
+                    "parser_ms": parser_ms,
                 }
                 self._send_json(200, response_payload)
 
+            except Exception as exc:
+                self._send_json(500, {"success": False, "error": str(exc)})
+            return
+
+        # -------------------------------------------------------
+        # POST /api/run_tests — Run pytest suite and return results
+        # Returns JSON: {success, output, passed, failed, total}
+        # -------------------------------------------------------
+        if parsed_url.path == "/api/run_tests":
+            try:
+                tests_dir = os.path.join(PROJECT_ROOT, "tests")
+                proc = subprocess.run(
+                    [sys.executable, "-m", "pytest", tests_dir, "-q", "--tb=line"],
+                    cwd=PROJECT_ROOT,
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                )
+                output = proc.stdout + proc.stderr
+
+                # Parse pytest summary line: "X passed[, Y failed] in Zs"
+                passed = failed = 0
+                for line in output.splitlines():
+                    line_stripped = line.strip()
+                    if "passed" in line_stripped or "failed" in line_stripped or "error" in line_stripped:
+                        import re
+                        m_passed = re.search(r"(\d+)\s+passed", line_stripped)
+                        m_failed = re.search(r"(\d+)\s+(?:failed|error)", line_stripped)
+                        if m_passed:
+                            passed = int(m_passed.group(1))
+                        if m_failed:
+                            failed = int(m_failed.group(1))
+
+                total = passed + failed
+                self._send_json(200, {
+                    "success": proc.returncode == 0,
+                    "output": output,
+                    "passed": passed,
+                    "failed": failed,
+                    "total": total,
+                    "return_code": proc.returncode,
+                })
+            except subprocess.TimeoutExpired:
+                self._send_json(200, {
+                    "success": False,
+                    "output": "Test run timed out after 120 seconds.",
+                    "passed": 0,
+                    "failed": 0,
+                    "total": 0,
+                    "return_code": -1,
+                })
             except Exception as exc:
                 self._send_json(500, {"success": False, "error": str(exc)})
             return

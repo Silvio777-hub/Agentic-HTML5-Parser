@@ -1,3 +1,12 @@
+# CI Pipeline — Agentic AI HTML5 Parser
+#
+# STATUS BADGE (add to README.md):
+#   ![CI](https://github.com/<owner>/<repo>/actions/workflows/ci.yml/badge.svg)
+#   Replace <owner> and <repo> with your GitHub username and repository name.
+#
+# COVERAGE BADGE (requires codecov.io integration):
+#   [![codecov](https://codecov.io/gh/<owner>/<repo>/branch/main/graph/badge.svg)](https://codecov.io/gh/<owner>/<repo>)
+
 name: CI Pipeline
 
 on:
@@ -9,12 +18,13 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -38,4 +48,3 @@ jobs:
           name: compliance-results
           path: data/compliance_results.json
         if: always()
-

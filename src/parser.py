@@ -73,6 +73,136 @@ class TreeNode:
     children: List['TreeNode'] = field(default_factory=list)
     text_content: str = ""
     parent: Optional['TreeNode'] = field(default=None, repr=False)
+
+    def add_child(self, child: 'TreeNode') -> None:
+        """Add a child node."""
+        child.parent = self
+        self.children.append(child)
+
+    def serialize(self) -> Dict[str, Any]:
+        """Serialize node to dictionary."""
+        return {
+            "name": self.name,
+            "attributes": self.attributes,
+            "text_content": self.text_content,
+            "children": [child.serialize() for child in self.children]
+        }
+
+    def __str__(self) -> str:
+        """String representation."""
+        return self.name
+
+    # -------------------------------------------------------------
+    # DOM Text Extraction & Navigation Properties
+    # -------------------------------------------------------------
+    def get_text(self, separator: str = "", strip: bool = False) -> str:
+        """
+        Recursively extract all concatenated text from this node and all descendants.
+
+        Args:
+            separator: String inserted between text chunks
+            strip: If True, whitespace at start/end of each chunk is stripped
+        """
+        chunks: List[str] = []
+
+        def _collect(node: 'TreeNode'):
+            if node.text_content:
+                t = node.text_content.strip() if strip else node.text_content
+                if t:
+                    chunks.append(t)
+            for child in node.children:
+                _collect(child)
+
+        _collect(self)
+        result = separator.join(chunks)
+        return result.strip() if strip else result
+
+    @property
+    def text(self) -> str:
+        """Convenience property matching BeautifulSoup's .text attribute."""
+        return self.get_text()
+
+    # -------------------------------------------------------------
+    # DOM Query & Search API (find, find_all, select, select_one)
+    # -------------------------------------------------------------
+    def _matches(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, **kwargs) -> bool:
+        """Helper to determine if this node satisfies given tag name and attribute constraints."""
+        if name is not None:
+            if name != "*" and self.name.lower() != name.lower():
+                return False
+
+        target_attrs: Dict[str, Any] = {}
+        if attrs:
+            target_attrs.update(attrs)
+        for k, v in kwargs.items():
+            attr_key = "class" if k == "class_" else k
+            target_attrs[attr_key] = v
+
+        for key, expected_val in target_attrs.items():
+            actual_val = self.attributes.get(key)
+            if actual_val is None:
+                return False
+            if expected_val is True:
+                continue
+            if key == "class" and isinstance(expected_val, str):
+                actual_classes = actual_val.split()
+                expected_classes = expected_val.split()
+                if not all(cls in actual_classes for cls in expected_classes):
+                    return False
+            elif str(actual_val) != str(expected_val):
+                return False
+        return True
+
+    def find(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, recursive: bool = True, **kwargs) -> Optional['TreeNode']:
+        """
+        Find the first matching descendant element in the DOM subtree.
+
+        Examples:
+            node.find("p")
+            node.find("div", class_="container")
+            node.find(id="header")
+        """
+        results = self.find_all(name=name, attrs=attrs, recursive=recursive, limit=1, **kwargs)
+        return results[0] if results else None
+
+    def find_all(self, name: Optional[str] = None, attrs: Optional[Dict[str, Any]] = None, recursive: bool = True, limit: Optional[int] = None, **kwargs) -> List['TreeNode']:
+        """
+        Find all matching descendant elements in the DOM subtree.
+
+        Args:
+            name: Tag name to match ('*' for any tag, None to match attributes only)
+            attrs: Dictionary of attribute names and expected values
+            recursive: If True, search all descendants; if False, search direct children only
+            limit: Maximum number of matches to return
+            **kwargs: Direct attribute lookups (e.g. class_="active", id="btn")
+        """
+        matches: List['TreeNode'] = []
+
+        def _search(node: 'TreeNode'):
+            for child in node.children:
+                if child._matches(name=name, attrs=attrs, **kwargs):
+                    matches.append(child)
+                    if limit is not None and len(matches) >= limit:
+                        return
+                if recursive:
+                    _search(child)
+                    if limit is not None and len(matches) >= limit:
+                        return
+
+        _search(self)
+        return matches
+
+    def select_one(self, selector: str) -> Optional['TreeNode']:
+        """Find the first element matching a CSS selector."""
+        results = self.select(selector)
+        return results[0] if results else None
+
+    """Represents a node in the DOM tree with full query, traversal, and HTML serialization."""
+    name: str
+    attributes: Dict[str, str] = field(default_factory=dict)
+    children: List['TreeNode'] = field(default_factory=list)
+    text_content: str = ""
+    parent: Optional['TreeNode'] = field(default=None, repr=False)
     
     def add_child(self, child: 'TreeNode') -> None:
         """Add a child node."""
@@ -757,7 +887,70 @@ class HTMLTokenizer:
         return tokens
 
 
+class ParsedDocument:
+    """Thin wrapper exposing high‑level API on a parsed DOM tree.
+
+    Provides convenient methods ``find``, ``find_all``, ``select``, ``select_one``
+    and ``to_html`` that delegate to the underlying ``TreeNode`` root.
+    """
+    def __init__(self, root: 'TreeNode'):
+        self.root = root
+
+    def find(self, *args, **kwargs):
+        return self.root.find(*args, **kwargs)
+
+    def find_all(self, *args, **kwargs):
+        return self.root.find_all(*args, **kwargs)
+
+    def select(self, *args, **kwargs):
+        return self.root.select(*args, **kwargs)
+
+    def select_one(self, *args, **kwargs):
+        return self.root.select_one(*args, **kwargs)
+
+    def to_html(self, *args, **kwargs):
+        return self.root.to_html(*args, **kwargs)
+
+    # expose common attributes for convenience
+    @property
+    def name(self):
+        return self.root.name
+
+    @property
+    def attributes(self):
+        return self.root.attributes
+
+    @property
+    def children(self):
+        return self.root.children
+
+    @property
+    def text(self):
+        return self.root.text
+
+    def __repr__(self):
+        return f"ParsedDocument(root={self.root!r})"
+
+    # Delegated methods for backward compatibility
+    def serialize(self):
+        """Delegate to root TreeNode.serialize()."""
+        return self.root.serialize()
+
+    def get_text(self, *args, **kwargs):
+        """Delegate to root TreeNode.get_text()."""
+        return self.root.get_text(*args, **kwargs)
+
+    @property
+    def text_content(self):
+        """Expose root.text_content for compatibility with legacy code."""
+        return self.root.text_content
+
+    # Fallback attribute access – forward any missing attribute to the root.
+    def __getattr__(self, name):
+        return getattr(self.root, name)
+
 class HTMLParser:
+
     """
     HTML5 parser implementing simplified tree construction algorithm.
     Converts token stream into a DOM tree.
@@ -939,17 +1132,24 @@ def tokenize(html: str) -> List[Token]:
 
 
 def parse(html: str) -> TreeNode:
-    """
-    FEATURE 1 FUNCTION 2: Parse HTML string to DOM tree.
-    
+    """Parse HTML string to DOM tree and return the root ``TreeNode``.
+
+    Maintains backward compatibility; new code should use ``parse_document``.
+
     Args:
         html: Raw HTML string
-        
+
     Returns:
         Root TreeNode of DOM tree
     """
     parser = HTMLParser()
     return parser.parse(html)
+
+
+def parse_document(html: str) -> "ParsedDocument":
+    """Parse HTML and return a ``ParsedDocument`` wrapper providing high-level API."""
+    root = parse(html)
+    return ParsedDocument(root)
 
 
 def parse_with_trace(html: str) -> Dict[str, Any]:

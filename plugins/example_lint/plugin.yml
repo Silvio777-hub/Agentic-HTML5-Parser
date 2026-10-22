@@ -1,0 +1,5 @@
+name: example-lint
+version: "1.0.0"
+description: Example plugin that warns about deprecated HTML tags (center, font, marquee, blink)
+author: Agentic AI HTML5 Parser Team
+entry_point: lint_rule
