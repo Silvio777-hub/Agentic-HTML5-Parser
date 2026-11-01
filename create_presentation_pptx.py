@@ -217,9 +217,9 @@ def main():
     tf.word_wrap = True
 
     conf_points = [
-        ("Automated Pytest Suite:", "34/34 tests pass cleanly in 0.39s (covering tokenizer states, DOM hierarchy, attributes preservation, error handling, edge cases, and streaming)."),
+        ("Automated Pytest Suite:", "139/139 tests pass in ~12s (tokenizer states, DOM hierarchy, attributes, error handling, edge cases, streaming, WHATWG boundaries, and adversarial inputs)."),
         ("W3C html5lib Test Harness:", "Tested against official tree-construction test format (.dat files)."),
-        ("Core Subset Compliance:", "100.0% Pass Rate (10/10 tests passed) on sample_compliance_tests.dat."),
+        ("Upstream W3C html5lib Suite:", "1,441/1,441 crash-free (100% robustness); 124/1,441 strict tree matches (8.61%). Full WHATWG AAA/foster-parenting is out-of-scope for this thesis; see architecture.md."),
         ("Differential Validation:", "Verified identical DOM hierarchy output against BeautifulSoup4 differential oracle on valid HTML documents.")
     ]
     for c_title, c_desc in conf_points:

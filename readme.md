@@ -13,7 +13,7 @@
 git clone https://github.com/Silvio777-hub/Agentic-HTML5-Parser.git
 cd Agentic-HTML5-Parser
 pip install -r requirements.txt
-python cli.py test          # 34/34 unit tests
+python cli.py test          # 139/139 unit tests
 python cli.py adversarial   # 15/15 attack vectors
 python cli.py compliance    # W3C compliance suite
 python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
@@ -48,7 +48,7 @@ Rather than treating AI as a black-box code generator, this system:
 - Breaks development into **discrete AI-assisted stages** (Spec → Code → Review → Test → Attack → Monitor → Repair)
 - Uses **intermediate artifacts** (specs, patches, tests) for full transparency and auditability
 - Implements **iterative self-repair loops** driven by real execution traces and test failures
-- Achieves **100% compliance on core structural subset** (`sample_compliance_tests.dat`) and **100% adversarial resilience** (15/15 attack vectors)
+- Achieves **100% crash-free robustness** on 1,441 upstream W3C html5lib tests (124/1,441 strict tree matches), **100% adversarial resilience** (15/15 attack vectors), and **100% functional matrix** (31/31 buckets)
 - Employs **concurrency via ThreadPoolExecutor** for independent agent evaluations (Critique & Red-Team)
 - Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8080/dashboard/`
 

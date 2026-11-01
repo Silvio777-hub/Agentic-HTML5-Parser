@@ -155,7 +155,7 @@ The generated parser is a pure-Python, zero-dependency HTML5 parser implementing
 
 ### C. Compliance Verification
 - **Location:** `scripts/run_compliance.py`
-- **Data File:** `data/sample_compliance_tests.dat`
+- **Data File:** `data/sample_compliance_tests.dat` (10 bundled sample cases) and `html5lib-tests/tree-construction/` (1,441 official upstream tests)
 - **Structure:**
   - Evaluates parser outputs against standardized `.dat` test files (input HTML vs expected document tree lines).
   - Current baseline: 10 structural conformance test cases (100% pass on core subset).

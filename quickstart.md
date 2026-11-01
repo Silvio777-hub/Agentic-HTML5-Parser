@@ -131,9 +131,9 @@ python scripts/run_compliance.py
 
 | Metric | Result |
 |---|---|
-| Automated Tests | **34/34 passed** |
+| Automated Tests | **139/139 passed** |
 | Adversarial Resilience | **15/15 attacks survived (100%)** |
-| W3C Core Subset Compliance | **10/10 (100%)** |
+| W3C Upstream Robustness | **1,441/1,441 (100% crash-free)**, 124/1,441 strict tree matches (8.61%) |
 | Benchmark vs BeautifulSoup4 | Comparable latency; pure Python implementation |
 | Parallel Stage Speedup | ~42% wall-clock reduction (Critique + Red-Team concurrent) |
 | Self-Repair Iterations | Max 3 loops; demo shows automated bug fix |
