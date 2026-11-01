@@ -131,3 +131,7 @@ create_report_docx.py
 
 # Local development and path customisation
 sitecustomize.py
+
+# Exported architecture diagrams (local only)
+SAD.png
+scripts/generate_sad.py
