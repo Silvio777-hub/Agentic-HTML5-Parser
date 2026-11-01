@@ -77,6 +77,10 @@ def run_agents_parallel(agent_funcs: List[Callable[[], Any]], timeout: int = 120
     Exception
         Re-raises the first exception thrown by any agent callable.
     """
+    # Early-exit for empty input — ThreadPoolExecutor requires max_workers >= 1.
+    if not agent_funcs:
+        return []
+
     # Allocate a fixed-size results list indexed by the original call order.
     # This guarantees that outputs match agent_funcs ordering regardless of completion order.
     results: List[Any] = [None] * len(agent_funcs)
