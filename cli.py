@@ -7,7 +7,7 @@ repair demos, chart generation, and dashboard servers.
 
 Usage Examples:
     python cli.py dashboard            # Launches live dashboard & playground at http://localhost:8080/dashboard/
-    python cli.py test                 # Runs all 70 automated unit & streaming & WHATWG boundary tests
+    python cli.py test                 # Runs all 139 automated unit & streaming & WHATWG boundary tests
     python cli.py compliance           # Runs W3C html5lib compliance test harness
     python cli.py benchmark            # Runs comparative performance benchmarks vs BeautifulSoup & lxml
     python cli.py adversarial          # Runs Red-Team hacker stress tests
@@ -46,7 +46,7 @@ def run_command(cmd_list, description):
 
 
 def cmd_test():
-    """Runs all 70 automated unit, integration, and streaming tests."""
+    """Runs all 139 automated unit, integration, and streaming tests."""
     # Invokes pytest directly using the current Python interpreter environment
     return run_command([sys.executable, "-m", "pytest", "tests/", "-v"], "Automated Test Suite (pytest)")
 
@@ -57,6 +57,12 @@ def cmd_compliance():
     if os.path.exists(upstream_dir) and any(os.scandir(upstream_dir)):
         return run_command([sys.executable, "scripts/run_compliance.py"], "W3C Compliance Test Runner (Official Upstream)")
     return run_command([sys.executable, "scripts/run_compliance.py", "--sample"], "W3C Compliance Test Runner (Sample)")
+
+
+def cmd_realworld():
+    """Runs real-world HTML5 evaluation benchmark across production websites."""
+    return run_command([sys.executable, str(PROJECT_ROOT / "scripts" / "eval_real_world_pages.py")],
+                       "Real-World Production HTML5 Benchmark")
 
 
 def cmd_benchmark():
@@ -470,7 +476,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Commands:
-  test          Run all 70 automated unit, streaming & WHATWG boundary tests
+  test          Run all 139 automated unit, streaming & WHATWG boundary tests
+  realworld     Run real-world production website benchmark (Wikipedia, HN, Python, GitHub, MDN)
   compliance    Run W3C compliance test harness
   matrix        Run 6-bucket W3C functional compliance matrix
   benchmark     Run performance benchmarks vs BeautifulSoup & lxml
@@ -497,7 +504,7 @@ Parse / Lint Examples:
         """
     )
     parser.add_argument("command", choices=[
-        "test", "compliance", "matrix", "benchmark", "adversarial", "ablation",
+        "test", "compliance", "matrix", "realworld", "benchmark", "adversarial", "ablation",
         "charts", "carbon", "audit", "repair-demo", "build-thesis",
         "dashboard", "parse", "lint", "orchestrate", "repl", "all"
     ], help="Command to execute")
@@ -516,6 +523,8 @@ Parse / Lint Examples:
         cmd_compliance()
     elif args.command == "matrix":
         cmd_matrix()
+    elif args.command == "realworld":
+        cmd_realworld()
     elif args.command == "benchmark":
         cmd_benchmark()
     elif args.command == "adversarial":

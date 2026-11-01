@@ -1,0 +1,85 @@
+{
+  "summary": {
+    "total_pages": 5,
+    "passed": 5,
+    "crashes": 0,
+    "pass_percentage": 100.0,
+    "average_latency_ms": 11.418,
+    "total_dom_nodes_constructed": 203
+  },
+  "pages": {
+    "Wikipedia_Article": {
+      "success": true,
+      "latency_ms": 12.469,
+      "input_bytes": 1573,
+      "dom_node_count": 38,
+      "max_dom_depth": 9,
+      "title": "HTML5 - Wikipedia",
+      "link_count": 6,
+      "heading_count": 3,
+      "headings_sample": [
+        "<h1> HTML5",
+        "<h2> Contents",
+        "<h2> History"
+      ],
+      "error": null
+    },
+    "Hacker_News_Thread": {
+      "success": true,
+      "latency_ms": 13.462,
+      "input_bytes": 2246,
+      "dom_node_count": 47,
+      "max_dom_depth": 22,
+      "title": "Show HN: Agentic AI HTML5 Parser | Hacker News",
+      "link_count": 11,
+      "heading_count": 0,
+      "headings_sample": [],
+      "error": null
+    },
+    "Python_Docs_Module": {
+      "success": true,
+      "latency_ms": 9.797,
+      "input_bytes": 2246,
+      "dom_node_count": 53,
+      "max_dom_depth": 10,
+      "title": "html.parser \u2014 Simple HTML and XHTML parser \u2014 Python 3.13 documentation",
+      "link_count": 4,
+      "heading_count": 2,
+      "headings_sample": [
+        "<h3> Navigation",
+        "<h1> \u2014 Simple HTML and XHTML parser"
+      ],
+      "error": null
+    },
+    "GitHub_Repo_View": {
+      "success": true,
+      "latency_ms": 10.686,
+      "input_bytes": 1871,
+      "dom_node_count": 32,
+      "max_dom_depth": 11,
+      "title": "Silvio777-hub/Agentic-HTML5-Parser: Trustworthy HTML5 Parser Development via Agentic AI",
+      "link_count": 3,
+      "heading_count": 2,
+      "headings_sample": [
+        "<h1> Agentic AI HTML5 Parser",
+        "<h2> Key Results"
+      ],
+      "error": null
+    },
+    "MDN_Web_Docs_Article": {
+      "success": true,
+      "latency_ms": 10.677,
+      "input_bytes": 1695,
+      "dom_node_count": 33,
+      "max_dom_depth": 10,
+      "title": "&lt;article&gt;: The Article Contents element - HTML: HyperText Markup Language | MDN",
+      "link_count": 5,
+      "heading_count": 2,
+      "headings_sample": [
+        "<h1> <article>: The Article Contents element",
+        "<h2> Try it"
+      ],
+      "error": null
+    }
+  }
+}

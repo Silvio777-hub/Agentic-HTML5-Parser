@@ -168,6 +168,58 @@ class MockLLMProvider(BaseLLMProvider):
         self.default_response = default_response
 
     def generate(self, prompt: str, system_prompt: Optional[str] = None, temperature: float = 0.7) -> str:
+        s_prompt = (system_prompt or "").lower()
+        p_prompt = (prompt or "").lower()
+
+        # 1. Spec Agent: HTML5 specification interpreter
+        if "specification interpreter" in s_prompt or ("spec" in p_prompt and "rules:" not in p_prompt and "test" not in s_prompt):
+            return (
+                "name: HTML5 Parser Subset Specification\n"
+                "version: 1.0.0\n"
+                "rules:\n"
+                "  tokenizer:\n"
+                "    - DATA\n"
+                "    - TAG_OPEN\n"
+                "    - TAG_NAME\n"
+                "    - RAWTEXT\n"
+                "  tree_construction:\n"
+                "    - insert_html\n"
+                "    - insert_head\n"
+                "    - insert_body\n"
+                "    - implicit_tags\n"
+            )
+
+        # 2. QA & Red-Team Agents: generate python pytest code
+        if "qa engineer" in s_prompt or "red-team" in s_prompt or "adversarial" in s_prompt:
+            return (
+                "# Generated Test Suite (MockLLMProvider)\n"
+                "import pytest\n\n"
+                "def test_generated_element_conformance():\n"
+                "    assert True\n\n"
+                "def test_generated_attribute_handling():\n"
+                "    assert True\n\n"
+                "def test_generated_edge_case_resilience():\n"
+                "    assert True\n"
+            )
+
+        # 3. Critique Agent: JSON approval
+        if "code reviewer" in s_prompt or "critique" in p_prompt:
+            return json.dumps({
+                "approval": True,
+                "confidence_score": 95,
+                "issues": [],
+                "recommendations": ["Preserve void element handling and RAWTEXT state preservation"]
+            })
+
+        # 4. Codegen & Repair Agents: unified diff patch
+        if "debugging engineer" in s_prompt or "python developer" in s_prompt or "patch" in p_prompt:
+            return (
+                "--- a/src/parser.py\n"
+                "+++ b/src/parser.py\n"
+                "@@ -10,3 +10,4 @@\n"
+                " # Targeted AST state validation and error recovery fix\n"
+            )
+
         return f"[{self.model_name}] {self.default_response}"
 
 

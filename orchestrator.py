@@ -185,12 +185,12 @@ class PipelineOrchestrator:
                 "rules_count": len(self.specification.get("rules", {}))
             }
             
-            print(f"✓ Specification generated ({len(spec_yaml)} chars)")
+            print(f"[OK] Specification generated ({len(spec_yaml)} chars)")
             print(f"  Rules: {len(self.specification.get('rules', {}))}")
             
         except Exception as e:
             report["stages"]["spec_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Spec Agent failed: {e}")
+            print(f"[FAIL] Spec Agent failed: {e}")
             raise
     
     def _run_codegen_agent(self, report: Dict[str, Any]) -> None:
@@ -218,11 +218,11 @@ class PipelineOrchestrator:
                 "patch_size": len(patch_content)
             }
             
-            print(f"✓ Code patch generated ({len(patch_content)} chars)")
+            print(f"[OK] Code patch generated ({len(patch_content)} chars)")
             
         except Exception as e:
             report["stages"]["codegen_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Codegen Agent failed: {e}")
+            print(f"[FAIL] Codegen Agent failed: {e}")
     
     def _run_critique_and_redteam_parallel(self, report: Dict[str, Any]) -> None:
         """Execute Critique and Red-Team agents concurrently via ThreadPoolExecutor.
@@ -321,14 +321,14 @@ class PipelineOrchestrator:
             
             approval = critique.get("approval", False)
             confidence = critique.get("confidence_score", 0)
-            print(f"✓ Code reviewed - Approval: {approval}, Confidence: {confidence}%")
+            print(f"[OK] Code reviewed - Approval: {approval}, Confidence: {confidence}%")
             
             if not approval:
                 print(f"  Issues: {critique.get('issues', [])}")
             
         except Exception as e:
             report["stages"]["critique_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Critique Agent failed: {e}")
+            print(f"[FAIL] Critique Agent failed: {e}")
     
     def _run_test_agent(self, report: Dict[str, Any]) -> None:
         """Execute Test Agent to generate test suite."""
@@ -351,11 +351,11 @@ class PipelineOrchestrator:
                 "test_code_size": len(test_code)
             }
             
-            print(f"✓ Test suite generated ({len(test_code)} chars)")
+            print(f"[OK] Test suite generated ({len(test_code)} chars)")
             
         except Exception as e:
             report["stages"]["test_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Test Agent failed: {e}")
+            print(f"[FAIL] Test Agent failed: {e}")
     
     def _run_red_team_agent(self, report: Dict[str, Any]) -> None:
         """Execute Red-Team Agent to generate adversarial tests."""
@@ -378,11 +378,11 @@ class PipelineOrchestrator:
                 "test_code_size": len(adversarial_tests)
             }
             
-            print(f"✓ Adversarial tests generated ({len(adversarial_tests)} chars)")
+            print(f"[OK] Adversarial tests generated ({len(adversarial_tests)} chars)")
             
         except Exception as e:
             report["stages"]["red_team_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Red-Team Agent failed: {e}")
+            print(f"[FAIL] Red-Team Agent failed: {e}")
     
     def _run_tests_and_monitor(self, report: Dict[str, Any]) -> Dict[str, Any]:
         """Execute tests and collect execution metrics."""
@@ -460,11 +460,11 @@ class PipelineOrchestrator:
                 "analysis": analysis
             }
             
-            print(f"✓ Execution monitored - Healthy: {analysis.get('healthy', False)}")
+            print(f"[OK] Execution monitored - Healthy: {analysis.get('healthy', False)}")
             
         except Exception as e:
             report["stages"]["monitor_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Monitor Agent failed: {e}")
+            print(f"[FAIL] Monitor Agent failed: {e}")
     
     def _run_repair_agent(self, report: Dict[str, Any], 
                          test_report: Dict[str, Any]) -> None:
@@ -485,7 +485,7 @@ class PipelineOrchestrator:
             ]
             
             if not failing_tests:
-                print("✓ No failures to repair")
+                print("[OK] No failures to repair")
                 return
             
             # Get parser code
@@ -512,12 +512,12 @@ class PipelineOrchestrator:
                 "failing_tests_count": len(failing_tests)
             }
             
-            print(f"✓ Repair patch generated (iteration {self.iteration})")
+            print(f"[OK] Repair patch generated (iteration {self.iteration})")
             print(f"  Fixed {len(failing_tests)} failing tests")
             
         except Exception as e:
             report["stages"]["repair_agent"] = {"status": "failed", "error": str(e)}
-            print(f"✗ Repair Agent failed: {e}")
+            print(f"[FAIL] Repair Agent failed: {e}")
     
     def _load_parser_interface(self) -> str:
         """Load parser interface documentation."""
