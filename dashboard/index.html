@@ -155,6 +155,11 @@
                     <i class="bi bi-file-diff me-1"></i> Differential DOM Visualizer
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="runner-tab" data-bs-toggle="tab" data-bs-target="#runner-pane" type="button" role="tab">
+                    <i class="bi bi-terminal-check me-1"></i> Live Pytest Runner
+                </button>
+            </li>
         </ul>
 
         <!-- Tab Content Panes -->
@@ -397,6 +402,26 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Live Pytest Runner Pane -->
+            <div class="tab-pane fade" id="runner-pane" role="tabpanel">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-terminal me-2 text-primary"></i>Live Automated Test Suite Execution</h5>
+                        <button class="btn btn-primary btn-sm px-3 fw-semibold" id="btn-run-tests" onclick="triggerRunTests()">
+                            <i class="bi bi-play-fill me-1"></i> Run 139 Pytest Tests
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="tests-summary-banner" class="alert alert-secondary d-flex justify-content-between align-items-center py-2 mb-3">
+                            <div><i class="bi bi-info-circle me-2"></i>Status: <span id="tests-status" class="fw-bold">Ready</span></div>
+                            <div>Passed: <span id="tests-passed" class="badge bg-success">--</span> &nbsp;|&nbsp; Failed: <span id="tests-failed" class="badge bg-danger">--</span> &nbsp;|&nbsp; Total: <span id="tests-total" class="badge bg-primary">--</span></div>
+                        </div>
+                        <pre id="tests-output" class="bg-dark text-success p-3 rounded" style="max-height: 420px; overflow-y: auto; font-family: monospace; font-size: 0.88rem;">// Click 'Run 139 Pytest Tests' to trigger live test execution via POST /api/run_tests...</pre>
                     </div>
                 </div>
             </div>
@@ -707,6 +732,47 @@
                 bs4Tree.innerText = '// Error: ensure python scripts/serve_dashboard.py is running.';
                 banner.className = 'alert alert-danger mb-3 fw-semibold';
                 banner.innerHTML = '<i class="bi bi-x-circle-fill me-2"></i>Server API not reachable. Run: python cli.py dashboard';
+            }
+        }
+
+        /**
+         * Trigger pytest execution via /api/run_tests and display results
+         */
+        async function triggerRunTests() {
+            const btn = document.getElementById('btn-run-tests');
+            const status = document.getElementById('tests-status');
+            const out = document.getElementById('tests-output');
+            const passedBadge = document.getElementById('tests-passed');
+            const failedBadge = document.getElementById('tests-failed');
+            const totalBadge = document.getElementById('tests-total');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Running pytest...';
+            status.innerHTML = '<span class="text-primary fw-semibold"><i class="bi bi-hourglass-split me-1"></i>Executing 139 pytest items...</span>';
+            out.innerText = '>>> Running: python -m pytest tests/ -q --tb=line\n>>> Please wait while tests execute...\n';
+
+            try {
+                const resp = await fetch('/api/run_tests', { method: 'POST' });
+                if (!resp.ok) throw new Error('HTTP error ' + resp.status);
+                const data = await resp.json();
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-play-fill me-1"></i> Run 139 Pytest Tests';
+
+                passedBadge.innerText = data.passed || 0;
+                failedBadge.innerText = data.failed || 0;
+                totalBadge.innerText = data.total || 0;
+
+                if (data.success) {
+                    status.innerHTML = '<span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i>All ' + (data.passed || 139) + ' Tests Passed Cleanly!</span>';
+                } else {
+                    status.innerHTML = '<span class="text-danger fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i>Tests Finished with ' + (data.failed || 0) + ' Failures</span>';
+                }
+                out.innerText = data.output || '// No output returned';
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-play-fill me-1"></i> Run 139 Pytest Tests';
+                status.innerHTML = '<span class="text-danger fw-bold"><i class="bi bi-x-circle-fill me-1"></i>API Error</span>';
+                out.innerText = '// Error connecting to /api/run_tests: ' + err.message + '\n// Make sure python scripts/serve_dashboard.py is running.';
             }
         }
 
