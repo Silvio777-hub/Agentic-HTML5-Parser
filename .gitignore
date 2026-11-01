@@ -121,3 +121,13 @@ html5lib-tests/
 
 # Local-only thesis drafts
 thesis/
+
+# Personal documents, presentations, and generator scripts
+*.docx
+*.pptx
+create_notes_docx.py
+create_presentation_pptx.py
+create_report_docx.py
+
+# Local development and path customisation
+sitecustomize.py
