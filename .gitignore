@@ -133,3 +133,6 @@ sitecustomize.py
 # Exported architecture diagrams (local only)
 SAD.png
 scripts/generate_sad.py
+
+# Thesis drafts and references (local only)
+thesis/
