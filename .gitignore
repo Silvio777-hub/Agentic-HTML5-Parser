@@ -110,7 +110,8 @@ cache/*.json
 *.mp3
 *.mov
 *.avi
-Thesis*
+Thesis*.docx
+Thesis*.pptx
 html5lib-tests/
 
 
@@ -118,9 +119,6 @@ html5lib-tests/
 scratch/
 data/tests1.dat
 html5lib-tests/
-
-# Local-only thesis drafts
-thesis/
 
 # Personal documents, presentations, and generator scripts
 *.docx
