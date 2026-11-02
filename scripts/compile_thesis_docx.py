@@ -3,7 +3,8 @@ scripts/compile_thesis_docx.py — Master Thesis Word (.docx) Document Compiler.
 
 Compiles all 7 thesis Markdown chapters into a unified, publication-ready Word
 manuscript (thesis/Master_Thesis_Silvio.docx), complete with formal title page,
-styled headings, formatted tables, code snippets, and embedded figures.
+styled headings, formatted tables, code snippets, embedded figures, and a
+complete parsed Bibliography from thesis/references.bib.
 
 Usage:
     python scripts/compile_thesis_docx.py
@@ -18,6 +19,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 THESIS_DIR = PROJECT_ROOT / "thesis"
 FIGURES_DIR = PROJECT_ROOT / "figures"
 OUTPUT_DOCX = THESIS_DIR / "Master_Thesis_Silvio.docx"
+BIB_FILE = THESIS_DIR / "references.bib"
 
 try:
     from docx import Document
@@ -44,7 +46,6 @@ BORDER_GREY = "CBD5E1"
 
 
 def set_cell_border(cell, **kwargs):
-    """Set custom borders on a docx cell."""
     tcPr = cell._tc.get_or_add_tcPr()
     tcBorders = OxmlElement('w:tcBorders')
     for edge in ('top', 'left', 'bottom', 'right'):
@@ -61,13 +62,40 @@ def set_cell_border(cell, **kwargs):
 
 
 def set_cell_shading(cell, color_hex):
-    """Set background color of a cell."""
     tcPr = cell._tc.get_or_add_tcPr()
     shd = OxmlElement('w:shd')
     shd.set(qn('w:val'), 'clear')
     shd.set(qn('w:color'), 'auto')
     shd.set(qn('w:fill'), color_hex)
     tcPr.append(shd)
+
+
+def parse_bib_file(bib_path):
+    if not bib_path.exists():
+        return []
+    raw = bib_path.read_text(encoding="utf-8")
+    entries_raw = raw.split("@")
+    parsed = []
+    for chunk in entries_raw:
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        lines = chunk.splitlines()
+        header_match = re.match(r'(\w+)\s*\{\s*([^,]+),', lines[0])
+        if not header_match:
+            continue
+        entry_type = header_match.group(1).lower()
+        cite_key = header_match.group(2).strip()
+        fields = {}
+        for line in lines[1:]:
+            line = line.strip()
+            field_match = re.match(r'([a-zA-Z_]+)\s*=\s*[\"{](.*?)[\"}],?$', line)
+            if field_match:
+                k = field_match.group(1).lower()
+                v = field_match.group(2).replace('{', '').replace('}', '').strip()
+                fields[k] = v
+        parsed.append((cite_key, entry_type, fields))
+    return parsed
 
 
 def compile_thesis_docx():
@@ -143,7 +171,6 @@ def compile_thesis_docx():
         while i < len(lines):
             line = lines[i].strip()
 
-            # Skip blank lines
             if not line:
                 i += 1
                 continue
@@ -192,7 +219,6 @@ def compile_thesis_docx():
             if img_match:
                 caption = img_match.group(1)
                 img_rel_path = img_match.group(2)
-                # Resolve image path
                 img_path = (chap_path.parent / img_rel_path).resolve()
                 if not img_path.exists():
                     img_path = (FIGURES_DIR / Path(img_rel_path).name).resolve()
@@ -222,10 +248,8 @@ def compile_thesis_docx():
                     table_lines.append(lines[i].strip())
                     i += 1
 
-                # Parse table lines
                 rows_data = []
                 for tl in table_lines:
-                    # Skip delimiter row (|---|---|)
                     if re.match(r'^\|[\s\-:|]+\|$', tl):
                         continue
                     cells = [c.strip() for c in tl.strip('|').split('|')]
@@ -299,9 +323,51 @@ def compile_thesis_docx():
             run.font.color.rgb = DARK_GREY
             i += 1
 
-        # Page break between chapters
         if idx < len(chapter_files):
             doc.add_page_break()
+
+    # ── BIBLIOGRAPHY / REFERENCES SECTION ─────────────────────────────────────
+    print("  --> Compiling References / Bibliography from references.bib ...")
+    doc.add_page_break()
+    ref_h = doc.add_heading(level=1)
+    ref_h.paragraph_format.space_before = Pt(18)
+    ref_h.paragraph_format.space_after = Pt(12)
+    r_h = ref_h.add_run("References & Bibliography")
+    r_h.font.name = "Arial"
+    r_h.font.size = Pt(18)
+    r_h.font.bold = True
+    r_h.font.color.rgb = NAVY_BLUE
+
+    bib_entries = parse_bib_file(BIB_FILE)
+    print(f"      Parsed {len(bib_entries)} references.")
+
+    for b_idx, (cite_key, entry_type, fields) in enumerate(bib_entries, 1):
+        ref_p = doc.add_paragraph()
+        ref_p.paragraph_format.space_before = Pt(2)
+        ref_p.paragraph_format.space_after = Pt(4)
+        ref_p.paragraph_format.left_indent = Inches(0.25)
+        ref_p.paragraph_format.first_line_indent = Inches(-0.25)
+
+        run_num = ref_p.add_run(f"[{b_idx}] ")
+        run_num.font.bold = True
+        run_num.font.size = Pt(9.5)
+        run_num.font.color.rgb = NAVY_BLUE
+
+        author = fields.get("author", "Unknown Author")
+        title = fields.get("title", "Untitled Document")
+        year = fields.get("year", "n.d.")
+        venue = fields.get("booktitle") or fields.get("journal") or fields.get("institution") or fields.get("publisher") or ""
+        url = fields.get("url", "")
+
+        ref_text = f"{author} ({year}). \"{title}.\" "
+        if venue:
+            ref_text += f"{venue}. "
+        if url:
+            ref_text += f"Available at: {url}"
+
+        run_body = ref_p.add_run(ref_text)
+        run_body.font.size = Pt(9.5)
+        run_body.font.color.rgb = DARK_GREY
 
     # Save output docx
     OUTPUT_DOCX.parent.mkdir(exist_ok=True)

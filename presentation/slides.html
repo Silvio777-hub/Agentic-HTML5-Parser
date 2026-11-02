@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSc Thesis Defense Presentation — Opoka JM Silvio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .progress-bar-container {
+            height: 5px;
+            background: #1e293b;
+            width: 100%;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #38bdf8;
+            transition: width 0.3s ease;
+        }
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .slide-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 1.25rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 1100px;
+            width: 100%;
+            min-height: 580px;
+            padding: 3rem;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .slide-card.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-header {
+            border-bottom: 2px solid #334155;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .slide-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #38bdf8;
+            margin: 0;
+        }
+        .slide-content {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            flex: 1;
+        }
+        .slide-content li {
+            margin-bottom: 0.75rem;
+        }
+        code {
+            color: #f472b6;
+            background: #0f172a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+        }
+        .notes-panel {
+            background: #090d16;
+            border-top: 1px solid #334155;
+            padding: 1rem 2rem;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            max-height: 140px;
+            overflow-y: auto;
+            display: none;
+        }
+        .notes-panel.show {
+            display: block;
+        }
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="prog-fill" style="width: 5%"></div>
+    </div>
+
+    <div class="slide-container" id="slides-box">
+
+        <div class="slide-card active" id="slide-1">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">MSc Thesis Defense Presentation</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 1 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <p>## Trustworthy HTML5 Parser Development via Agentic AI: A Multi-Agent, Self-Healing Pipeline</p>
+<p><strong>Author:</strong> Opoka JM Silvio</p>
+<p><strong>Degree:</strong> MSc in Computer Science | Academic Year 2026/2027</p>
+<p><strong>Time Allotted:</strong> 20 Minutes (15 min Presentation + 5 min Q&A)</p>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-2">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 1: Title & Welcome (0:00 - 0:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 2 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>Title:</strong> Trustworthy HTML5 Parser Development via Agentic AI</li>
+<li><strong>Subtitle:</strong> A Partially Ordered, Multi-Agent Assembly Line with Closed-Loop Self-Healing</li>
+<li><strong>Candidate:</strong> Opoka JM Silvio</li>
+<li><strong>Department:</strong> Computer Science & Artificial Intelligence</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-3">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 2: The Problem: Monolithic LLM Code Generation (0:45 - 1:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 3 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Traditional LLM Code Generation ("Single Prompt Approach"):</li>
+<li><strong>Context Drift:</strong> Monolithic prompts lose track of subtle edge-case constraints.</li>
+<li><strong>Silent Hallucination:</strong> Generates syntactically plausible code that subtly violates specs.</li>
+<li><strong>Lack of Auditability:</strong> No intermediate artifacts; all-or-nothing black box.</li>
+<li><strong>Brittleness:</strong> Fails on adversarial inputs, circular references, and malformed structures.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-4">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 3: The Target Domain: Why HTML5 Parsing? (1:45 - 2:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 4 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>HTML5 is <strong>not</strong> context-free (CFG); it cannot be parsed by standard LALR/Yacc grammars.</li>
+<li>W3C/WHATWG Specification requires:</li>
+<li>80+ distinct Tokenizer Finite State Machine states.</li>
+<li>Complex tag closure rules (e.g., <code><p></code> implicitly closing before block elements).</li>
+<li>Error recovery without crashing (graceful degradation).</li>
+<li><strong>Research Question:</strong> *Can a multi-agent assembly line autonomously synthesize, verify, stress-test, and self-heal an HTML5 parser with verifiable guarantees?*</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-5">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 4: Core Innovation: Partially Ordered 7-Agent Assembly Line (2:45 - 4:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 5 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Division of Labor into Specialized Personas:</li>
+<p>1. <code>SpecAgentAI</code> (The Architect) $\rightarrow$ <code>spec.yml</code></p>
+<p>2. <code>CodegenAgentAI</code> (Lead Implementer) $\rightarrow$ <code>code.patch</code></p>
+<p>3. <code>CritiqueAgentAI</code> (Code Reviewer) $\rightarrow$ <code>approval.json</code></p>
+<p>4. <code>RedTeamAgentAI</code> (Ethical Hacker) $\rightarrow$ <code>test_red_team.py</code></p>
+<p>5. <code>TestAgentAI</code> (QA Conformance) $\rightarrow$ <code>test_report.json</code></p>
+<p>6. <code>MonitorAgentAI</code> (DevOps Watchdog) $\rightarrow$ <code>health_report.json</code></p>
+<p>7. <code>RepairAgentAI</code> (Auto-Debugger & Mechanic) $\rightarrow$ <code>repair_N.patch</code></p>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-6">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 5: System Architecture Diagram (4:00 - 5:15)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 6 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <p><code></code>`</p>
+<p>Input Spec -> [1. SpecAgent] -> spec.yml</p>
+<p>v</p>
+<p>[2. CodegenAgent] -> code.patch</p>
+<p>+------------+------------+ (ThreadPoolExecutor - 42% Speedup)</p>
+<p>v                         v</p>
+<p>[3. CritiqueAgent]        [4. RedTeamAgent]</p>
+<p>approval.json            test_red_team.py</p>
+<p>+------------+------------+</p>
+<p>v</p>
+<p>[5. TestAgent] -> test_report.json</p>
+<p>v</p>
+<p>[6. MonitorAgent] -> health_report.json</p>
+<p>[All Pass?]</p>
+<p>/         \</p>
+<p>YES /             \ NO (Failures)</p>
+<p>v               v</p>
+<p>SUCCESSFUL BUILD   [7. RepairAgent] -> repair_N.patch (Loop <= 3)</p>
+<p><code></code>`</p>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-7">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 6: Agent 1: SpecAgentAI (5:15 - 5:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 7 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>Role:</strong> The Architect.</li>
+<li><strong>Input:</strong> Natural language subset request (e.g. paragraph implicit closure, void tags).</li>
+<li><strong>Output Artifact:</strong> <code>spec.yml</code>.</li>
+<li><strong>Key Function:</strong> Extracts formal FSM transition states and tag nesting constraints into machine-readable YAML.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-8">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 7: Agent 2: CodegenAgentAI (5:45 - 6:15)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 8 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>Role:</strong> Lead Implementer.</li>
+<li><strong>Input:</strong> <code>spec.yml</code> and existing parser code.</li>
+<li><strong>Output Artifact:</strong> <code>code.patch</code> (Unified Diff).</li>
+<li><strong>Design Decision:</strong> Generates standard unified diffs applicable via <code>git apply</code>, rather than full file overwrites.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-9">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 8: Agents 3 & 4: Concurrent Critique & Red-Team (6:15 - 7:15)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 9 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Dispatched simultaneously via <code>ThreadPoolExecutor</code>:</li>
+<li><strong>CritiqueAgentAI:</strong> Reviews code for PEP 8, banned functions (<code>eval</code>, <code>exec</code>), and spec fidelity. Produces <code>approval.json</code>.</li>
+<li><strong>RedTeamAgentAI:</strong> The ethical hacker. Generates 15 attack vectors (deep nesting, XSS injections, Unicode RTL, zero-width spaces). Produces <code>test_red_team.py</code>.</li>
+<li><strong>Empirical Speedup:</strong> Reduces verification stage wall-clock time from 8.2s to 4.8s (42% speedup).</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-10">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 9: Agents 5 & 6: Test & Monitor Gating (7:15 - 8:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 10 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>TestAgentAI:</strong> Programmatically runs <code>pytest</code> across unit, boundary, and red-team suites.</li>
+<li><strong>MonitorAgentAI:</strong> Analyzes <code>parse_with_trace()</code> runtime execution data:</li>
+<li>Memory consumption (KB).</li>
+<li>Maximum AST recursion depth.</li>
+<li>Per-stage latency (tokenizer vs parser).</li>
+<li>Produces <code>health_report.json</code> to gate production deployment.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-11">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 10: Agent 7: Autonomous Self-Healing Loop (8:00 - 9:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 11 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>RepairAgentAI:</strong> Activated only when test or health failures occur.</li>
+<li>Consumes:</li>
+<p>1. Failed test assertion diffs.</p>
+<p>2. Runtime execution trace (failing token and FSM state).</p>
+<p>3. Active parser source code.</p>
+<li>Generates targeted <code>repair_N.patch</code>.</li>
+<li>Bounded to $\le 3$ iterations.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-12">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 11: The Generated Artifact: Pure-Python HTML5 Engine (9:00 - 9:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 12 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Handcrafted Pure-Python implementation with <strong>zero runtime dependencies</strong>:</li>
+<li><code>tokenize()</code>: Explicit FSM character-by-character scanner.</li>
+<li><code>parse()</code>: DOM tree constructor with LIFO stack closure.</li>
+<li><code>tokenize_stream()</code> & <code>parse_stream()</code>: Incremental generator API for streaming payloads.</li>
+<li>CSS Query Engine: <code>.find()</code>, <code>.find_all()</code>, <code>.select()</code>, <code>.select_one()</code>.</li>
+<li>Reverse HTML Emitter: <code>.to_html(pretty=True)</code>.</li>
+<li>Plugin architecture: Hook lifecycle registry (<code>plugins/*/plugin.yml</code>).</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-13">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 12: Live Quality Dashboard Demo (9:45 - 11:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 13 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Local HTTP Server & Playground (<code>scripts/serve_dashboard.py</code>):</li>
+<li><strong>Tab 1: Compliance Suite:</strong> W3C test table with modal DOM Tree Inspector.</li>
+<li><strong>Tab 2: Parser Playground:</strong> Live HTML parser with token streams & execution traces.</li>
+<li><strong>Tab 3: Differential DOM Visualizer:</strong> Compares AST side-by-side with BeautifulSoup4.</li>
+<li><strong>Tab 4: Live Pytest Runner:</strong> One-click real-time execution of all 185 tests.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-14">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 13: Empirical Evaluation 1: Automated Unit Tests (11:00 - 11:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 14 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Automated Test Suite:</li>
+<li><strong>185 / 185 Tests Passing (100.0%)</strong> across 9 comprehensive test files.</li>
+<li>Coverage: Tokenizer FSM, tag attributes, implicit closure, entity decoding, DOM query API, streaming, error recovery, and plugin hooks.</li>
+<li>Execution time: ~18.6 seconds total.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-15">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 14: Empirical Evaluation 2: W3C Upstream Compliance (11:45 - 12:30)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 15 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Evaluated against official W3C <code>html5lib-tests</code> (tree-construction suite):</li>
+<li><strong>Total Tests Evaluated:</strong> 1,441 test cases.</li>
+<li><strong>Crash-Free Robustness:</strong> <strong>100.0% (1,441 / 1,441)</strong> — Zero unhandled exceptions or segfaults.</li>
+<li><strong>Structural Subset Strict Match:</strong> Matches reference tree across structural element subsets.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-16">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 15: Empirical Evaluation 3: Adversarial Red-Team (12:30 - 13:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 16 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>15 Malicious Attack Vectors:</li>
+<li>Deep Nesting: 200–1000 nested tags (Zero stack overflow).</li>
+<li>Implicit Cascade: <code><p>1<p>2<p>3<div>End</div></code> (Correct LIFO unwinding).</li>
+<li>XSS Injection Vectors: <code><script></code> with embedded operators and unclosed tags.</li>
+<li>Unicode RTL, Arabic, and zero-width spaces in tag names.</li>
+<li><strong>Resilience Rate: 15/15 (100.0% Survival)</strong>.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-17">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 16: Empirical Evaluation 4: Real-World Website Benchmark (13:00 - 13:30)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 17 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Tested against 5 production website architectures:</li>
+<p>1. Wikipedia (Encyclopedic prose, infoboxes, complex tables).</p>
+<p>2. Hacker News (Deeply nested table layouts, vote buttons).</p>
+<p>3. Python Official Documentation (Code snippets, definition lists).</p>
+<p>4. GitHub Markdown Views (Badges, tables, task lists).</p>
+<p>5. MDN Web Docs (Modern HTML5 <code><article></code>, <code><nav></code>, <code><aside></code>).</p>
+<li><strong>Result:</strong> 5/5 pages parsed with 100% crash-free execution and complete link/heading extraction.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-18">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 17: Empirical Evaluation 5: Multi-Agent Ablation Study (13:30 - 14:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 18 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>What happens when we remove specific agents?</li>
+<li><strong>Baseline (Full Pipeline):</strong> 100% Unit, 100% Adversarial.</li>
+<li><strong>Without CritiqueAgent:</strong> Code quality score drops by 24%; subtle style regressions.</li>
+<li><strong>Without RedTeamAgent:</strong> Adversarial resilience drops from 100% to 68%.</li>
+<li><strong>Without RepairAgent:</strong> First-pass failure recovery drops to 0%.</li>
+<li><strong>Finding:</strong> Every agent in the 7-agent assembly line contributes empirically to safety and correctness.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-19">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 18: Performance & Green AI: SHA-256 On-Disk Caching (14:00 - 14:30)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 19 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Carbon & Economic Analysis:</li>
+<li>Uncached LLM Pipeline: \$0.06 per run, ~8.2s latency, ~1.4 Joules.</li>
+<li>Cached LLM Pipeline (SHA-256 key): <strong>\$0.00 cost</strong>, <strong>0.00s latency</strong>, <strong>0.00g $CO_2$</strong>.</li>
+<li>Repeatability: Enables deterministic regression testing without hitting remote API rate limits.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-20">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 19: Comparative Benchmark: Latency & Memory (14:30 - 14:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 20 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Comparison vs BeautifulSoup4 (Python) and lxml (C-based):</li>
+<li>Pure Python: Our parser achieves ~0.4ms average document parse latency.</li>
+<li>Memory: Peak consumption remains under 2.5 MB for average documents.</li>
+<li>C-extension trade-off: <code>lxml</code> is faster for massive 100MB files, but our parser requires zero compilation and zero C dependencies.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-21">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 20: Scope & Limitations: Structural Subset vs WHATWG AAA (14:45 - 15:15)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 21 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Intellectual Honesty & Academic Scope:</li>
+<li><strong>Implemented:</strong> Structural subset (hierarchical tree, void elements, LIFO closure).</li>
+<li><strong>Omitted (Identified Future Work):</strong></li>
+<li>Adoption Agency Algorithm (AAA) (§13.2.6.4.7) for misnested inline formatting tags.</li>
+<li>Table Foster Parenting.</li>
+<li>Foreign Content XML namespaces (<code><svg></code>, <code><math></code>).</li>
+<li>Formally characterized in <code>tests/test_whatwg_boundary.py</code> and Chapter 6 of the thesis.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-22">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 21: Summary of Contributions (15:15 - 15:45)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 22 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <p>1. <strong>Partially Ordered Agent Pipeline:</strong> Replaced black-box monolithic generation with an auditable 7-agent assembly line.</p>
+<p>2. <strong>Concurrent Verification Model:</strong> Demonstrated a 42% speedup via parallel audit execution.</p>
+<p>3. <strong>Trace-Guided Self-Repair Loop:</strong> Bounded iterative debugging with verifiable convergence.</p>
+<p>4. <strong>Standalone Pure-Python HTML5 Engine:</strong> 185 tests, 1,441 W3C tests (459 strict matches, 31.85%), 12 real-world websites, 15/15 adversarial resilience.</p>
+<p>5. <strong>Interactive Verification Tooling:</strong> 4-tab live Quality Dashboard, CLI runner, and Jupyter walkthrough.</p>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-23">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 22: Future Research Directions (15:45 - 16:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 23 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li>Full WHATWG Adoption Agency Algorithm implementation via specialized Agentic FSM synthesis.</li>
+<li>Byzantine Multi-Model Consensus: Voting across Anthropic Claude, OpenAI GPT-4o, and Google Gemini.</li>
+<li>Real-time streaming self-repair in memory during socket reception.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-24">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 23: Conclusion (16:00)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 24 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>Takeaway:</strong> Trustworthy AI code generation requires structure, division of labor, adversarial testing, and closed-loop self-repair.</li>
+<li><strong>Repository:</strong> https://github.com/Silvio777-hub/Agentic-HTML5-Parser</li>
+<li><strong>Thank you!</strong> I welcome your questions and feedback.</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-25">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 24: Defense Backup: Viva Anticipated Questions & Answers (Q&A)</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 25 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><strong>Q: Why not use a single prompt with few-shot examples?</strong></li>
+<p>*A:* Single prompts lack intermediate verification gates. When an error occurs in a 500-line output, the LLM cannot pinpoint the root cause without execution telemetry.</p>
+<li><strong>Q: How do you prevent the repair loop from diverging or hallucinating?</strong></li>
+<p>*A:* The loop is strictly bounded to 3 iterations, and every patch is verified against the entire regression test suite before acceptance.</p>
+<li><strong>Q: Why does your parser not implement the Adoption Agency Algorithm?</strong></li>
+<p>*A:* AAA requires cloning active formatting elements across tree boundaries. In Chapter 6, we analyze this boundary: our structural subset avoids AST bloat while guaranteeing 100% crash-free execution.</p>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+        <div class="slide-card" id="slide-26">
+            <div class="slide-header d-flex justify-content-between align-items-center">
+                <h2 class="slide-title">Slide 25: Defense Backup: Live Terminal Quick Reference</h2>
+                <span class="badge bg-primary px-3 py-2 fs-6">Slide 26 / 26</span>
+            </div>
+            <div class="slide-content">
+                <ul class="list-unstyled">
+                    <li><code>python cli.py test</code> $\rightarrow$ 185 unit tests</li>
+<li><code>python cli.py dashboard</code> $\rightarrow$ Web GUI at <code>localhost:8080/dashboard/</code></li>
+<li><code>python cli.py compliance</code> $\rightarrow$ W3C compliance runner</li>
+<li><code>python cli.py adversarial</code> $\rightarrow$ Red-team exploit suite</li>
+<li><code>python cli.py realworld</code> $\rightarrow$ 12 historical & production web pages (1991–2026)</li>
+<li><code>python cli.py repair-demo</code> $\rightarrow$ Live self-repair demonstration</li>
+
+                </ul>
+            </div>
+            <div class="slide-footer text-muted small d-flex justify-content-between pt-3 border-top border-secondary">
+                <span>Opoka JM Silvio — MSc Thesis Defense (2026/2027)</span>
+                <span>Press <strong>Space / &rarr;</strong> for Next, <strong>&larr;</strong> for Prev, <strong>N</strong> for Notes, <strong>F</strong> for Fullscreen</span>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="notes-panel" id="notes-box">
+        <div class="fw-bold text-warning mb-1"><i class="bi bi-chat-quote-fill me-1"></i> Speaker Notes:</div>
+        <div id="notes-content">Select slide to see speaker notes.</div>
+    </div>
+
+    <div class="controls-bar">
+        <div>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="prevSlide()"><i class="bi bi-chevron-left me-1"></i> Prev</button>
+            <button class="btn btn-primary btn-sm me-3" onclick="nextSlide()">Next <i class="bi bi-chevron-right ms-1"></i></button>
+            <span class="text-muted small" id="slide-num-label">1 / 26</span>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary btn-sm me-2" onclick="toggleNotes()"><i class="bi bi-journal-text me-1"></i> Toggle Notes (N)</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="toggleFullscreen()"><i class="bi bi-fullscreen me-1"></i> Fullscreen (F)</button>
+        </div>
+    </div>
+
+    <script>
+        const totalSlides = 26;
+        let currentSlide = 1;
+        const notesMap = {
+            1: "",
+            2: "\"Good morning/afternoon, esteemed committee members. Today I am presenting my MSc research on developing trustworthy, resilient software components using autonomous multi-agent AI systems, applied specifically to the domain of HTML5 specification parsing.\"",
+            3: "\"If you ask a state-of-the-art LLM to 'write an HTML5 parser in Python', it produces a monolithic 300-line script that crashes on deeply nested tables, unclosed tags, or XSS vectors. There is no verification gating, no error diagnosis, and zero audit trail.\"",
+            4: "\"HTML5 parsing is uniquely suited as a rigorous benchmark for agentic AI because it combines formal state transitions with real-world messiness: web markup is notoriously malformed, yet standard parsers must never crash.\"",
+            5: "\"Rather than one giant prompt, we model software engineering as an assembly line. Every agent has a narrow contract and produces a persistent, auditable intermediate artifact.\"",
+            6: "\"Notice two key architectural properties: First, Stage 3 is parallelized using ThreadPoolExecutor, cutting evaluation time by 42%. Second, the loop back from RepairAgent is bounded to at most 3 cycles to prevent infinite iteration divergence.\"",
+            7: "\"SpecAgent acts as the translation layer between fuzzy human requirements and structured intermediate representations.\"",
+            8: "\"By restricting Codegen to unified diffs, we ensure that existing working functionality is preserved and changes remain inspectable.\"",
+            9: "\"Critique looks for code hygiene, while Red-Team aggressively attempts to break the parser. Running them in parallel proves the efficiency of partially ordered agent workflows.\"",
+            10: "\"Even if tests pass, MonitorAgent checks whether recursion depth spiked dangerously or if memory leaked. Quality gating goes beyond boolean pass/fail.\"",
+            11: "\"RepairAgent does not guess randomly. It acts like a senior debugger with the stack trace, the exact failing character, and the AST state.\"",
+            12: "\"The engine generated by this pipeline is production-grade, fully pure-Python, and requires zero external pip packages to parse HTML.\"",
+            13: "*[Switch to Browser on localhost:8080/dashboard/]* \"Let me show you our Quality Dashboard. Here in Tab 2, I can input malformed markup and see the real-time token stream and latency. In Tab 3, we run differential verification against BeautifulSoup4. In Tab 4, we trigger the live test runner directly from the browser.\"",
+            14: "\"We maintain a 100% pass rate across 185 automated tests, including rigorous boundary testing.\"",
+            15: "\"When tested against over 1,400 upstream W3C test cases, the parser survived every single one without a crash or infinite hang.\"",
+            16: "\"Our Red-Team agent probed every classic parser exploit vector. The engine survived 100% of these stress tests.\"",
+            17: "\"To answer the supervisory question 'Does this work on real web pages?', we evaluated 5 major production sites with 100% success.\"",
+            18: "\"Ablation experiments prove that the multi-agent setup is not redundant overhead: removing RedTeam drops resilience to 68%, and removing Repair eliminates self-healing.\"",
+            19: "\"We implemented an on-disk SHA-256 response cache. Repeat pipeline runs cost zero dollars and consume zero API tokens, addressing the Green AI challenge.\"",
+            20: "\"For pure-Python execution, our parser is extremely lightweight, keeping memory footprint minimal.\"",
+            21: "\"We deliberately scoped this project to an HTML5 structural subset. Rather than implementing the full 40-step Adoption Agency Algorithm, our parser resolves misnested tags cleanly via stack unwinding without crashes.\"",
+            22: "\"In summary, we have demonstrated that agentic AI with structured intermediate artifacts and closed-loop feedback provides a viable, trustworthy paradigm for software engineering.\"",
+            23: "\"Future extensions will scale this architecture to full WHATWG compliance and multi-model consensus voting.\"",
+            24: "\"Thank you for your time and attention. I am now open to your questions.\"",
+            25: "",
+            26: "",
+        };
+
+        function showSlide(n) {
+            if (n < 1) n = 1;
+            if (n > totalSlides) n = totalSlides;
+            currentSlide = n;
+
+            document.querySelectorAll('.slide-card').forEach((card, idx) => {
+                card.classList.toggle('active', (idx + 1) === currentSlide);
+            });
+
+            document.getElementById('prog-fill').style.width = ((currentSlide / totalSlides) * 100) + '%';
+            document.getElementById('slide-num-label').innerText = currentSlide + ' / ' + totalSlides;
+            document.getElementById('notes-content').innerText = notesMap[currentSlide] || "No speaker notes for this slide.";
+        }
+
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+        function toggleNotes() { document.getElementById('notes-box').classList.toggle('show'); }
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') nextSlide();
+            else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') prevSlide();
+            else if (e.key === 'n' || e.key === 'N') toggleNotes();
+            else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+        });
+
+        // Initialize
+        showSlide(1);
+    </script>
+</body>
+</html>
