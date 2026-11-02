@@ -13,7 +13,7 @@
 git clone https://github.com/Silvio777-hub/Agentic-HTML5-Parser.git
 cd Agentic-HTML5-Parser
 pip install -r requirements.txt
-python cli.py test          # 139/139 unit tests
+python cli.py test          # 185/185 unit tests
 python cli.py adversarial   # 15/15 attack vectors
 python cli.py compliance    # W3C compliance suite
 python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
@@ -27,9 +27,9 @@ python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashbo
 
 | Metric | Result |
 |---|---|
-| Automated Tests | ✅ **139/139 passed** |
+| Automated Tests | ✅ **185/185 passed** |
 | Adversarial Resilience | ✅ **15/15 (100%)** |
-| W3C Upstream Robustness | ✅ **1,441/1,441 (100%)** (124 strict matches) |
+| W3C Upstream Robustness | ✅ **1,441/1,441 (100%)** (459 strict matches, 31.85%) |
 | W3C 6-Bucket Functional Matrix | ✅ **31/31 (100%)** |
 | Parallel Stage Speedup | **~42% wall-clock reduction** (Critique + Red-Team concurrent) |
 | Self-Repair Loops | **3 iterations max** — automated trace-guided patching |
@@ -48,7 +48,7 @@ Rather than treating AI as a black-box code generator, this system:
 - Breaks development into **discrete AI-assisted stages** (Spec → Code → Review → Test → Attack → Monitor → Repair)
 - Uses **intermediate artifacts** (specs, patches, tests) for full transparency and auditability
 - Implements **iterative self-repair loops** driven by real execution traces and test failures
-- Achieves **100% crash-free robustness** on 1,441 upstream W3C html5lib tests (124/1,441 strict tree matches), **100% adversarial resilience** (15/15 attack vectors), and **100% functional matrix** (31/31 buckets)
+- Achieves **100% crash-free robustness** on 1,441 upstream W3C html5lib tests (459/1,441 strict tree matches, 31.85%), **100% adversarial resilience** (15/15 attack vectors), and **100% functional matrix** (31/31 buckets)
 - Employs **concurrency via ThreadPoolExecutor** for independent agent evaluations (Critique & Red-Team)
 - Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8080/dashboard/`
 
@@ -275,7 +275,7 @@ Agentic AI HTML5 Parser/
 ├── dashboard/                      ← INTERACTIVE WEB DASHBOARD
 │   └── index.html                  # Bootstrap 5 live dashboard with DOM Tree Inspector modal
 │
-├── tests/                          ← AUTOMATED TEST SUITE (139 tests, 100% passing)
+├── tests/                          ← AUTOMATED TEST SUITE (185 tests, 100% passing)
 │   ├── test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
 │   └── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
 │
@@ -732,9 +732,9 @@ print("Run ID:", report['run_id'])
 
 | Metric | Result |
 |---|---|
-| Automated tests passing | **139 / 139 (100%)** |
+| Automated tests passing | **185 / 185 (100%)** |
 | W3C html5lib upstream robustness | **1,441 / 1,441 tests (100%)** |
-| W3C strict tree equivalence | **124 / 1,441 tests (8.6%)** |
+| W3C strict tree equivalence | **459 / 1,441 tests (31.85%)** |
 | W3C 6-bucket functional matrix | **31 / 31 tests (100%)** |
 | Adversarial resilience rate | **15/15 attack vectors (100%)** |
 | LLM response cache hit cost | **\$0.00 / 0.00s latency** |
@@ -819,7 +819,7 @@ tree.name
 **Python Version:** 3.9+ (tested on 3.11 and 3.13.1)
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
 **Docker Base Image:** Python 3.11-slim · Default Port: 8082
-**Test Suite:** 139 automated tests · 100% passing
+**Test Suite:** 185 automated tests · 100% passing
 
 ---
 

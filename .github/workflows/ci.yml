@@ -44,6 +44,9 @@ jobs:
       - name: Run adversarial robustness suite
         run: python scripts/run_adversarial.py
 
+      - name: Run real-world historical website benchmark
+        run: python scripts/eval_real_world_pages.py
+
       - name: Run compliance sample tests
         run: python scripts/run_compliance.py --sample
         continue-on-error: true

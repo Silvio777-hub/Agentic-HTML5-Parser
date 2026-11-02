@@ -1,16 +1,74 @@
 {
   "summary": {
-    "total_pages": 5,
-    "passed": 5,
+    "total_pages": 12,
+    "passed": 12,
     "crashes": 0,
     "pass_percentage": 100.0,
-    "average_latency_ms": 11.418,
-    "total_dom_nodes_constructed": 203
+    "average_latency_ms": 14.302,
+    "total_dom_nodes_constructed": 529
   },
   "pages": {
+    "CERN_First_Website_1991": {
+      "success": true,
+      "latency_ms": 14.677,
+      "input_bytes": 2100,
+      "dom_node_count": 47,
+      "max_dom_depth": 8,
+      "title": "The World Wide Web project",
+      "link_count": 21,
+      "heading_count": 1,
+      "headings_sample": [
+        "<h1> World Wide Web"
+      ],
+      "error": null
+    },
+    "Space_Jam_1996": {
+      "success": true,
+      "latency_ms": 17.218,
+      "input_bytes": 2769,
+      "dom_node_count": 56,
+      "max_dom_depth": 37,
+      "title": "Space Jam",
+      "link_count": 7,
+      "heading_count": 0,
+      "headings_sample": [],
+      "error": null
+    },
+    "CERN_HTML_Tags_1992": {
+      "success": true,
+      "latency_ms": 21.96,
+      "input_bytes": 1204,
+      "dom_node_count": 31,
+      "max_dom_depth": 5,
+      "title": "HTML Tags",
+      "link_count": 7,
+      "heading_count": 5,
+      "headings_sample": [
+        "<h1> HTML Tags",
+        "<h2> Headings",
+        "<h2> Search Keyword Tag"
+      ],
+      "error": null
+    },
+    "Amazon_First_Store_1995": {
+      "success": true,
+      "latency_ms": 23.335,
+      "input_bytes": 2930,
+      "dom_node_count": 55,
+      "max_dom_depth": 22,
+      "title": "Amazon.com Books! Earth's Biggest Bookstore.",
+      "link_count": 6,
+      "heading_count": 3,
+      "headings_sample": [
+        "<h1> Welcome to Amazon.com Books!",
+        "<h2> Spotlight of the Day \u2014 July 16, 1995",
+        "<h3> Customer Services & Personalization"
+      ],
+      "error": null
+    },
     "Wikipedia_Article": {
       "success": true,
-      "latency_ms": 12.469,
+      "latency_ms": 8.059,
       "input_bytes": 1573,
       "dom_node_count": 38,
       "max_dom_depth": 9,
@@ -26,7 +84,7 @@
     },
     "Hacker_News_Thread": {
       "success": true,
-      "latency_ms": 13.462,
+      "latency_ms": 10.527,
       "input_bytes": 2246,
       "dom_node_count": 47,
       "max_dom_depth": 22,
@@ -38,7 +96,7 @@
     },
     "Python_Docs_Module": {
       "success": true,
-      "latency_ms": 9.797,
+      "latency_ms": 9.546,
       "input_bytes": 2246,
       "dom_node_count": 53,
       "max_dom_depth": 10,
@@ -53,7 +111,7 @@
     },
     "GitHub_Repo_View": {
       "success": true,
-      "latency_ms": 10.686,
+      "latency_ms": 10.912,
       "input_bytes": 1871,
       "dom_node_count": 32,
       "max_dom_depth": 11,
@@ -68,7 +126,7 @@
     },
     "MDN_Web_Docs_Article": {
       "success": true,
-      "latency_ms": 10.677,
+      "latency_ms": 10.208,
       "input_bytes": 1695,
       "dom_node_count": 33,
       "max_dom_depth": 10,
@@ -78,6 +136,53 @@
       "headings_sample": [
         "<h1> <article>: The Article Contents element",
         "<h2> Try it"
+      ],
+      "error": null
+    },
+    "Low_Tech_Magazine_Solar": {
+      "success": true,
+      "latency_ms": 16.951,
+      "input_bytes": 2702,
+      "dom_node_count": 41,
+      "max_dom_depth": 13,
+      "title": "Low-tech Magazine \u2014 Solar Powered Website",
+      "link_count": 5,
+      "heading_count": 2,
+      "headings_sample": [
+        "<h1> ",
+        "<h2> How to Build a Low-tech Website?"
+      ],
+      "error": null
+    },
+    "Lings_Cars_Maximalist": {
+      "success": true,
+      "latency_ms": 14.577,
+      "input_bytes": 2719,
+      "dom_node_count": 36,
+      "max_dom_depth": 12,
+      "title": "LINGsCARS.com - UK's Favourite Car Leasing Site!",
+      "link_count": 7,
+      "heading_count": 3,
+      "headings_sample": [
+        "<h1> LING'S CRAZY CAR LEASING WAREHOUSE",
+        "<h2> Top Vehicle Leasing Deals This Week",
+        "<h3> Nissan Qashqai 1.3 DiG-T Mild Hybrid"
+      ],
+      "error": null
+    },
+    "ArXiv_Scientific_Paper": {
+      "success": true,
+      "latency_ms": 13.654,
+      "input_bytes": 2486,
+      "dom_node_count": 60,
+      "max_dom_depth": 17,
+      "title": "[2312.00752] State Space Models for Sequence Processing: A Comprehensive Survey",
+      "link_count": 7,
+      "heading_count": 3,
+      "headings_sample": [
+        "<h1> >  > arXiv:2312.00752",
+        "<h1> State Space Models for Sequence Processing: A Comprehensive Survey",
+        "<h2> Download:"
       ],
       "error": null
     }
