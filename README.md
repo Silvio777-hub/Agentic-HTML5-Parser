@@ -257,31 +257,47 @@ Agentic AI HTML5 Parser/
 │   ├── cache.py                    # SHA-256 On-Disk ResponseCache ($0.00 repeat cost, 0.00s latency on hit)
 │   ├── parallel_runner.py          # ThreadPoolExecutor parallel dispatcher (42% speedup)
 │   ├── llm_provider.py             # Multi-model abstraction (Claude 3.5, GPT-4o, local Ollama, Mock)
+│   ├── plugin_manager.py           # Plugin loader and hook dispatcher
 │   └── utils.py                    # ArtifactManager, PatchManager, ReportGenerator
 │
 ├── scripts/                        ← AUTOMATION, BENCHMARKS & RESEARCH TOOLS
 │   ├── serve_dashboard.py          # HTTP server + Live POST /api/parse REST endpoint
 │   ├── run_compliance.py           # W3C html5lib-tests compliance runner
+│   ├── run_upstream_matrix.py      # 6-bucket functional matrix across 1,441 upstream tests
 │   ├── setup_upstream_tests.py     # 1-click downloader for 1,000+ W3C tests
 │   ├── compare_benchmarks.py       # Latency & memory benchmark vs BeautifulSoup4, html5lib, lxml
 │   ├── run_adversarial.py          # 15 red-team attack vectors (100% resilience)
 │   ├── run_ablation_study.py       # Empirical ablation: proves each agent's contribution
-│   ├── generate_thesis_charts.py   # Auto-generates 5 publication-ready 300-DPI figures
+│   ├── generate_thesis_charts.py   # Auto-generates 7 publication-ready 300-DPI figures
+│   ├── eval_real_world_pages.py    # 12-site real-world corpus evaluation (1991–2026)
 │   ├── estimate_carbon.py          # Green AI energy consumption & CO2 calculator
 │   ├── repair_pattern_mining.py    # Statistical failure taxonomy miner
 │   ├── demo_self_repair.py         # Live self-healing demo (inject bug → auto-patch)
-│   └── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
+│   ├── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
+│   ├── compile_thesis_docx.py      # Compiles all thesis chapters into Master_Thesis_Silvio.docx (local only)
+│   └── generate_future_docx.py     # Generates Future Works research roadmap document (local only)
 │
-├── dashboard/                      ← INTERACTIVE WEB DASHBOARD
-│   └── index.html                  # Bootstrap 5 live dashboard with DOM Tree Inspector modal
+├── dashboard/                      ← INTERACTIVE 5-TAB WEB DASHBOARD
+│   └── index.html                  # Bootstrap 5: Compliance · Benchmark · Adversarial · Ablation · Real-World
 │
 ├── tests/                          ← AUTOMATED TEST SUITE (185 tests, 100% passing)
+│   ├── conftest.py                 # Shared pytest fixtures
 │   ├── test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
-│   └── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
+│   ├── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
+│   ├── test_dom_query_and_html_emitter.py  # DOM query API & HTML serializer
+│   ├── test_entity_decoding.py     # HTML entity decoding (named, numeric, hex)
+│   ├── test_new_features.py        # Plugin system, Multi-LLM provider, Parallel runner
+│   ├── test_ollama_provider.py     # Ollama local LLM provider tests
+│   ├── test_parallel_and_utils.py  # ThreadPool concurrency, ArtifactManager, PatchManager
+│   ├── test_rawtext_and_comments.py # Raw text elements (script/style) & comment nodes
+│   └── test_whatwg_boundary.py     # WHATWG boundary conditions & edge cases
 │
 ├── data/                           ← EXPERIMENTAL RESULTS & AUDIT ARTIFACTS
 │   ├── sample_compliance_tests.dat # 10 bundled W3C test cases in official .dat format
+│   ├── tests1.dat                  # Additional W3C tree-construction test cases
 │   ├── compliance_results.json     # W3C upstream compliance results (1,441 tests, 100% robustness)
+│   ├── upstream_matrix_report.json # 6-bucket functional matrix report (31/31 passes)
+│   ├── real_world_results.json     # 12-site real-world corpus results (100% parse success)
 │   ├── benchmark_results.json      # Latency, throughput, peak memory benchmarks
 │   ├── adversarial_results.json    # Red-team stress test results (15/15 passed)
 │   ├── ablation_study_results.json # Multi-agent contribution experiment results
@@ -290,41 +306,44 @@ Agentic AI HTML5 Parser/
 │   ├── security_audit_report.json    # AST code scan findings & STRIDE matrix
 │   └── self_repair_demo_result.json  # Audit trail of live self-healing run
 │
-├── figures/                        ← 300-DPI PUBLICATION FIGURES
-│   ├── 01_latency_vs_parsers.png   # Comparative latency bar chart
-│   ├── 02_memory_consumption.png   # Peak memory comparison
-│   ├── 03_repair_pattern_distribution.png  # Error taxonomy pie chart
-│   ├── 04_parallel_speedup.png     # ThreadPool speedup demonstration
-│   └── 05_ablation_comparison.png  # Per-agent ablation comparison
+├── figures/                        ← 7 × 300-DPI PUBLICATION FIGURES
+│   ├── 01_latency_vs_parsers.png          # Comparative latency bar chart (our parser vs BS4, lxml)
+│   ├── 02_memory_consumption.png          # Peak memory comparison across parsers
+│   ├── 03_repair_pattern_distribution.png # Error taxonomy pie chart (self-repair loop)
+│   ├── 04_parallel_speedup.png            # ThreadPool 42% wall-clock speedup demonstration
+│   ├── 05_ablation_comparison.png         # Per-agent ablation comparison (7-agent vs subsets)
+│   ├── 06_w3c_compliance_progression.png  # W3C match progression: 0% → 31.85% over iterations
+│   └── 07_real_world_corpus_profile.png   # 12-site real-world corpus parse success profile
 │
-├── thesis/                         ← THESIS CHAPTER DRAFTS
-│   ├── 01_introduction.md
-│   ├── 02_background_and_related_work.md
-│   ├── 03_system_architecture.md
-│   ├── 04_implementation.md
-│   ├── 05_evaluation_and_results.md
-│   ├── 06_discussion_and_limitations.md
-│   ├── 07_conclusion_and_future_work.md
-│   └── README_THESIS_GUIDE.md
+├── presentation/                   ← THESIS DEFENSE MATERIALS
+│   ├── defense_presentation.md     # 25-slide Markdown deck with speaker notes
+│   ├── defense_qa_prep.md          # Viva voce cheat sheet — 25 likely examiner questions + answers
+│   └── slides.html                 # Interactive 17-slide HTML5 defense deck (open in any browser)
 │
-├── presentation/                   ← DEFENSE PRESENTATION
-│   ├── defense_presentation.md     # 25-slide deck with speaker notes
-│   └── defense_presentation.docx   # Word version
+├── plugins/example_lint/           ← PLUGIN SYSTEM EXAMPLE
+│   ├── plugin.yml                  # Plugin manifest (name, version, hook points)
+│   └── lint_rule.py                # Example lint rule demonstrating the plugin API
 │
 ├── cache/                          ← SHA-256 RESPONSE CACHE
-│   └── *.json                      # Cached LLM responses (replay = $0.00 cost, 0.00s latency)
+│   └── .gitkeep                    # Cached LLM responses stored here (replay = $0.00, 0.00s latency)
 │
 ├── .github/workflows/ci.yml        ← GITHUB ACTIONS CI/CD PIPELINE
 │
 ├── cli.py                          # Master CLI (one command to run everything)
 ├── orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
 ├── config.py                       # Configuration: API keys, model names, paths
-├── dockerfile                      # Multi-stage Python container
+├── Dockerfile                      # Multi-stage Python container
 ├── docker-compose.yml              # Docker Compose (port 8082)
+├── pyproject.toml                  # PEP 517/518 project metadata & pytest configuration
 ├── requirements.txt                # Python dependencies
+├── architecture.md                 # Full system diagrams, concurrency specs, agent contracts
+├── quickstart.md                   # Step-by-step setup guide including LLM pipeline
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── demo_walkthrough.ipynb          # Interactive Jupyter notebook walkthrough
 ├── .env.example                    # API key template — copy to .env and fill in keys
-└── readme.md                       # This file
+└── README.md                       # This file
 ```
+
 
 ---
 
@@ -508,7 +527,7 @@ python cli.py adversarial
 # Ablation study: measure parser quality with each agent individually removed
 python cli.py ablation
 
-# Generate all 5 publication-ready 300-DPI thesis figures into figures/
+# Generate all 7 publication-ready 300-DPI figures into figures/
 python cli.py charts
 
 # Estimate computational carbon footprint & energy in Joules (Green AI)
@@ -520,8 +539,8 @@ python cli.py audit
 # Live self-healing demo: inject a bug → watch it auto-patch itself
 python cli.py repair-demo
 
-# Verify all 7 thesis chapters in thesis/
-python cli.py build-thesis
+# Compile thesis to DOCX (local only — thesis/ folder is gitignored)
+python scripts/compile_thesis_docx.py
 ```
 
 ---
@@ -533,6 +552,12 @@ Run any experiment directly without the CLI wrapper:
 ```powershell
 # W3C Compliance: run bundled sample tests
 python scripts/run_compliance.py --sample
+
+# W3C 6-Bucket Functional Matrix: test all 31 parser capability categories
+python scripts/run_upstream_matrix.py
+
+# Real-World Corpus: parse 12 historical websites (1991–2026)
+python scripts/eval_real_world_pages.py
 
 # Download the FULL W3C upstream test suite (1,000+ official tests)
 python scripts/setup_upstream_tests.py
@@ -546,7 +571,7 @@ python scripts/run_adversarial.py
 # Ablation: empirical proof of each agent's individual contribution
 python scripts/run_ablation_study.py
 
-# Charts: generate all 5 thesis publication figures (saves to figures/)
+# Charts: generate all 7 publication-ready figures (saves to figures/)
 python scripts/generate_thesis_charts.py
 
 # Carbon: Green AI energy & CO2 footprint calculation
@@ -578,8 +603,7 @@ After running experiments, all outputs are auto-saved:
 | Security audit report | `data/security_audit_report.json` | `python cli.py audit` |
 | Self-repair demo result | `data/self_repair_demo_result.json` | `python cli.py repair-demo` |
 | Repair patterns analysis | `data/repair_patterns_analysis.json` | `scripts/repair_pattern_mining.py` |
-| Thesis figures (5 PNGs) | `figures/` | `python cli.py charts` |
-| Pipeline run artifacts | `runs/<run_id>/` | `orchestrator.py` |
+| Publication figures (7 PNGs) | `figures/` | `python cli.py charts` |
 | LLM response cache | `cache/*.json` | Automatic on every LLM call |
 | Test coverage HTML | `htmlcov/index.html` | `pytest --cov=src --cov-report=html` |
 
@@ -655,7 +679,7 @@ The project includes a full automated CI pipeline at [`.github/workflows/ci.yml`
 On every push and pull request, it automatically:
 1. Installs all dependencies
 2. Runs linting with `flake8`
-3. Executes all 34 pytest tests
+3. Executes all 185 pytest tests across 9 test files
 4. Generates a code coverage report
 
 To check CI status locally before pushing:
@@ -815,7 +839,7 @@ tree.name
 
 ---
 
-**Last Updated:** October 2026
+**Last Updated:** November 2026
 **Python Version:** 3.9+ (tested on 3.11 and 3.13.1)
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
 **Docker Base Image:** Python 3.11-slim · Default Port: 8082
