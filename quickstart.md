@@ -43,7 +43,7 @@ cp .env.example .env
 Run all commands via the unified CLI:
 
 ```bash
-# Run all 34 automated unit & streaming tests
+# Run all 207 automated unit, offline agent, & streaming tests
 python cli.py test
 
 # Run W3C compliance test harness
@@ -58,7 +58,7 @@ python cli.py benchmark
 # Run the empirical ablation study
 python cli.py ablation
 
-# Generate all 5 publication-quality figures (saves to figures/)
+# Generate all 7 publication-quality figures (saves to figures/)
 python cli.py charts
 
 # Launch the interactive web dashboard (DOM Tree Inspector)
@@ -115,7 +115,7 @@ python scripts/run_compliance.py
 │   ├── setup_upstream_tests.py # Downloads official W3C tests
 │   └── serve_dashboard.py      # HTTP server + REST API
 │
-├── tests/                # 34 automated tests (pytest)
+├── tests/                # 207 automated tests across 10 test suites (pytest)
 ├── data/                 # Results JSON files (auto-generated)
 ├── figures/              # 300-DPI publication figures (auto-generated)
 ├── dashboard/            # Interactive web dashboard HTML
@@ -131,9 +131,9 @@ python scripts/run_compliance.py
 
 | Metric | Result |
 |---|---|
-| Automated Tests | **139/139 passed** |
+| Automated Tests | **207/207 passed** |
 | Adversarial Resilience | **15/15 attacks survived (100%)** |
-| W3C Upstream Robustness | **1,441/1,441 (100% crash-free)**, 124/1,441 strict tree matches (8.61%) |
+| W3C Upstream Robustness | **1,441/1,441 (100% crash-free)**, 459/1,441 strict tree matches (31.85%) |
 | Benchmark vs BeautifulSoup4 | Comparable latency; pure Python implementation |
 | Parallel Stage Speedup | ~42% wall-clock reduction (Critique + Red-Team concurrent) |
 | Self-Repair Iterations | Max 3 loops; demo shows automated bug fix |
