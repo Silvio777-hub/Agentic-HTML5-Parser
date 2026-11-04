@@ -14,6 +14,7 @@ from enum import Enum
 import time
 import re
 import html as _html_module
+import json
 
 # Standard HTML5 void elements (cannot have children or closing tags)
 VOID_ELEMENTS_SET = {
@@ -87,6 +88,32 @@ class TreeNode:
             "text_content": self.text_content,
             "children": [child.serialize() for child in self.children]
         }
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Export DOM tree node and all descendants to a clean, nested Python dictionary.
+        
+        Returns:
+            Dict containing node name, attributes, text content, and nested children.
+        """
+        return {
+            "name": self.name,
+            "attributes": dict(self.attributes) if self.attributes else {},
+            "text_content": self.text_content,
+            "children": [child.to_dict() for child in self.children]
+        }
+
+    def to_json(self, indent: Optional[int] = 2) -> str:
+        """
+        Export DOM tree node and all descendants to a formatted JSON string.
+        
+        Args:
+            indent: Number of spaces for indentation (defaults to 2). None for compact.
+            
+        Returns:
+            Formatted JSON string representing the DOM tree.
+        """
+        return json.dumps(self.to_dict(), indent=indent, ensure_ascii=False)
 
     def __str__(self) -> str:
         """String representation."""
@@ -217,6 +244,32 @@ class TreeNode:
             "text_content": self.text_content,
             "children": [child.serialize() for child in self.children]
         }
+
+    def to_dict(self) -> Dict[str, Any]:
+        """
+        Export DOM tree node and all descendants to a clean, nested Python dictionary.
+        
+        Returns:
+            Dict containing node name, attributes, text content, and nested children.
+        """
+        return {
+            "name": self.name,
+            "attributes": dict(self.attributes) if self.attributes else {},
+            "text_content": self.text_content,
+            "children": [child.to_dict() for child in self.children]
+        }
+
+    def to_json(self, indent: Optional[int] = 2) -> str:
+        """
+        Export DOM tree node and all descendants to a formatted JSON string.
+        
+        Args:
+            indent: Number of spaces for indentation (defaults to 2). None for compact.
+            
+        Returns:
+            Formatted JSON string representing the DOM tree.
+        """
+        return json.dumps(self.to_dict(), indent=indent, ensure_ascii=False)
     
     def __str__(self) -> str:
         """String representation."""
@@ -1232,6 +1285,33 @@ def parse_stream(chunks):
             "tree": tree.serialize(),
             "root_children_count": len(tree.children)
         }
+
+
+def parse_to_dict(html: str) -> Dict[str, Any]:
+    """
+    Parse an HTML string directly into a nested DOM dictionary.
+    
+    Args:
+        html: Raw HTML input string
+        
+    Returns:
+        Nested dictionary representation of the root TreeNode.
+    """
+    return parse(html).to_dict()
+
+
+def parse_to_json(html: str, indent: Optional[int] = 2) -> str:
+    """
+    Parse an HTML string directly into a formatted JSON string.
+    
+    Args:
+        html: Raw HTML input string
+        indent: JSON indentation spaces (default 2)
+        
+    Returns:
+        JSON string representation of the parsed DOM tree.
+    """
+    return parse(html).to_json(indent=indent)
 
 
 if __name__ == "__main__":

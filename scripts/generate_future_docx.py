@@ -252,7 +252,7 @@ def build_future_docx():
         "Methodology: This thesis introduces a partially ordered, seven-agent autonomous assembly line (SpecAgentAI, CodegenAgentAI, "
         "CritiqueAgentAI, RedTeamAgentAI, TestAgentAI, MonitorAgentAI, and RepairAgentAI) governed by immutable file artifacts "
         "and trace-guided closed-loop self-repair.\n\n"
-        "Results: The synthesized zero-dependency pure-Python parser achieves a 100% pass rate across 185 unit tests, survives 100% "
+        "Results: The synthesized zero-dependency pure-Python parser achieves a 100% pass rate across 207 unit tests, survives 100% "
         "(15/15) of Red-Team adversarial attack vectors, and demonstrates 100.0% crash-free stability across all 1,441 upstream official "
         "W3C html5lib test cases and 12 historical and production websites spanning 1991 to 2026. Furthermore, Compliance Serialiser v2 "
         "elevates strict tree matches to 459 (31.85%), an ~3.7× improvement over baseline.\n\n"
@@ -435,7 +435,7 @@ def build_future_docx():
 
     cli_headers = ["Subcommand", "Full Command Syntax", "Primary Functionality & Expected Output"]
     cli_rows = [
-        ("test", "python cli.py test", "Runs all 185 automated unit, streaming, and WHATWG boundary tests via pytest. Expected: 185 passed."),
+        ("test", "python cli.py test", "Runs all 185 automated unit, streaming, and WHATWG boundary tests via pytest. Expected: 207 passed."),
         ("compliance", "python cli.py compliance", "Runs official W3C html5lib test runner (1,441 tests). Expected: 459 strict tree matches, 100% crash-free."),
         ("realworld", "python cli.py realworld", "Evaluates parser across 12 historical and production websites (1991 CERN to 2026 arXiv). Expected: 12/12 pass."),
         ("adversarial", "python cli.py adversarial", "Executes RedTeamAgentAI 15 hacker exploit vectors. Expected: 100% resilience rate (15/15 survived)."),

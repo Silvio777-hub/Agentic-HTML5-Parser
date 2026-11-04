@@ -124,6 +124,17 @@ class ClaudeAgent:
             "content": user_message
         })
         
+        # Check offline / placeholder fallback
+        if self.client is None or self.is_placeholder:
+            from src.llm_provider import get_llm_provider
+            provider = get_llm_provider()
+            assistant_message = provider.generate(user_message, system_prompt=system_prompt)
+            self.conversation_history.append({
+                "role": "assistant",
+                "content": assistant_message
+            })
+            return assistant_message
+        
         # Call Claude with history
         response = self.client.messages.create(
             model=self.model,

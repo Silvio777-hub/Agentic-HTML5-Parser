@@ -13,9 +13,10 @@
 git clone https://github.com/Silvio777-hub/Agentic-HTML5-Parser.git
 cd Agentic-HTML5-Parser
 pip install -r requirements.txt
-python cli.py test          # 185/185 unit tests
+python cli.py test          # 207/207 unit tests
 python cli.py adversarial   # 15/15 attack vectors
 python cli.py compliance    # W3C compliance suite
+python cli.py repl          # Interactive terminal REPL with live telemetry & security scan
 python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
 ```
 
@@ -27,7 +28,7 @@ python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashbo
 
 | Metric | Result |
 |---|---|
-| Automated Tests | ✅ **185/185 passed** |
+| Automated Tests | ✅ **207/207 passed** |
 | Adversarial Resilience | ✅ **15/15 (100%)** |
 | W3C Upstream Robustness | ✅ **1,441/1,441 (100%)** (459 strict matches, 31.85%) |
 | W3C 6-Bucket Functional Matrix | ✅ **31/31 (100%)** |
@@ -275,13 +276,15 @@ Agentic AI HTML5 Parser/
 │   ├── demo_self_repair.py         # Live self-healing demo (inject bug → auto-patch)
 │   ├── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
 │   ├── compile_thesis_docx.py      # Compiles all thesis chapters into Master_Thesis_Silvio.docx (local only)
-│   └── generate_future_docx.py     # Generates Future Works research roadmap document (local only)
+│   ├── generate_future_docx.py     # Generates Future Works research roadmap document (local only)
+│   └── generate_viva_docx.py       # Generates VIVA.docx oral defense master Q&A guide (local only)
 │
 ├── dashboard/                      ← INTERACTIVE 5-TAB WEB DASHBOARD
 │   └── index.html                  # Bootstrap 5: Compliance · Benchmark · Adversarial · Ablation · Real-World
 │
-├── tests/                          ← AUTOMATED TEST SUITE (185 tests, 100% passing)
+├── tests/                          ← AUTOMATED TEST SUITE (207 tests, 100% passing)
 │   ├── conftest.py                 # Shared pytest fixtures
+│   ├── test_agent_pipeline_offline.py # Offline integration tests for all 7 Claude agents
 │   ├── test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
 │   ├── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
 │   ├── test_dom_query_and_html_emitter.py  # DOM query API & HTML serializer
@@ -679,7 +682,7 @@ The project includes a full automated CI pipeline at [`.github/workflows/ci.yml`
 On every push and pull request, it automatically:
 1. Installs all dependencies
 2. Runs linting with `flake8`
-3. Executes all 185 pytest tests across 9 test files
+3. Executes all 207 pytest tests across 10 test files
 4. Generates a code coverage report
 
 To check CI status locally before pushing:
@@ -756,7 +759,7 @@ print("Run ID:", report['run_id'])
 
 | Metric | Result |
 |---|---|
-| Automated tests passing | **185 / 185 (100%)** |
+| Automated tests passing | **207 / 207 (100%)** |
 | W3C html5lib upstream robustness | **1,441 / 1,441 tests (100%)** |
 | W3C strict tree equivalence | **459 / 1,441 tests (31.85%)** |
 | W3C 6-bucket functional matrix | **31 / 31 tests (100%)** |
@@ -843,7 +846,7 @@ tree.name
 **Python Version:** 3.9+ (tested on 3.11 and 3.13.1)
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
 **Docker Base Image:** Python 3.11-slim · Default Port: 8082
-**Test Suite:** 185 automated tests · 100% passing
+**Test Suite:** 207 automated tests · 100% passing
 
 ---
 

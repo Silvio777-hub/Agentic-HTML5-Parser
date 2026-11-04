@@ -237,7 +237,7 @@ def compile_thesis_docx():
         "Methodology: This thesis introduces a partially ordered, seven-agent autonomous assembly line (SpecAgentAI, CodegenAgentAI, "
         "CritiqueAgentAI, RedTeamAgentAI, TestAgentAI, MonitorAgentAI, and RepairAgentAI) governed by immutable file artifacts and trace-guided "
         "closed-loop self-repair.\n\n"
-        "Findings: The synthesized zero-dependency pure-Python parser achieves a 100% pass rate across 185 unit tests, survives 100% (15/15) "
+        "Findings: The synthesized zero-dependency pure-Python parser achieves a 100% pass rate across 207 unit tests, survives 100% (15/15) "
         "of Red-Team adversarial attack vectors, and demonstrates 100.0% crash-free stability across all 1,441 upstream official W3C html5lib "
         "test cases and 12 historical and production websites spanning 1991 to 2026. Furthermore, Compliance Serialiser v2 elevates strict "
         "tree matches to 459 (31.85%), an ~3.7× improvement over baseline.\n\n"
@@ -493,7 +493,7 @@ def compile_thesis_docx():
 
     doc.add_paragraph("Complete reference of all 17 CLI subcommands available in cli.py:")
     cli_rows = [
-        ("test", "python cli.py test", "Runs all 185 unit, streaming, and boundary tests. Expected: 185 passed."),
+        ("test", "python cli.py test", "Runs all 185 unit, streaming, and boundary tests. Expected: 207 passed."),
         ("compliance", "python cli.py compliance", "Runs official W3C html5lib suite. Expected: 459 strict tree matches, 100% crash-free."),
         ("realworld", "python cli.py realworld", "Evaluates parser across 12 historical and production websites. Expected: 12/12 pass."),
         ("adversarial", "python cli.py adversarial", "Executes RedTeamAgentAI 15 exploit vectors. Expected: 100% resilience (15/15 survived)."),
