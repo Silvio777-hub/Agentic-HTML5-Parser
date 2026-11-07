@@ -149,3 +149,6 @@ presentation/
 
 # Generated publication charts (local only, reproducible via python cli.py charts)
 figures/
+scripts/compile_thesis_docx.py
+scripts/generate_future_docx.py
+scripts/generate_viva_docx.py
