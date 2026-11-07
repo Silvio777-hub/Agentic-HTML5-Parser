@@ -378,7 +378,7 @@ Tim Berners-Lee, <a name="7" href="http://info.cern.ch/">CERN</a><br>
                 <table>
                     <thead><tr><th>Metric</th><th>Result</th></tr></thead>
                     <tbody>
-                        <tr><td>Automated Tests</td><td>139/139 passed</td></tr>
+                        <tr><td>Automated Tests</td><td>207/207 passed</td></tr>
                         <tr><td>W3C Robustness</td><td>1441/1441 crash-free</td></tr>
                     </tbody>
                 </table>

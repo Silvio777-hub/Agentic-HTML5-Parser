@@ -171,7 +171,7 @@ Input Spec -> [1. SpecAgent] -> spec.yml
   - Coverage: Tokenizer FSM, tag attributes, implicit closure, entity decoding, DOM query API, streaming, error recovery, and plugin hooks.
   - Execution time: ~18.6 seconds total.
 > **Speaker Notes:**
-> "We maintain a 100% pass rate across 185 automated tests, including rigorous boundary testing."
+> "We maintain a 100% pass rate across 207 automated tests, including rigorous boundary testing."
 
 ---
 

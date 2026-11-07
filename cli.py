@@ -16,7 +16,7 @@ Usage Examples:
 
     python cli.py dashboard            # Launches live dashboard & playground at http://localhost:8080/dashboard/
 
-    python cli.py test                 # Runs all 185 automated unit & streaming & WHATWG boundary tests
+    python cli.py test                 # Runs all 207 automated unit, streaming, offline agent & boundary tests
 
     python cli.py compliance           # Runs W3C html5lib compliance test harness
 
@@ -95,7 +95,7 @@ def run_command(cmd_list, description):
 
 def cmd_test():
 
-    """Runs all 185 automated unit, integration, and streaming tests."""
+    """Runs all 207 automated unit, integration, streaming, and offline agent tests."""
 
     # Invokes pytest directly using the current Python interpreter environment
 
@@ -944,7 +944,7 @@ def main():
 
 Commands:
 
-  test          Run all 185 automated unit, streaming & WHATWG boundary tests
+  test          Run all 207 automated unit, streaming, offline agent & boundary tests
 
   realworld     Run real-world & historical website benchmark (12 sites: CERN 1991/1992, Amazon 1995, Space Jam 1996, Wikipedia, HN, Python, GitHub, MDN, Low-tech, Ling's, arXiv)
 

@@ -9,11 +9,11 @@ services:
   html5-parser-dashboard:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: agentic_html5_parser_dashboard
     restart: unless-stopped
     ports:
-      - "8082:8080"
+      - "8080:8080"
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}

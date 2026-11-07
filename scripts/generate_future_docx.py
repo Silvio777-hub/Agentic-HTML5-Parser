@@ -203,7 +203,7 @@ def build_future_docx():
     add_callout(
         doc,
         "EXECUTIVE SUMMARY OF VERIFIED ACHIEVEMENTS",
-        "• 185 / 185 Automated Pytest Tests Passing Cleanly (100.0% Pass Rate)\n"
+        "• 207 / 207 Automated Pytest Tests Passing Cleanly (100.0% Pass Rate)\n"
         "• 1,441 / 1,441 Upstream Official W3C Tests Evaluated (100.0% Crash-Free Robustness)\n"
         "• 459 Strict W3C Tree Matches (31.85% Strict Tree Match Rate — ~3.7× Increase over Baseline)\n"
         "• 15 / 15 Red-Team Adversarial Exploit Vectors Survived (100.0% Security Resilience)\n"
