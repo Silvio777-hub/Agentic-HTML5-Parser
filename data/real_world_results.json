@@ -4,13 +4,13 @@
     "passed": 12,
     "crashes": 0,
     "pass_percentage": 100.0,
-    "average_latency_ms": 14.302,
+    "average_latency_ms": 13.255,
     "total_dom_nodes_constructed": 529
   },
   "pages": {
     "CERN_First_Website_1991": {
       "success": true,
-      "latency_ms": 14.677,
+      "latency_ms": 19.049,
       "input_bytes": 2100,
       "dom_node_count": 47,
       "max_dom_depth": 8,
@@ -24,7 +24,7 @@
     },
     "Space_Jam_1996": {
       "success": true,
-      "latency_ms": 17.218,
+      "latency_ms": 22.639,
       "input_bytes": 2769,
       "dom_node_count": 56,
       "max_dom_depth": 37,
@@ -36,7 +36,7 @@
     },
     "CERN_HTML_Tags_1992": {
       "success": true,
-      "latency_ms": 21.96,
+      "latency_ms": 8.049,
       "input_bytes": 1204,
       "dom_node_count": 31,
       "max_dom_depth": 5,
@@ -52,7 +52,7 @@
     },
     "Amazon_First_Store_1995": {
       "success": true,
-      "latency_ms": 23.335,
+      "latency_ms": 20.704,
       "input_bytes": 2930,
       "dom_node_count": 55,
       "max_dom_depth": 22,
@@ -68,7 +68,7 @@
     },
     "Wikipedia_Article": {
       "success": true,
-      "latency_ms": 8.059,
+      "latency_ms": 8.457,
       "input_bytes": 1573,
       "dom_node_count": 38,
       "max_dom_depth": 9,
@@ -84,7 +84,7 @@
     },
     "Hacker_News_Thread": {
       "success": true,
-      "latency_ms": 10.527,
+      "latency_ms": 9.105,
       "input_bytes": 2246,
       "dom_node_count": 47,
       "max_dom_depth": 22,
@@ -96,7 +96,7 @@
     },
     "Python_Docs_Module": {
       "success": true,
-      "latency_ms": 9.546,
+      "latency_ms": 8.69,
       "input_bytes": 2246,
       "dom_node_count": 53,
       "max_dom_depth": 10,
@@ -111,7 +111,7 @@
     },
     "GitHub_Repo_View": {
       "success": true,
-      "latency_ms": 10.912,
+      "latency_ms": 12.184,
       "input_bytes": 1871,
       "dom_node_count": 32,
       "max_dom_depth": 11,
@@ -126,7 +126,7 @@
     },
     "MDN_Web_Docs_Article": {
       "success": true,
-      "latency_ms": 10.208,
+      "latency_ms": 11.087,
       "input_bytes": 1695,
       "dom_node_count": 33,
       "max_dom_depth": 10,
@@ -141,7 +141,7 @@
     },
     "Low_Tech_Magazine_Solar": {
       "success": true,
-      "latency_ms": 16.951,
+      "latency_ms": 13.718,
       "input_bytes": 2702,
       "dom_node_count": 41,
       "max_dom_depth": 13,
@@ -156,7 +156,7 @@
     },
     "Lings_Cars_Maximalist": {
       "success": true,
-      "latency_ms": 14.577,
+      "latency_ms": 14.681,
       "input_bytes": 2719,
       "dom_node_count": 36,
       "max_dom_depth": 12,
@@ -172,7 +172,7 @@
     },
     "ArXiv_Scientific_Paper": {
       "success": true,
-      "latency_ms": 13.654,
+      "latency_ms": 10.696,
       "input_bytes": 2486,
       "dom_node_count": 60,
       "max_dom_depth": 17,

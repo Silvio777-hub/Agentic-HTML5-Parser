@@ -404,7 +404,42 @@ def build_future_docx():
          "The partially ordered multi-agent assembly line is grammar-agnostic. Future work should apply this exact same pipeline to other notoriously difficult, ill-specified, or non-context-free data formats:\n"
          "• CSS3 Selectors & Cascade Engine: Synthesizing an engine that parses CSS Selectors Level 4 and evaluates specificity and cascading rules against our parsed HTML5 DOM tree.\n"
          "• CommonMark / GitHub Flavored Markdown (GFM): Markdown parsing shares HTML's ambiguities regarding loose lists, blockquote lazy continuation, and emphasis delimiters.\n"
-         "• Legacy Enterprise & Financial Protocols: Synthesizing parsers for legacy RTF, PDF object streams, EDI, or SWIFT financial messages where official specs are incomplete and trial-and-error reverse engineering is currently required.")
+         "• Legacy Enterprise & Financial Protocols: Synthesizing parsers for legacy RTF, PDF object streams, EDI, or SWIFT financial messages where official specs are incomplete and trial-and-error reverse engineering is currently required."),
+
+        ("Axis 7: Neural-Symbolic Grammar Induction & Active Automata Learning",
+         "Rather than treating LLMs solely as text predictors, future work will couple SpecAgentAI with active automata learning frameworks (such as Angluin's L* algorithm and Trakhtenbrot-Barzdin state merging).\n"
+         "• Oracle-Guided State Synthesis: The agent will actively query a reference browser engine with minimal membership and equivalence queries to mathematically synthesize minimal deterministic finite automata (DFAs).\n"
+         "• Formal Completeness Proofs: This neuro-symbolic approach ensures that inferred tokenizer states possess formal completeness proofs rather than stochastic approximations."),
+
+        ("Axis 8: Dynamic Green AI Scheduling & Carbon-Aware Multi-Tier Routing",
+         "To optimize the environmental and economic cost of multi-agent development loops, the orchestrator will integrate real-time grid carbon intensity telemetry via the Carbon Aware SDK.\n"
+         "• Pareto-Optimal Multi-Tier Routing: The scheduler dynamically routes low-complexity tasks (PEP 8 linting, minor assertions) to quantized local Small Language Models (e.g. Llama-3.2-1B/3B executing at ~0.005 J/token).\n"
+         "• Targeted Frontier Allocation: Reserving frontier cloud LLMs strictly for complex AST rebalancing and trace-guided debugging, reducing aggregate pipeline carbon emissions by over 85%."),
+
+        ("Axis 9: Automated Exploit Synthesis & Autonomous Zero-Day Quarantine",
+         "To harden the parser against adversarial evasion, RedTeamAgentAI will be equipped with symbolic execution engines and differential taint tracking.\n"
+         "• Advanced Web Vector Synthesis: The agent will autonomously synthesize DOM clobbering, prototype pollution, and mutation cross-site scripting (mXSS) vectors that exploit differential serialization between parsers.\n"
+         "• In-Memory Zero-Day Sandbox: Once a zero-day vulnerability is surfaced, RepairAgentAI will generate an immediate in-memory sandbox filter to quarantine the exploit pattern prior to standard patch deployment."),
+
+        ("Axis 10: Hardware-Accelerated Tokenizer Synthesis (SIMD / AVX-512 & GPU Lexing)",
+         "To achieve gigabyte-per-second ingestion speeds necessary for web-scale search engines and archive crawlers, the pipeline will prompt CodegenAgentAI to target SIMD vector intrinsics and GPU compute kernels.\n"
+         "• Vectorised Delimiter Scanning: Implementing SIMD character scanning (AVX2, AVX-512, and ARM NEON) to identify '<' and '>' tags across 64-byte registers simultaneously.\n"
+         "• Throughput Acceleration: Bypassing scalar character-by-character loops and accelerating tokenization throughput by 10x to 50x."),
+
+        ("Axis 11: Continuous WHATWG Living Standard Tracking & Autonomous Spec Evolution",
+         "The HTML5 standard is officially maintained as an evolving 'Living Standard' with frequent editorial and normative modifications.\n"
+         "• Autonomous Spec Watchdog: Introducing WatchdogAgentAI, an autonomous daemon monitoring the WHATWG GitHub repository for merged pull requests and commit diffs.\n"
+         "• Zero-Lag Specification Alignment: Upon detecting normative changes (custom elements, template shadow boundaries), the agent automatically updates spec.yml, generates new test cases, and synthesizes non-breaking code patches."),
+
+        ("Axis 12: Differential Shadow Execution & Web-Scale In-the-Wild Oracle Mining",
+         "To evaluate real-world resilience at internet scale, the synthesized parser will be deployed into production edge proxies (e.g. Cloudflare Workers or Fastly Compute@Edge) in 'shadow mode' alongside Chromium (Blink) and Firefox (Gecko).\n"
+         "• Internet-Scale Divergence Mining: Processing millions of live HTTP responses in parallel to continuously collect differential tree signatures.\n"
+         "• Specification Ambiguity Discovery: Clustering real-world syntax deviations and autonomously filing actionable bug reports on previously undocumented non-standard web quirks."),
+
+        ("Axis 13: Distributed Multi-Agent Consensus over Conflict-Free Replicated Data Types (CRDTs)",
+         "To scale beyond a single workstation, the agentic assembly line will be decentralized across a peer-to-peer network of autonomous nodes.\n"
+         "• P2P Multi-Agent Coordination: Specialized agents operate across distributed nodes, communicating and coordinating code refactoring via Conflict-Free Replicated Data Types (CRDTs) and State-based Replication.\n"
+         "• Zero-Lock Concurrency: Eliminating centralized orchestration bottlenecks, allowing geographically distributed agents to propose, audit, fuzz, and merge concurrent grammar extensions without lock contention or divergence.")
     ]
 
     for title, desc in directions:
@@ -435,7 +470,7 @@ def build_future_docx():
 
     cli_headers = ["Subcommand", "Full Command Syntax", "Primary Functionality & Expected Output"]
     cli_rows = [
-        ("test", "python cli.py test", "Runs all 185 automated unit, streaming, and WHATWG boundary tests via pytest. Expected: 207 passed."),
+        ("test", "python cli.py test", "Runs all 207 automated unit, streaming, and WHATWG boundary tests via pytest. Expected: 207 passed."),
         ("compliance", "python cli.py compliance", "Runs official W3C html5lib test runner (1,441 tests). Expected: 459 strict tree matches, 100% crash-free."),
         ("realworld", "python cli.py realworld", "Evaluates parser across 12 historical and production websites (1991 CERN to 2026 arXiv). Expected: 12/12 pass."),
         ("adversarial", "python cli.py adversarial", "Executes RedTeamAgentAI 15 hacker exploit vectors. Expected: 100% resilience rate (15/15 survived)."),

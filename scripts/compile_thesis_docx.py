@@ -196,7 +196,7 @@ def compile_thesis_docx():
     badge_p = doc.add_paragraph()
     badge_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     badge_p.paragraph_format.space_before = Pt(36)
-    run_b = badge_p.add_run("✔ 185 Unit Tests Passed (100%)  ·  ✔ 1,441 W3C Tests (100% Stability, 459 Strict Matches)  ·  ✔ 12 Historical Websites")
+    run_b = badge_p.add_run("✔ 207 Unit Tests Passed (100%)  ·  ✔ 1,441 W3C Tests (100% Stability, 459 Strict Matches)  ·  ✔ 12 Historical Websites")
     run_b.font.size = Pt(9.5)
     run_b.font.color.rgb = SLATE
 
@@ -493,7 +493,7 @@ def compile_thesis_docx():
 
     doc.add_paragraph("Complete reference of all 17 CLI subcommands available in cli.py:")
     cli_rows = [
-        ("test", "python cli.py test", "Runs all 185 unit, streaming, and boundary tests. Expected: 207 passed."),
+        ("test", "python cli.py test", "Runs all 207 unit, streaming, and boundary tests. Expected: 207 passed."),
         ("compliance", "python cli.py compliance", "Runs official W3C html5lib suite. Expected: 459 strict tree matches, 100% crash-free."),
         ("realworld", "python cli.py realworld", "Evaluates parser across 12 historical and production websites. Expected: 12/12 pass."),
         ("adversarial", "python cli.py adversarial", "Executes RedTeamAgentAI 15 exploit vectors. Expected: 100% resilience (15/15 survived)."),

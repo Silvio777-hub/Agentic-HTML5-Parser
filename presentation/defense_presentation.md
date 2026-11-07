@@ -158,7 +158,7 @@ Input Spec -> [1. SpecAgent] -> spec.yml
   - **Tab 1: Compliance Suite:** W3C test table with modal DOM Tree Inspector.
   - **Tab 2: Parser Playground:** Live HTML parser with token streams & execution traces.
   - **Tab 3: Differential DOM Visualizer:** Compares AST side-by-side with BeautifulSoup4.
-  - **Tab 4: Live Pytest Runner:** One-click real-time execution of all 185 tests.
+  - **Tab 4: Live Pytest Runner:** One-click real-time execution of all 207 tests.
 > **Speaker Notes:**
 > *[Switch to Browser on localhost:8080/dashboard/]*
 > "Let me show you our Quality Dashboard. Here in Tab 2, I can input malformed markup and see the real-time token stream and latency. In Tab 3, we run differential verification against BeautifulSoup4. In Tab 4, we trigger the live test runner directly from the browser."
@@ -167,7 +167,7 @@ Input Spec -> [1. SpecAgent] -> spec.yml
 
 ## Slide 13: Empirical Evaluation 1: Automated Unit Tests (11:00 - 11:45)
 - Automated Test Suite:
-  - **185 / 185 Tests Passing (100.0%)** across 9 comprehensive test files.
+  - **207 / 207 Tests Passing (100.0%)** across 10 comprehensive test files.
   - Coverage: Tokenizer FSM, tag attributes, implicit closure, entity decoding, DOM query API, streaming, error recovery, and plugin hooks.
   - Execution time: ~18.6 seconds total.
 > **Speaker Notes:**
@@ -259,7 +259,7 @@ Input Spec -> [1. SpecAgent] -> spec.yml
 1. **Partially Ordered Agent Pipeline:** Replaced black-box monolithic generation with an auditable 7-agent assembly line.
 2. **Concurrent Verification Model:** Demonstrated a 42% speedup via parallel audit execution.
 3. **Trace-Guided Self-Repair Loop:** Bounded iterative debugging with verifiable convergence.
-4. **Standalone Pure-Python HTML5 Engine:** 185 tests, 1,441 W3C tests (459 strict matches, 31.85%), 12 real-world websites, 15/15 adversarial resilience.
+4. **Standalone Pure-Python HTML5 Engine:** 207 tests, 1,441 W3C tests (459 strict matches, 31.85%), 12 real-world websites, 15/15 adversarial resilience.
 5. **Interactive Verification Tooling:** 4-tab live Quality Dashboard, CLI runner, and Jupyter walkthrough.
 > **Speaker Notes:**
 > "In summary, we have demonstrated that agentic AI with structured intermediate artifacts and closed-loop feedback provides a viable, trustworthy paradigm for software engineering."
@@ -295,7 +295,7 @@ Input Spec -> [1. SpecAgent] -> spec.yml
 ---
 
 ## Slide 25: Defense Backup: Live Terminal Quick Reference
-- `python cli.py test` $\rightarrow$ 185 unit tests
+- `python cli.py test` $\rightarrow$ 207 unit tests
 - `python cli.py dashboard` $\rightarrow$ Web GUI at `localhost:8080/dashboard/`
 - `python cli.py compliance` $\rightarrow$ W3C compliance runner
 - `python cli.py adversarial` $\rightarrow$ Red-team exploit suite

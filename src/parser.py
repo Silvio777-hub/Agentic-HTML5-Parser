@@ -674,7 +674,9 @@ class HTMLTokenizer:
         while i < len(html):
             char = html[i]
             
-            # DATA STATE: Normal character data
+            # DATA STATE: Normal character data (outside tags)
+            # In this state, character data is accumulated, ampersands trigger entity resolution,
+            # and '<' triggers a state transition to TAG_OPEN.
             if self.current_state == self.DATA_STATE:
                 if char == '<':
                     self.current_state = self.TAG_OPEN_STATE
@@ -692,7 +694,9 @@ class HTMLTokenizer:
                     tokens.append(Token(TokenType.CHARACTER, data=char))
                     self.trace.add_event("character_emitted", {"char": char})
             
-            # TAG_OPEN STATE: After '<'
+            # TAG_OPEN STATE: Evaluated immediately upon consuming '<'
+            # Inspects following character to differentiate between closing tags ('/'),
+            # comments or DOCTYPE ('!'), or normal element start tags.
             elif self.current_state == self.TAG_OPEN_STATE:
                 if char == '/':
                     # End tag
@@ -730,7 +734,8 @@ class HTMLTokenizer:
                     i += 1
                     continue
             
-            # TAG_NAME STATE: Reading tag name
+            # TAG_NAME STATE: Accumulates alphanumeric tag identifier
+            # Terminates upon reaching whitespace (moving to attributes) or '>' (emitting tag).
             elif self.current_state == self.TAG_NAME_STATE:
                 if char == '>':
                     if current_token:
@@ -761,7 +766,8 @@ class HTMLTokenizer:
                 else:
                     tag_name += char
             
-            # BEFORE_ATTRIBUTE_NAME STATE
+            # BEFORE_ATTRIBUTE_NAME STATE: Consumes whitespace delimiters between attributes
+            # Detects self-closing '/' or closing '>' before starting next attribute key.
             elif self.current_state == self.BEFORE_ATTRIBUTE_NAME_STATE:
                 if char == '>':
                     if current_token:
@@ -1049,8 +1055,10 @@ class HTMLParser:
                 self._process_doctype(token)
             elif token.type == TokenType.COMMENT:
                 self._process_comment(token)
+            # START_TAG: Instantiate element, evaluate implicit closures, and push to open scope
             elif token.type == TokenType.START_TAG:
                 self._process_start_tag(token)
+            # END_TAG: Pop element stack up to matching tag name to maintain well-formed hierarchy
             elif token.type == TokenType.END_TAG:
                 self._process_end_tag(token)
             elif token.type == TokenType.CHARACTER:

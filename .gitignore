@@ -134,5 +134,11 @@ sitecustomize.py
 SAD.png
 scripts/generate_sad.py
 
+# Meeting notes, audio transcripts and scratch files (local only)
+meeting2_audio.wav
+meeting2_transcript.txt
+great_dump.txt
+temp_meeting_frames/
+
 # Thesis drafts and references (local only)
 thesis/

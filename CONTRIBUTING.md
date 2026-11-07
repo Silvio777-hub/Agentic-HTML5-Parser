@@ -16,7 +16,7 @@ python -m pytest tests/ -v
 
 ### Running All Evaluation Scripts
 ```bash
-python cli.py test         # 34 unit & streaming tests
+python cli.py test         # 207 unit, streaming, DOM selector, and offline agent tests (10 test modules)
 python cli.py compliance   # W3C compliance suite
 python cli.py adversarial  # Red-team attack vectors
 python cli.py benchmark    # Latency benchmarks
