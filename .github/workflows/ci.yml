@@ -1,11 +1,7 @@
 # CI Pipeline — Agentic AI HTML5 Parser
 #
-# STATUS BADGE (add to README.md):
+# STATUS BADGE:
 #   ![CI](https://github.com/Silvio777-hub/Agentic-HTML5-Parser/actions/workflows/ci.yml/badge.svg)
-#   Replace <owner> and <repo> with your GitHub username and repository name.
-#
-# COVERAGE BADGE (requires codecov.io integration):
-#   [![codecov](https://codecov.io/gh/Silvio777-hub/Agentic-HTML5-Parser/branch/main/graph/badge.svg)](https://codecov.io/gh/Silvio777-hub/Agentic-HTML5-Parser)
 
 name: CI Pipeline
 
@@ -19,8 +15,17 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.9', '3.11', '3.13']
+        include:
+          - os: ubuntu-latest
+            python-version: '3.9'
+          - os: ubuntu-latest
+            python-version: '3.11'
+          - os: ubuntu-latest
+            python-version: '3.13'
+          - os: windows-latest
+            python-version: '3.11'
+          - os: windows-latest
+            python-version: '3.13'
       fail-fast: false
     runs-on: ${{ matrix.os }}
     name: Tests on ${{ matrix.os }} / Python ${{ matrix.python-version }}
