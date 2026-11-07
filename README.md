@@ -336,7 +336,7 @@ Agentic AI HTML5 Parser/
 â”œâ”€â”€ orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
 â”œâ”€â”€ config.py                       # Configuration: API keys, model names, paths
 â”œâ”€â”€ Dockerfile                      # Multi-stage Python container
-â”œâ”€â”€ docker-compose.yml              # Docker Compose (port 8082)
+â”œâ”€â”€ docker-compose.yml              # Docker Compose (port 8080)
 â”œâ”€â”€ pyproject.toml                  # PEP 517/518 project metadata & pytest configuration
 â”œâ”€â”€ requirements.txt                # Python dependencies
 â”œâ”€â”€ architecture.md                 # Full system diagrams, concurrency specs, agent contracts
@@ -436,7 +436,7 @@ Then open: **http://localhost:8080/dashboard/**
 ```powershell
 netstat -ano | findstr ":8080"
 ```
-Expected output: `TCP    0.0.0.0:8082    0.0.0.0:0    LISTENING`
+Expected output: `TCP    0.0.0.0:8080    0.0.0.0:0    LISTENING`
 
 ---
 
@@ -789,7 +789,7 @@ python -c "import anthropic; print('OK')"
 
 ### Port already in use (OSError: [WinError 10048])
 ```powershell
-# Find which process is using port 8082
+# Find which process is using port 8080
 netstat -ano | findstr ":8080"
 # Start on a different port instead
 python scripts/serve_dashboard.py --no-browser --port 8090
