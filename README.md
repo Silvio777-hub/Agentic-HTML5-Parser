@@ -309,7 +309,7 @@ Agentic AI HTML5 Parser/
 │   ├── security_audit_report.json    # AST code scan findings & STRIDE matrix
 │   └── self_repair_demo_result.json  # Audit trail of live self-healing run
 │
-├── figures/                        ← 7 × 300-DPI PUBLICATION FIGURES
+├── figures/                        ← 7 × 300-DPI PUBLICATION FIGURES (local only, generated via: python cli.py charts)
 │   ├── 01_latency_vs_parsers.png          # Comparative latency bar chart (our parser vs BS4, lxml)
 │   ├── 02_memory_consumption.png          # Peak memory comparison across parsers
 │   ├── 03_repair_pattern_distribution.png # Error taxonomy pie chart (self-repair loop)
@@ -318,7 +318,7 @@ Agentic AI HTML5 Parser/
 │   ├── 06_w3c_compliance_progression.png  # W3C match progression: 0% → 31.85% over iterations
 │   └── 07_real_world_corpus_profile.png   # 12-site real-world corpus parse success profile
 │
-├── presentation/                   ← THESIS DEFENSE MATERIALS
+├── presentation/                   ← THESIS DEFENSE MATERIALS (local only)
 │   ├── defense_presentation.md     # 25-slide Markdown deck with speaker notes
 │   ├── defense_qa_prep.md          # Viva voce cheat sheet — 25 likely examiner questions + answers
 │   └── slides.html                 # Interactive 17-slide HTML5 defense deck (open in any browser)

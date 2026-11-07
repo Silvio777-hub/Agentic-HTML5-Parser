@@ -143,3 +143,9 @@ temp_meeting_frames/
 # Thesis drafts and references (local only)
 thesis/
 meetings/
+
+# Presentation and defense slides (local only)
+presentation/
+
+# Generated publication charts (local only, reproducible via python cli.py charts)
+figures/
