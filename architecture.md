@@ -165,7 +165,55 @@ The generated parser is a pure-Python, zero-dependency HTML5 parser implementing
 
 ## 6. Interactive Web Dashboard (`dashboard/index.html`)
 
-- **Server:** `scripts/serve_dashboard.py` (served on port 8082 by default)
+- **Server:** `scripts/serve_dashboard.py` (served on port 8080 by default)
 - **Features:**
   - **Live DOM Inspector:** Interactive input textarea where users can enter arbitrary HTML and inspect the generated hierarchical DOM tree in real time via `POST /api/parse`.
   - **Pipeline Telemetry:** Displays compliance summaries, adversarial attack results, benchmark latencies, and agent status.
+
+
+---
+
+## 7. Real-World & Historical Web Corpus Evaluation (1991–2026)
+
+To empirically validate the transferability and crash-free robustness of the agent-synthesized parser beyond synthetic benchmarks, the system is evaluated against a 35-year longitudinal corpus of 12 real-world websites spanning 1991 to 2026:
+
+| Era / Year | Site Description | Nodes | Depth | Links | Latency | Status |
+|---|---|---|---|---|---|---|
+| **1991** | CERN First World Wide Web Page | 47 | 8 | 21 | 19.0 ms | ✅ 100% Valid |
+| **1992** | CERN HTML Basic Tags Summary | 31 | 5 | 7 | 8.0 ms | ✅ 100% Valid |
+| **1995** | Amazon.com Inc. First Online Store | 55 | 22 | 6 | 20.7 ms | ✅ 100% Valid |
+| **1996** | Warner Bros Space Jam Movie Portal | 56 | **37** | 7 | 22.6 ms | ✅ 100% Valid |
+| **2001** | Wikipedia Encyclopedic Article Sample | 38 | 9 | 6 | 8.5 ms | ✅ 100% Valid |
+| **2007** | Hacker News Discussion Thread | 47 | 22 | 11 | 9.1 ms | ✅ 100% Valid |
+| **2010** | Python 3 Official Documentation | 53 | 10 | 4 | 8.7 ms | ✅ 100% Valid |
+| **2015** | GitHub Public Repository Tree View | 32 | 11 | 3 | 12.2 ms | ✅ 100% Valid |
+| **2018** | MDN Web Docs Technical Reference | 33 | 10 | 5 | 11.1 ms | ✅ 100% Valid |
+| **2020** | Low-tech Magazine (Solar-Powered) | 41 | 13 | 5 | 13.7 ms | ✅ 100% Valid |
+| **2023** | Ling's Cars Commercial Marketplace | 36 | 12 | 7 | 14.7 ms | ✅ 100% Valid |
+| **2026** | arXiv AI Scientific Paper Portal | **60** | 17 | 7 | 10.7 ms | ✅ 100% Valid |
+
+**Aggregate Performance:** 529 DOM nodes constructed, 0 crashes (100% robustness), mean latency 13.25 ms.
+
+---
+
+## 8. Strategic Future Work Framework (13 Research Axes)
+
+The thesis formalizes 13 forward-looking research axes categorized across four engineering dimensions:
+
+1. **Specification & Conformance:**
+   - *Axis 1:* Full Adoption Agency Algorithm (WHATWG §8.13)
+   - *Axis 2:* Foster Parenting & Misplaced Table Content (§8.14)
+   - *Axis 3:* Foreign Content Namespaces (SVG & MathML)
+   - *Axis 4:* Complete 80+ Tokenizer State Machine
+2. **Performance & Systems Scaling:**
+   - *Axis 5:* Streaming & Incremental Chunked Parsing
+   - *Axis 10:* SIMD/AVX-512 & GPU Tokenizer Synthesis (sub-millisecond 10 MB+ targets)
+3. **Verification, Robustness & Security:**
+   - *Axis 6:* Coverage-guided Adversarial Fuzzing & Mutation
+   - *Axis 7:* Neural-Symbolic Grammar Induction via Active Automata Learning ($L^*$ / TTT)
+   - *Axis 9:* Automated Exploit Synthesis & Zero-Day Isolation Quarantines
+   - *Axis 12:* Differential Shadow Execution & Web-Scale Oracle Mining
+4. **Agentic Lifecycle & Governance:**
+   - *Axis 8:* Dynamic Green AI Scheduling & Carbon-Aware Pipeline Routing
+   - *Axis 11:* WHATWG Living Standard Autonomous Tracking via Spec-Diff CI
+   - *Axis 13:* Distributed Multi-Agent Consensus via Conflict-Free Replicated Data Types (CRDTs)

@@ -1,4 +1,4 @@
-# Agentic AI HTML5 Parser — Complete Implementation Guide
+﻿# Agentic AI HTML5 Parser â€” Complete Implementation Guide
 
 > **Author:** Opoka JM Silvio | **Degree:** MSc Computer Science | **Academic Year:** 2026/2027
 > **Python:** 3.9+ (tested on 3.11 and 3.13) | **Model:** Claude 3.5 Sonnet | **Port:** 8080 (default)
@@ -7,7 +7,7 @@
 
 ---
 
-## ⚡ Quick Start
+## âš¡ Quick Start
 
 ```bash
 git clone https://github.com/Silvio777-hub/Agentic-HTML5-Parser.git
@@ -20,48 +20,48 @@ python cli.py repl          # Interactive terminal REPL with live telemetry & se
 python cli.py dashboard     # Live DOM Inspector at http://localhost:8080/dashboard/
 ```
 
-→ See [quickstart.md](quickstart.md) for full setup instructions including the LLM pipeline.
+â†’ See [quickstart.md](quickstart.md) for full setup instructions including the LLM pipeline.
 
 ---
 
-## 📊 Key Results
+## ðŸ“Š Key Results
 
 | Metric | Result |
 |---|---|
-| Automated Tests | ✅ **207/207 passed** |
-| Adversarial Resilience | ✅ **15/15 (100%)** |
-| W3C Upstream Robustness | ✅ **1,441/1,441 (100%)** (459 strict matches, 31.85%) |
-| W3C 6-Bucket Functional Matrix | ✅ **31/31 (100%)** |
+| Automated Tests | âœ… **207/207 passed** |
+| Adversarial Resilience | âœ… **15/15 (100%)** |
+| W3C Upstream Robustness | âœ… **1,441/1,441 (100%)** (459 strict matches, 31.85%) |
+| W3C 6-Bucket Functional Matrix | âœ… **31/31 (100%)** |
 | Parallel Stage Speedup | **~42% wall-clock reduction** (Critique + Red-Team concurrent) |
-| Self-Repair Loops | **3 iterations max** — automated trace-guided patching |
+| Self-Repair Loops | **3 iterations max** â€” automated trace-guided patching |
 | Parser Benchmark vs BeautifulSoup4 | **352 ms/doc** vs 237 ms/doc (pure Python, no C extensions) |
-| Parser Benchmark vs lxml (C) | 83× slower — expected; lxml uses native C code |
+| Parser Benchmark vs lxml (C) | 83Ã— slower â€” expected; lxml uses native C code |
 
 ---
 
 ## Project Overview
 
-This project implements a **trustworthy HTML5 parser development pipeline** using **agentic AI** (Claude 3.5 Sonnet). The system orchestrates **7 specialized AI agents** that collaboratively design, implement, test, and self-repair an HTML5 parser component — benchmarked against BeautifulSoup4 and lxml, validated against the W3C `html5lib` official test suite.
+This project implements a **trustworthy HTML5 parser development pipeline** using **agentic AI** (Claude 3.5 Sonnet). The system orchestrates **7 specialized AI agents** that collaboratively design, implement, test, and self-repair an HTML5 parser component â€” benchmarked against BeautifulSoup4 and lxml, validated against the W3C `html5lib` official test suite.
 
 ### Key Innovation: Artifact-Based Agentic Assembly Line
 
 Rather than treating AI as a black-box code generator, this system:
-- Breaks development into **discrete AI-assisted stages** (Spec → Code → Review → Test → Attack → Monitor → Repair)
+- Breaks development into **discrete AI-assisted stages** (Spec â†’ Code â†’ Review â†’ Test â†’ Attack â†’ Monitor â†’ Repair)
 - Uses **intermediate artifacts** (specs, patches, tests) for full transparency and auditability
 - Implements **iterative self-repair loops** driven by real execution traces and test failures
 - Achieves **100% crash-free robustness** on 1,441 upstream W3C html5lib tests (459/1,441 strict tree matches, 31.85%), **100% adversarial resilience** (15/15 attack vectors), and **100% functional matrix** (31/31 buckets)
 - Employs **concurrency via ThreadPoolExecutor** for independent agent evaluations (Critique & Red-Team)
 - Provides a **live interactive web dashboard** with DOM Tree Inspector at `http://localhost:8080/dashboard/`
 
-> ⚠️ **Scope Note:** The parser implements an HTML5 structural subset. Full WHATWG spec compliance (adoption agency algorithm, full foster parenting, foreign content) is identified as future work. See [architecture.md](architecture.md) for scope details.
+> âš ï¸ **Scope Note:** The parser implements an HTML5 structural subset. Full WHATWG spec compliance (adoption agency algorithm, full foster parenting, foreign content) is identified as future work. See [architecture.md](architecture.md) for scope details.
 
-> 📐 **Architecture Reference:** See [architecture.md](architecture.md) for full system diagrams, concurrency specifications, and agent contracts.
+> ðŸ“ **Architecture Reference:** See [architecture.md](architecture.md) for full system diagrams, concurrency specifications, and agent contracts.
 
 ---
 
 ## 7 Core AI Agents
 
-### 1. SpecAgentAI — The Architect (`src/claude_integration.py`)
+### 1. SpecAgentAI â€” The Architect (`src/claude_integration.py`)
 **Responsibility:** Reads the W3C HTML5 specification and converts complex rules into a structured engineering blueprint.
 
 **Input:**
@@ -69,7 +69,7 @@ Rather than treating AI as a black-box code generator, this system:
 - Parser interface contract
 
 **Output:**
-- `spec.yml` — YAML specification containing tokenizer states, parsing rules, implicit tag closure behaviours, and expected test cases
+- `spec.yml` â€” YAML specification containing tokenizer states, parsing rules, implicit tag closure behaviours, and expected test cases
 
 ```yaml
 # Example spec.yml output
@@ -90,7 +90,7 @@ test_cases:
 
 ---
 
-### 2. CodegenAgentAI — The Lead Coder (`src/claude_integration.py`)
+### 2. CodegenAgentAI â€” The Lead Coder (`src/claude_integration.py`)
 **Responsibility:** Translates the specification blueprint into clean, compliant Python parsing code.
 
 **Input:**
@@ -99,11 +99,11 @@ test_cases:
 - List of features to implement
 
 **Output:**
-- `code.patch` — Unified diff patch with tokenizer enhancements, tree construction logic, implicit closure handling, and inline documentation
+- `code.patch` â€” Unified diff patch with tokenizer enhancements, tree construction logic, implicit closure handling, and inline documentation
 
 ---
 
-### 3. CritiqueAgentAI — The Code Reviewer (`src/claude_integration.py`)
+### 3. CritiqueAgentAI â€” The Code Reviewer (`src/claude_integration.py`)
 **Responsibility:** Reviews generated code against the specification for quality, performance, and style.
 
 **Input:**
@@ -114,14 +114,14 @@ test_cases:
 **Output:**
 - Approval decision (approve/reject)
 - Issues found (if any)
-- Confidence score (0–100%)
+- Confidence score (0â€“100%)
 - Improvement recommendations
 
-**Runs in parallel** with RedTeamAgentAI via `ThreadPoolExecutor` (≈42% wall-clock speedup).
+**Runs in parallel** with RedTeamAgentAI via `ThreadPoolExecutor` (â‰ˆ42% wall-clock speedup).
 
 ---
 
-### 4. TestAgentAI — The QA Engineer (`src/claude_integration.py`)
+### 4. TestAgentAI â€” The QA Engineer (`src/claude_integration.py`)
 **Responsibility:** Runs the official W3C `html5lib-tests` compliance suite and reports exact failure diffs.
 
 **Input:**
@@ -129,18 +129,18 @@ test_cases:
 - Parser interface documentation
 
 **Output:**
-- `test_parser.py` — pytest test suite covering tokenization, tree construction, implicit closure, edge cases, with docstrings
+- `test_parser.py` â€” pytest test suite covering tokenization, tree construction, implicit closure, edge cases, with docstrings
 
 **Test Coverage:**
-- ✓ Basic functionality
-- ✓ Attribute parsing
-- ✓ Nested structures
-- ✓ Self-closing tags
-- ✓ Error handling
+- âœ“ Basic functionality
+- âœ“ Attribute parsing
+- âœ“ Nested structures
+- âœ“ Self-closing tags
+- âœ“ Error handling
 
 ---
 
-### 5. RedTeamAgentAI — The Ethical Hacker (`src/claude_integration.py`)
+### 5. RedTeamAgentAI â€” The Ethical Hacker (`src/claude_integration.py`)
 **Responsibility:** Attacks the parser with 15 adversarial, malicious, and malformed HTML inputs.
 
 **Input:**
@@ -148,14 +148,14 @@ test_cases:
 - Known vulnerability patterns
 
 **Output:**
-- `test_red_team.py` — adversarial test suite including deeply nested structures (200+ levels), script injection, unclosed tags, long attributes (5000 chars), Unicode/emoji, zero-width spaces
+- `test_red_team.py` â€” adversarial test suite including deeply nested structures (200+ levels), script injection, unclosed tags, long attributes (5000 chars), Unicode/emoji, zero-width spaces
 
 **Result: 100% Resilience Rate (15/15 attacks survived)**
 
 ---
 
-### 6. MonitorAgentAI — The DevOps Safety Watchdog (`src/claude_integration.py`)
-**Responsibility:** Watches parser execution traces for anomalies — memory spikes, timeout violations, infinite loops.
+### 6. MonitorAgentAI â€” The DevOps Safety Watchdog (`src/claude_integration.py`)
+**Responsibility:** Watches parser execution traces for anomalies â€” memory spikes, timeout violations, infinite loops.
 
 **Input:**
 - Parser execution traces (from `parse_with_trace()`)
@@ -167,15 +167,15 @@ test_cases:
 - Recommendations
 
 **Monitoring Points:**
-- ✓ Recursion depth violations
-- ✓ Memory exhaustion
-- ✓ Timeout violations (< 50ms target)
-- ✓ Inefficient algorithms
-- ✓ State machine errors
+- âœ“ Recursion depth violations
+- âœ“ Memory exhaustion
+- âœ“ Timeout violations (< 50ms target)
+- âœ“ Inefficient algorithms
+- âœ“ State machine errors
 
 ---
 
-### 7. RepairAgentAI — The Master Mechanic (`src/claude_integration.py`)
+### 7. RepairAgentAI â€” The Master Mechanic (`src/claude_integration.py`)
 **Responsibility:** Analyses failing test traces and autonomously writes unified `.patch` diffs to self-heal bugs.
 
 **Input:**
@@ -184,7 +184,7 @@ test_cases:
 - Current implementation
 
 **Output:**
-- `repair_N.patch` — Targeted fix with root-cause analysis, minimal changes, explanatory comments
+- `repair_N.patch` â€” Targeted fix with root-cause analysis, minimal changes, explanatory comments
 
 **Repair Strategy:**
 - Analyse failing test evidence
@@ -197,52 +197,52 @@ test_cases:
 ## Pipeline Workflow
 
 ```
-┌─────────────────────────────────────────────┐
-│  Human-defined HTML5 Subset + Interface     │
-└────────────────────┬────────────────────────┘
-                     │
-                     ▼
-            ┌─────────────────┐
-            │  SpecAgentAI    │  → spec.yml
-            │ (Architect)     │
-            └────────┬────────┘
-                     │
-                     ▼
-            ┌─────────────────┐
-            │ CodegenAgentAI  │  → code.patch
-            │ (Lead Coder)    │
-            └────────┬────────┘
-                     │
-          ┌──────────┴──────────┐  ← Parallel via ThreadPoolExecutor
-          ▼                     ▼
-┌─────────────────┐   ┌─────────────────┐
-│ CritiqueAgentAI │   │ RedTeamAgentAI  │
-│ (Code Reviewer) │   │ (Ethical Hacker)│
-└────────┬────────┘   └────────┬────────┘
-          └──────────┬──────────┘
-                     ▼
-            ┌─────────────────┐
-            │  TestAgentAI    │  → test_report.json
-            │  (QA Engineer)  │
-            └────────┬────────┘
-                     ▼
-            ┌─────────────────┐
-            │ MonitorAgentAI  │  → health report
-            │  (Watchdog)     │
-            └────────┬────────┘
-                     │
-         ┌───────────▼───────────┐
-         │    Tests Passed?      │──NO──┐
-         └───────────┬───────────┘      │
-                     │ YES              ▼
-                     ▼       ┌─────────────────┐
-              ┌──────────┐   │  RepairAgentAI  │ → repair_N.patch
-              │ SUCCESS  │   │  (Mechanic)     │ (max 3 iterations)
-              └──────────┘   └────────┬────────┘
-                                      │
-                              ┌───────▼────────┐
-                              │ Re-run tests   │
-                              └────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Human-defined HTML5 Subset + Interface     â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â”‚
+                     â–¼
+            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+            â”‚  SpecAgentAI    â”‚  â†’ spec.yml
+            â”‚ (Architect)     â”‚
+            â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â”‚
+                     â–¼
+            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+            â”‚ CodegenAgentAI  â”‚  â†’ code.patch
+            â”‚ (Lead Coder)    â”‚
+            â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â”‚
+          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â† Parallel via ThreadPoolExecutor
+          â–¼                     â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ CritiqueAgentAI â”‚   â”‚ RedTeamAgentAI  â”‚
+â”‚ (Code Reviewer) â”‚   â”‚ (Ethical Hacker)â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â–¼
+            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+            â”‚  TestAgentAI    â”‚  â†’ test_report.json
+            â”‚  (QA Engineer)  â”‚
+            â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â–¼
+            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+            â”‚ MonitorAgentAI  â”‚  â†’ health report
+            â”‚  (Watchdog)     â”‚
+            â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                     â”‚
+         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+         â”‚    Tests Passed?      â”‚â”€â”€NOâ”€â”€â”
+         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â”‚
+                     â”‚ YES              â–¼
+                     â–¼       â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+              â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚  RepairAgentAI  â”‚ â†’ repair_N.patch
+              â”‚ SUCCESS  â”‚   â”‚  (Mechanic)     â”‚ (max 3 iterations)
+              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                                      â”‚
+                              â”Œâ”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”
+                              â”‚ Re-run tests   â”‚
+                              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
@@ -251,108 +251,108 @@ test_cases:
 
 ```
 Agentic AI HTML5 Parser/
-│
-├── src/                            ← CORE ENGINE & AGENT LOGIC
-│   ├── parser.py                   # Pure-Python HTML5 Tokenizer (FSM), DOM Tree builder & Streaming API
-│   ├── claude_integration.py       # All 7 Claude-powered AI Agent classes
-│   ├── cache.py                    # SHA-256 On-Disk ResponseCache ($0.00 repeat cost, 0.00s latency on hit)
-│   ├── parallel_runner.py          # ThreadPoolExecutor parallel dispatcher (42% speedup)
-│   ├── llm_provider.py             # Multi-model abstraction (Claude 3.5, GPT-4o, local Ollama, Mock)
-│   ├── plugin_manager.py           # Plugin loader and hook dispatcher
-│   └── utils.py                    # ArtifactManager, PatchManager, ReportGenerator
-│
-├── scripts/                        ← AUTOMATION, BENCHMARKS & RESEARCH TOOLS
-│   ├── serve_dashboard.py          # HTTP server + Live POST /api/parse REST endpoint
-│   ├── run_compliance.py           # W3C html5lib-tests compliance runner
-│   ├── run_upstream_matrix.py      # 6-bucket functional matrix across 1,441 upstream tests
-│   ├── setup_upstream_tests.py     # 1-click downloader for 1,000+ W3C tests
-│   ├── compare_benchmarks.py       # Latency & memory benchmark vs BeautifulSoup4, html5lib, lxml
-│   ├── run_adversarial.py          # 15 red-team attack vectors (100% resilience)
-│   ├── run_ablation_study.py       # Empirical ablation: proves each agent's contribution
-│   ├── generate_thesis_charts.py   # Auto-generates 7 publication-ready 300-DPI figures
-│   ├── eval_real_world_pages.py    # 12-site real-world corpus evaluation (1991–2026)
-│   ├── estimate_carbon.py          # Green AI energy consumption & CO2 calculator
-│   ├── repair_pattern_mining.py    # Statistical failure taxonomy miner
-│   ├── demo_self_repair.py         # Live self-healing demo (inject bug → auto-patch)
-│   ├── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
-│   ├── compile_thesis_docx.py      # Compiles all thesis chapters into Master_Thesis_Silvio.docx (local only)
-│   ├── generate_future_docx.py     # Generates Future Works research roadmap document (local only)
-│   └── generate_viva_docx.py       # Generates VIVA.docx oral defense master Q&A guide (local only)
-│
-├── dashboard/                      ← INTERACTIVE 5-TAB WEB DASHBOARD
-│   └── index.html                  # Bootstrap 5: Compliance · Benchmark · Adversarial · Ablation · Real-World
-│
-├── tests/                          ← AUTOMATED TEST SUITE (207 tests, 100% passing)
-│   ├── conftest.py                 # Shared pytest fixtures
-│   ├── test_agent_pipeline_offline.py # Offline integration tests for all 7 Claude agents
-│   ├── test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
-│   ├── test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
-│   ├── test_dom_query_and_html_emitter.py  # DOM query API & HTML serializer
-│   ├── test_entity_decoding.py     # HTML entity decoding (named, numeric, hex)
-│   ├── test_new_features.py        # Plugin system, Multi-LLM provider, Parallel runner
-│   ├── test_ollama_provider.py     # Ollama local LLM provider tests
-│   ├── test_parallel_and_utils.py  # ThreadPool concurrency, ArtifactManager, PatchManager
-│   ├── test_rawtext_and_comments.py # Raw text elements (script/style) & comment nodes
-│   └── test_whatwg_boundary.py     # WHATWG boundary conditions & edge cases
-│
-├── data/                           ← EXPERIMENTAL RESULTS & AUDIT ARTIFACTS
-│   ├── sample_compliance_tests.dat # 10 bundled W3C test cases in official .dat format
-│   ├── tests1.dat                  # Additional W3C tree-construction test cases
-│   ├── compliance_results.json     # W3C upstream compliance results (1,441 tests, 100% robustness)
-│   ├── upstream_matrix_report.json # 6-bucket functional matrix report (31/31 passes)
-│   ├── real_world_results.json     # 12-site real-world corpus results (100% parse success)
-│   ├── benchmark_results.json      # Latency, throughput, peak memory benchmarks
-│   ├── adversarial_results.json    # Red-team stress test results (15/15 passed)
-│   ├── ablation_study_results.json # Multi-agent contribution experiment results
-│   ├── repair_patterns_analysis.json # Statistical distribution of recurring failure modes
-│   ├── carbon_footprint_report.json  # Green AI energy & CO2 measurements
-│   ├── security_audit_report.json    # AST code scan findings & STRIDE matrix
-│   └── self_repair_demo_result.json  # Audit trail of live self-healing run
-│
-├── figures/                        ← 7 × 300-DPI PUBLICATION FIGURES
-│   ├── 01_latency_vs_parsers.png          # Comparative latency bar chart (our parser vs BS4, lxml)
-│   ├── 02_memory_consumption.png          # Peak memory comparison across parsers
-│   ├── 03_repair_pattern_distribution.png # Error taxonomy pie chart (self-repair loop)
-│   ├── 04_parallel_speedup.png            # ThreadPool 42% wall-clock speedup demonstration
-│   ├── 05_ablation_comparison.png         # Per-agent ablation comparison (7-agent vs subsets)
-│   ├── 06_w3c_compliance_progression.png  # W3C match progression: 0% → 31.85% over iterations
-│   └── 07_real_world_corpus_profile.png   # 12-site real-world corpus parse success profile
-│
-├── presentation/                   ← THESIS DEFENSE MATERIALS
-│   ├── defense_presentation.md     # 25-slide Markdown deck with speaker notes
-│   ├── defense_qa_prep.md          # Viva voce cheat sheet — 25 likely examiner questions + answers
-│   └── slides.html                 # Interactive 17-slide HTML5 defense deck (open in any browser)
-│
-├── plugins/example_lint/           ← PLUGIN SYSTEM EXAMPLE
-│   ├── plugin.yml                  # Plugin manifest (name, version, hook points)
-│   └── lint_rule.py                # Example lint rule demonstrating the plugin API
-│
-├── cache/                          ← SHA-256 RESPONSE CACHE
-│   └── .gitkeep                    # Cached LLM responses stored here (replay = $0.00, 0.00s latency)
-│
-├── .github/workflows/ci.yml        ← GITHUB ACTIONS CI/CD PIPELINE
-│
-├── cli.py                          # Master CLI (one command to run everything)
-├── orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
-├── config.py                       # Configuration: API keys, model names, paths
-├── Dockerfile                      # Multi-stage Python container
-├── docker-compose.yml              # Docker Compose (port 8082)
-├── pyproject.toml                  # PEP 517/518 project metadata & pytest configuration
-├── requirements.txt                # Python dependencies
-├── architecture.md                 # Full system diagrams, concurrency specs, agent contracts
-├── quickstart.md                   # Step-by-step setup guide including LLM pipeline
-├── CONTRIBUTING.md                 # Contribution guidelines
-├── demo_walkthrough.ipynb          # Interactive Jupyter notebook walkthrough
-├── .env.example                    # API key template — copy to .env and fill in keys
-└── README.md                       # This file
+â”‚
+â”œâ”€â”€ src/                            â† CORE ENGINE & AGENT LOGIC
+â”‚   â”œâ”€â”€ parser.py                   # Pure-Python HTML5 Tokenizer (FSM), DOM Tree builder & Streaming API
+â”‚   â”œâ”€â”€ claude_integration.py       # All 7 Claude-powered AI Agent classes
+â”‚   â”œâ”€â”€ cache.py                    # SHA-256 On-Disk ResponseCache ($0.00 repeat cost, 0.00s latency on hit)
+â”‚   â”œâ”€â”€ parallel_runner.py          # ThreadPoolExecutor parallel dispatcher (42% speedup)
+â”‚   â”œâ”€â”€ llm_provider.py             # Multi-model abstraction (Claude 3.5, GPT-4o, local Ollama, Mock)
+â”‚   â”œâ”€â”€ plugin_manager.py           # Plugin loader and hook dispatcher
+â”‚   â””â”€â”€ utils.py                    # ArtifactManager, PatchManager, ReportGenerator
+â”‚
+â”œâ”€â”€ scripts/                        â† AUTOMATION, BENCHMARKS & RESEARCH TOOLS
+â”‚   â”œâ”€â”€ serve_dashboard.py          # HTTP server + Live POST /api/parse REST endpoint
+â”‚   â”œâ”€â”€ run_compliance.py           # W3C html5lib-tests compliance runner
+â”‚   â”œâ”€â”€ run_upstream_matrix.py      # 6-bucket functional matrix across 1,441 upstream tests
+â”‚   â”œâ”€â”€ setup_upstream_tests.py     # 1-click downloader for 1,000+ W3C tests
+â”‚   â”œâ”€â”€ compare_benchmarks.py       # Latency & memory benchmark vs BeautifulSoup4, html5lib, lxml
+â”‚   â”œâ”€â”€ run_adversarial.py          # 15 red-team attack vectors (100% resilience)
+â”‚   â”œâ”€â”€ run_ablation_study.py       # Empirical ablation: proves each agent's contribution
+â”‚   â”œâ”€â”€ generate_thesis_charts.py   # Auto-generates 7 publication-ready 300-DPI figures
+â”‚   â”œâ”€â”€ eval_real_world_pages.py    # 12-site real-world corpus evaluation (1991â€“2026)
+â”‚   â”œâ”€â”€ estimate_carbon.py          # Green AI energy consumption & CO2 calculator
+â”‚   â”œâ”€â”€ repair_pattern_mining.py    # Statistical failure taxonomy miner
+â”‚   â”œâ”€â”€ demo_self_repair.py         # Live self-healing demo (inject bug â†’ auto-patch)
+â”‚   â”œâ”€â”€ run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
+â”‚   â”œâ”€â”€ compile_thesis_docx.py      # Compiles all thesis chapters into Master_Thesis_Silvio.docx (local only)
+â”‚   â”œâ”€â”€ generate_future_docx.py     # Generates Future Works research roadmap document (local only)
+â”‚   â””â”€â”€ generate_viva_docx.py       # Generates VIVA.docx oral defense master Q&A guide (local only)
+â”‚
+â”œâ”€â”€ dashboard/                      â† INTERACTIVE 5-TAB WEB DASHBOARD
+â”‚   â””â”€â”€ index.html                  # Bootstrap 5: Compliance Â· Benchmark Â· Adversarial Â· Ablation Â· Real-World
+â”‚
+â”œâ”€â”€ tests/                          â† AUTOMATED TEST SUITE (207 tests, 100% passing)
+â”‚   â”œâ”€â”€ conftest.py                 # Shared pytest fixtures
+â”‚   â”œâ”€â”€ test_agent_pipeline_offline.py # Offline integration tests for all 7 Claude agents
+â”‚   â”œâ”€â”€ test_integration.py         # 32 tests: Tokenizer, Parser, Implicit Closure, Traces, Edge Cases
+â”‚   â”œâ”€â”€ test_streaming.py           # 2 tests: tokenize_stream() and parse_stream() generators
+â”‚   â”œâ”€â”€ test_dom_query_and_html_emitter.py  # DOM query API & HTML serializer
+â”‚   â”œâ”€â”€ test_entity_decoding.py     # HTML entity decoding (named, numeric, hex)
+â”‚   â”œâ”€â”€ test_new_features.py        # Plugin system, Multi-LLM provider, Parallel runner
+â”‚   â”œâ”€â”€ test_ollama_provider.py     # Ollama local LLM provider tests
+â”‚   â”œâ”€â”€ test_parallel_and_utils.py  # ThreadPool concurrency, ArtifactManager, PatchManager
+â”‚   â”œâ”€â”€ test_rawtext_and_comments.py # Raw text elements (script/style) & comment nodes
+â”‚   â””â”€â”€ test_whatwg_boundary.py     # WHATWG boundary conditions & edge cases
+â”‚
+â”œâ”€â”€ data/                           â† EXPERIMENTAL RESULTS & AUDIT ARTIFACTS
+â”‚   â”œâ”€â”€ sample_compliance_tests.dat # 10 bundled W3C test cases in official .dat format
+â”‚   â”œâ”€â”€ tests1.dat                  # Additional W3C tree-construction test cases
+â”‚   â”œâ”€â”€ compliance_results.json     # W3C upstream compliance results (1,441 tests, 100% robustness)
+â”‚   â”œâ”€â”€ upstream_matrix_report.json # 6-bucket functional matrix report (31/31 passes)
+â”‚   â”œâ”€â”€ real_world_results.json     # 12-site real-world corpus results (100% parse success)
+â”‚   â”œâ”€â”€ benchmark_results.json      # Latency, throughput, peak memory benchmarks
+â”‚   â”œâ”€â”€ adversarial_results.json    # Red-team stress test results (15/15 passed)
+â”‚   â”œâ”€â”€ ablation_study_results.json # Multi-agent contribution experiment results
+â”‚   â”œâ”€â”€ repair_patterns_analysis.json # Statistical distribution of recurring failure modes
+â”‚   â”œâ”€â”€ carbon_footprint_report.json  # Green AI energy & CO2 measurements
+â”‚   â”œâ”€â”€ security_audit_report.json    # AST code scan findings & STRIDE matrix
+â”‚   â””â”€â”€ self_repair_demo_result.json  # Audit trail of live self-healing run
+â”‚
+â”œâ”€â”€ figures/                        â† 7 Ã— 300-DPI PUBLICATION FIGURES
+â”‚   â”œâ”€â”€ 01_latency_vs_parsers.png          # Comparative latency bar chart (our parser vs BS4, lxml)
+â”‚   â”œâ”€â”€ 02_memory_consumption.png          # Peak memory comparison across parsers
+â”‚   â”œâ”€â”€ 03_repair_pattern_distribution.png # Error taxonomy pie chart (self-repair loop)
+â”‚   â”œâ”€â”€ 04_parallel_speedup.png            # ThreadPool 42% wall-clock speedup demonstration
+â”‚   â”œâ”€â”€ 05_ablation_comparison.png         # Per-agent ablation comparison (7-agent vs subsets)
+â”‚   â”œâ”€â”€ 06_w3c_compliance_progression.png  # W3C match progression: 0% â†’ 31.85% over iterations
+â”‚   â””â”€â”€ 07_real_world_corpus_profile.png   # 12-site real-world corpus parse success profile
+â”‚
+â”œâ”€â”€ presentation/                   â† THESIS DEFENSE MATERIALS
+â”‚   â”œâ”€â”€ defense_presentation.md     # 25-slide Markdown deck with speaker notes
+â”‚   â”œâ”€â”€ defense_qa_prep.md          # Viva voce cheat sheet â€” 25 likely examiner questions + answers
+â”‚   â””â”€â”€ slides.html                 # Interactive 17-slide HTML5 defense deck (open in any browser)
+â”‚
+â”œâ”€â”€ plugins/example_lint/           â† PLUGIN SYSTEM EXAMPLE
+â”‚   â”œâ”€â”€ plugin.yml                  # Plugin manifest (name, version, hook points)
+â”‚   â””â”€â”€ lint_rule.py                # Example lint rule demonstrating the plugin API
+â”‚
+â”œâ”€â”€ cache/                          â† SHA-256 RESPONSE CACHE
+â”‚   â””â”€â”€ .gitkeep                    # Cached LLM responses stored here (replay = $0.00, 0.00s latency)
+â”‚
+â”œâ”€â”€ .github/workflows/ci.yml        â† GITHUB ACTIONS CI/CD PIPELINE
+â”‚
+â”œâ”€â”€ cli.py                          # Master CLI (one command to run everything)
+â”œâ”€â”€ orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
+â”œâ”€â”€ config.py                       # Configuration: API keys, model names, paths
+â”œâ”€â”€ Dockerfile                      # Multi-stage Python container
+â”œâ”€â”€ docker-compose.yml              # Docker Compose (port 8082)
+â”œâ”€â”€ pyproject.toml                  # PEP 517/518 project metadata & pytest configuration
+â”œâ”€â”€ requirements.txt                # Python dependencies
+â”œâ”€â”€ architecture.md                 # Full system diagrams, concurrency specs, agent contracts
+â”œâ”€â”€ quickstart.md                   # Step-by-step setup guide including LLM pipeline
+â”œâ”€â”€ CONTRIBUTING.md                 # Contribution guidelines
+â”œâ”€â”€ demo_walkthrough.ipynb          # Interactive Jupyter notebook walkthrough
+â”œâ”€â”€ .env.example                    # API key template â€” copy to .env and fill in keys
+â””â”€â”€ README.md                       # This file
 ```
 
 
 ---
 
-## 🔑 Environment Setup (API Keys)
+## ðŸ”‘ Environment Setup (API Keys)
 
-### Step 1 — Copy the environment template
+### Step 1 â€” Copy the environment template
 
 **Windows PowerShell:**
 ```powershell
@@ -364,7 +364,7 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-### Step 2 — Edit `.env` and add your keys
+### Step 2 â€” Edit `.env` and add your keys
 
 Open `.env` in any text editor and fill in:
 ```env
@@ -381,7 +381,7 @@ OLLAMA_BASE_URL=http://localhost:11434
 > **Where to get your Anthropic key:** https://console.anthropic.com
 > **Note:** The pipeline works **without an API key** in Mock mode for local testing.
 
-### Step 3 — Verify configuration
+### Step 3 â€” Verify configuration
 
 ```powershell
 python config.py
@@ -390,7 +390,7 @@ Expected output: `All directories created successfully.`
 
 ---
 
-## ⚙️ Installation and Setup
+## âš™ï¸ Installation and Setup
 
 ### Prerequisites
 - Python 3.9+ (tested on **3.11** and **3.13**)
@@ -418,29 +418,29 @@ python -c "from src.parser import parse; t = parse('<p>Hello<div>World</div>'); 
 
 ---
 
-## 🚀 Running the Project
+## ðŸš€ Running the Project
 
-### Option A — Run Directly with Python (Recommended)
+### Option A â€” Run Directly with Python (Recommended)
 
 #### Step 1: Start the Live Dashboard & API Server
 ```powershell
-python scripts/serve_dashboard.py --no-browser --port 8082
+python scripts/serve_dashboard.py --no-browser --port 8080
 ```
 
 Then open: **http://localhost:8080/dashboard/**
 
 > **Note:** Port 8080 or 8081 may be occupied by other services on your machine.
-> Use `--port 8082` (or any other free port).
+> Use `--port 8090` (or any other free port).
 
 #### Verify the server is listening
 ```powershell
-netstat -ano | findstr ":8082"
+netstat -ano | findstr ":8080"
 ```
 Expected output: `TCP    0.0.0.0:8082    0.0.0.0:0    LISTENING`
 
 ---
 
-### Option B — Run with Docker
+### Option B â€” Run with Docker
 
 #### Step 1: Build and start the container (first run downloads ~500MB)
 ```powershell
@@ -462,13 +462,13 @@ docker compose logs -f
 docker compose down
 ```
 
-#### Rebuild after code changes (uses cached layers — much faster)
+#### Rebuild after code changes (uses cached layers â€” much faster)
 ```powershell
 docker compose up -d --build
 ```
 
 > **Port conflict?** If port 8080 is occupied (another container/service), edit
-> `docker-compose.yml` line 16 and change `"8080:8080"` → `"8082:8080"`,
+> `docker-compose.yml` line 16 and change `"8080:8080"` â†’ `"8082:8080"`,
 > then run `docker compose up -d`.
 
 > **Slow first build?** Docker downloads the Python 3.11-slim base image (~200MB)
@@ -477,13 +477,13 @@ docker compose up -d --build
 
 ---
 
-## 🧪 Running the Automated Test Suite
+## ðŸ§ª Running the Automated Test Suite
 
-### Run All 34 Tests
+### Run All 207 Tests
 ```powershell
 python -m pytest tests/ -v
 ```
-Expected: `34 passed in ~1.6s`
+Expected: `207 passed in ~80s`
 
 ### Run with Coverage Report (creates `htmlcov/index.html`)
 ```powershell
@@ -507,7 +507,7 @@ python -m pytest tests/ -q
 
 ---
 
-## 🎛️ Master CLI — All Commands
+## ðŸŽ›ï¸ Master CLI â€” All Commands
 
 The [`cli.py`](cli.py) is your single command-centre for the entire project:
 
@@ -539,16 +539,16 @@ python cli.py carbon
 # Static security audit: AST scanner + 6-point STRIDE threat model check
 python cli.py audit
 
-# Live self-healing demo: inject a bug → watch it auto-patch itself
+# Live self-healing demo: inject a bug â†’ watch it auto-patch itself
 python cli.py repair-demo
 
-# Compile thesis to DOCX (local only — thesis/ folder is gitignored)
+# Compile thesis to DOCX (local only â€” thesis/ folder is gitignored)
 python scripts/compile_thesis_docx.py
 ```
 
 ---
 
-## 📊 Individual Research & Experiment Scripts
+## ðŸ“Š Individual Research & Experiment Scripts
 
 Run any experiment directly without the CLI wrapper:
 
@@ -559,7 +559,7 @@ python scripts/run_compliance.py --sample
 # W3C 6-Bucket Functional Matrix: test all 31 parser capability categories
 python scripts/run_upstream_matrix.py
 
-# Real-World Corpus: parse 12 historical websites (1991–2026)
+# Real-World Corpus: parse 12 historical websites (1991â€“2026)
 python scripts/eval_real_world_pages.py
 
 # Download the FULL W3C upstream test suite (1,000+ official tests)
@@ -586,13 +586,13 @@ python scripts/run_security_audit.py
 # Repair patterns: mine and classify recurring failure modes statistically
 python scripts/repair_pattern_mining.py
 
-# Self-repair demo: intentionally break the parser → watch it self-heal
+# Self-repair demo: intentionally break the parser â†’ watch it self-heal
 python scripts/demo_self_repair.py
 ```
 
 ---
 
-## 📁 Where to Find All Results
+## ðŸ“ Where to Find All Results
 
 After running experiments, all outputs are auto-saved:
 
@@ -625,17 +625,17 @@ Get-Content runs\<run_id>\reports\pipeline_report.json
 
 ---
 
-## 🌐 Live Dashboard URLs
+## ðŸŒ Live Dashboard URLs
 
 | URL | Description |
 |---|---|
 | `http://localhost:8080/dashboard/` | Main dashboard: compliance panels, benchmark charts, DOM Inspector |
-| `POST http://localhost:8082/api/parse` | REST API: send HTML, receive parsed DOM tree + trace |
+| `POST http://localhost:8080/api/parse` | REST API: send HTML, receive parsed DOM tree + trace |
 
 ### Test the REST API from PowerShell
 ```powershell
 $body = '{"html": "<p>Hello <b>World</b></p>"}'
-Invoke-WebRequest -Uri "http://localhost:8082/api/parse" `
+Invoke-WebRequest -Uri "http://localhost:8080/api/parse" `
   -Method POST `
   -ContentType "application/json" `
   -Body $body | Select-Object -ExpandProperty Content
@@ -643,12 +643,12 @@ Invoke-WebRequest -Uri "http://localhost:8082/api/parse" `
 
 ---
 
-## 🔍 Diagnostic Commands
+## ðŸ” Diagnostic Commands
 
 ```powershell
 # Check which ports are currently in use
 netstat -ano | findstr ":8080"
-netstat -ano | findstr ":8082"
+netstat -ano | findstr ":8080"
 
 # Check all running Docker containers and their port bindings
 docker ps -a
@@ -666,7 +666,7 @@ python -c "from src.parser import parse; t = parse('<p>Hello<div>World</div>'); 
 # Quick tokenizer test
 python -c "from src.parser import tokenize; tokens = tokenize('<p class=\"x\">Hi</p>'); print('[OK] Tokens:', len(tokens))"
 
-# Check cache is working (run twice — second call should show 0.00s latency)
+# Check cache is working (run twice â€” second call should show 0.00s latency)
 python -c "from src.cache import ResponseCache; c = ResponseCache(); print('[OK] Cache dir:', c.cache_dir)"
 
 # Verify the streaming API works
@@ -675,7 +675,7 @@ python -c "from src.parser import tokenize_stream; tokens = list(tokenize_stream
 
 ---
 
-## 🔁 CI/CD Pipeline (GitHub Actions)
+## ðŸ” CI/CD Pipeline (GitHub Actions)
 
 The project includes a full automated CI pipeline at [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
@@ -696,7 +696,7 @@ python -m pytest tests/ --cov=src --cov-report=term-missing -v
 
 ---
 
-## 💡 Using the Parser in Your Own Code
+## ðŸ’¡ Using the Parser in Your Own Code
 
 ```python
 from src.parser import tokenize, parse, parse_with_trace
@@ -708,7 +708,7 @@ tokens = tokenize(html)
 for token in tokens:
     print(token)
 
-# 2. Full parse → returns TreeNode (use .name not .tag)
+# 2. Full parse â†’ returns TreeNode (use .name not .tag)
 tree = parse(html)
 print("Root node:", tree.name)          # e.g. "document"
 print("Children:", tree.children)
@@ -728,7 +728,7 @@ for token in tokenize_stream(html):
 
 ---
 
-## 🤖 Running Individual AI Agents
+## ðŸ¤– Running Individual AI Agents
 
 ```python
 from src.claude_integration import SpecAgentAI, CodegenAgentAI, RepairAgentAI
@@ -755,7 +755,7 @@ print("Run ID:", report['run_id'])
 
 ---
 
-## 🔬 Key Technical Results
+## ðŸ”¬ Key Technical Results
 
 | Metric | Result |
 |---|---|
@@ -772,7 +772,7 @@ print("Run ID:", report['run_id'])
 
 ---
 
-## 🛠️ Troubleshooting
+## ðŸ› ï¸ Troubleshooting
 
 ### "ANTHROPIC_API_KEY not set"
 1. Get your key from https://console.anthropic.com
@@ -790,7 +790,7 @@ python -c "import anthropic; print('OK')"
 ### Port already in use (OSError: [WinError 10048])
 ```powershell
 # Find which process is using port 8082
-netstat -ano | findstr ":8082"
+netstat -ano | findstr ":8080"
 # Start on a different port instead
 python scripts/serve_dashboard.py --no-browser --port 8090
 ```
@@ -801,16 +801,16 @@ This is a known Windows Docker Desktop issue with large images (numpy/matplotlib
 ```powershell
 pip install -r requirements.txt
 pip install matplotlib python-docx
-python scripts/serve_dashboard.py --no-browser --port 8082
+python scripts/serve_dashboard.py --no-browser --port 8080
 ```
 
 ### TreeNode AttributeError: 'TreeNode' has no attribute 'tag'
 The node attribute is **`.name`**, not `.tag`:
 ```python
-# WRONG ❌
+# WRONG âŒ
 tree.tag
 
-# CORRECT ✅
+# CORRECT âœ…
 tree.name
 ```
 
@@ -821,7 +821,7 @@ tree.name
 
 ---
 
-## 🔐 Security Considerations
+## ðŸ” Security Considerations
 
 1. **API Key Protection:** Never commit `.env` to version control (it is in `.gitignore`)
 2. **Input Validation:** Parser validates and sanitises all HTML before processing
@@ -832,42 +832,54 @@ tree.name
 
 ---
 
-## 📚 References
+## ðŸ“š Academic & Technical References
 
-- [HTML5 Specification — WHATWG](https://html.spec.whatwg.org/)
-- [html5lib-tests — W3C Official Test Suite](https://github.com/html5lib/html5lib-tests)
-- [Anthropic Claude API Documentation](https://docs.anthropic.com/)
-- [BeautifulSoup4 (benchmark baseline)](https://www.crummy.com/software/BeautifulSoup/)
-- [lxml (benchmark baseline)](https://lxml.de/)
+### Standards & Specifications
+- **WHATWG:** [HTML Living Standard](https://html.spec.whatwg.org/) â€” Section 8: Parsing HTML documents, tokenisation state machine, and tree construction dispatch.
+- **W3C:** [html5lib-tests Official Test Suite](https://github.com/html5lib/html5lib-tests) â€” Conformance test vectors covering tokenizer states, tree construction, and entity decoding.
+- **RFC 8259:** [The JavaScript Object Notation (JSON) Data Interchange Format](https://tools.ietf.org/html/rfc8259) â€” Standard for intermediate AST and execution trace serialization.
 
+### Software Architecture & Compiler Engineering
+- Aho, A. V., Lam, M. S., Sethi, R., & Ullman, J. D. (2006). *Compilers: Principles, Techniques, and Tools* (2nd ed.). Addison-Wesley.
+- McKeeman, W. M. (1998). *Differential Testing for Software*. Digital Technical Journal, 10(1), 100â€“107.
+- Angluin, D. (1987). *Learning regular sets from queries and counterexamples*. Information and Computation, 75(2), 87â€“106.
+
+### Agentic AI & Automated Program Repair
+- Anthropic. (2024). *The Claude 3.5 Sonnet Model Card and API Technical Specification*. Anthropic PBC.
+- Schwartz, R., Dodge, J., Smith, N. A., & Etzioni, O. (2020). *Green AI*. Communications of the ACM, 63(12), 54â€“63.
+- Monperrus, M. (2018). *Automatic software repair: a bibliography*. ACM Computing Surveys (CSUR), 51(1), 1â€“24.
+
+### Benchmark Baselines & Industrial Parsers
+- Leonard, R. (2023). *Beautiful Soup 4 Documentation*. Crummy Software.
+- Behnel, S., et al. (2023). *lxml â€” Processing XML and HTML with Python*. lxml.de.
 ---
 
 **Last Updated:** November 2026
 **Python Version:** 3.9+ (tested on 3.11 and 3.13.1)
 **Primary AI Model:** Claude 3.5 Sonnet (+ GPT-4o and local Ollama Llama 3 fallback)
-**Docker Base Image:** Python 3.11-slim · Default Port: 8082
-**Test Suite:** 207 automated tests · 100% passing
+**Docker Base Image:** Python 3.11-slim Â· Default Port: 8080
+**Test Suite:** 207 automated tests Â· 100% passing
 
 ---
 
-## ⚠️ Limitations & Future Work
+## âš ï¸ Limitations & Future Work
 
 ### Current Scope
 This parser implements an **HTML5 structural subset** designed to validate the agentic pipeline methodology. The following WHATWG specification features have been implemented or identified as future work:
 
 | Feature | Status | Notes |
 |---|---|---|
-| Core tag tree construction | ✅ Implemented | Tags, attributes, nesting, text nodes |
-| Implicit tag closures (p, li, heading) | ✅ Implemented | p closes before div/h1–h6 etc. |
-| Void/self-closing elements | ✅ Implemented | br, img, hr, input etc. |
-| Raw text elements (script, style) | ✅ Implemented | Content treated as raw text |
-| DOCTYPE handling | ✅ Implemented | Basic doctype recognition |
-| Comment nodes | ✅ Implemented | Standard, bogus comments |
-| Table auto-wrapping (tbody, tr) | ✅ Implemented | Basic table structure |
-| **Adoption Agency Algorithm** | ➡️ Future Work | Complex misnested formatting elements |
-| **Foster Parenting** | ➡️ Future Work | Text/elements misplaced in tables |
-| **Foreign Content** (SVG, MathML) | ➡️ Future Work | Requires namespace handling |
-| **Full Tokenizer States** (80+) | ➡️ Future Work | Only core states implemented |
+| Core tag tree construction | âœ… Implemented | Tags, attributes, nesting, text nodes |
+| Implicit tag closures (p, li, heading) | âœ… Implemented | p closes before div/h1â€“h6 etc. |
+| Void/self-closing elements | âœ… Implemented | br, img, hr, input etc. |
+| Raw text elements (script, style) | âœ… Implemented | Content treated as raw text |
+| DOCTYPE handling | âœ… Implemented | Basic doctype recognition |
+| Comment nodes | âœ… Implemented | Standard, bogus comments |
+| Table auto-wrapping (tbody, tr) | âœ… Implemented | Basic table structure |
+| **Adoption Agency Algorithm** | âž¡ï¸ Future Work | Complex misnested formatting elements |
+| **Foster Parenting** | âž¡ï¸ Future Work | Text/elements misplaced in tables |
+| **Foreign Content** (SVG, MathML) | âž¡ï¸ Future Work | Requires namespace handling |
+| **Full Tokenizer States** (80+) | âž¡ï¸ Future Work | Only core states implemented |
 
 ### Research Future Work Axes (13 Axes)
 
@@ -875,8 +887,8 @@ The thesis identifies **13 research axes** for extending this agentic framework 
 
 | Axis | Title | Description |
 |---|---|---|
-| 1 | **Adoption Agency Algorithm** | Full WHATWG §8.13 adoption agency for misnested formatting elements |
-| 2 | **Foster Parenting & Misplaced Content** | Relocate table-misplaced text/elements per WHATWG §8.14 |
+| 1 | **Adoption Agency Algorithm** | Full WHATWG Â§8.13 adoption agency for misnested formatting elements |
+| 2 | **Foster Parenting & Misplaced Content** | Relocate table-misplaced text/elements per WHATWG Â§8.14 |
 | 3 | **Foreign Content Namespaces** | SVG and MathML namespace integration with correct tokenizer switching |
 | 4 | **Full 80+ Tokenizer States** | Complete WHATWG tokenizer state machine beyond the implemented core states |
 | 5 | **Streaming & Incremental Parsing** | Chunk-by-chunk parsing for large documents and live network streams |
@@ -890,7 +902,7 @@ The thesis identifies **13 research axes** for extending this agentic framework 
 | 13 | **Distributed Multi-Agent Consensus via CRDTs** | Replace single-leader repair with a CRDT-based distributed consensus protocol so multiple RepairAgentAI replicas agree on the canonical AST without locks |
 
 ### Why This Scope Is Academically Valid
-The research contribution is the **agentic pipeline methodology** — not the completeness of the parser itself. The parser serves as the target system demonstrating that the multi-agent assembly line can:
+The research contribution is the **agentic pipeline methodology** â€” not the completeness of the parser itself. The parser serves as the target system demonstrating that the multi-agent assembly line can:
 1. Interpret a specification via `SpecAgentAI`
 2. Generate conformant code via `CodegenAgentAI`
 3. Validate quality via `CritiqueAgentAI`

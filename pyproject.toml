@@ -9,11 +9,11 @@ description = "Trustworthy HTML5 Parser via Agentic AI: a multi-agent, self-heal
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
-    { name = "Opoka JM Silvio", email = "silvio@example.com" }
+    { name = "Opoka JM Silvio", email = "opoka2010@gmail.com" }
 ]
 keywords = [
     "html5", "parser", "agentic-ai", "multi-agent", "self-healing",
-    "llm", "claude", "groq", "tokenizer", "dom", "w3c"
+    "llm", "claude", "tokenizer", "dom", "w3c"
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
