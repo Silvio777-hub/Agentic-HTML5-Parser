@@ -853,21 +853,41 @@ tree.name
 ## ⚠️ Limitations & Future Work
 
 ### Current Scope
-This parser implements an **HTML5 structural subset** designed to validate the agentic pipeline methodology. The following WHATWG specification features are identified as future work:
+This parser implements an **HTML5 structural subset** designed to validate the agentic pipeline methodology. The following WHATWG specification features have been implemented or identified as future work:
 
 | Feature | Status | Notes |
 |---|---|---|
 | Core tag tree construction | ✅ Implemented | Tags, attributes, nesting, text nodes |
-| Implicit tag closures (p, li, heading) | ✅ Implemented | p closes before div/h1-h6 etc. |
+| Implicit tag closures (p, li, heading) | ✅ Implemented | p closes before div/h1–h6 etc. |
 | Void/self-closing elements | ✅ Implemented | br, img, hr, input etc. |
 | Raw text elements (script, style) | ✅ Implemented | Content treated as raw text |
 | DOCTYPE handling | ✅ Implemented | Basic doctype recognition |
 | Comment nodes | ✅ Implemented | Standard, bogus comments |
 | Table auto-wrapping (tbody, tr) | ✅ Implemented | Basic table structure |
-| **Adoption Agency Algorithm** | 🔜 Future Work | Complex misnested formatting elements |
-| **Foster Parenting** | 🔜 Future Work | Text/elements misplaced in tables |
-| **Foreign Content** (SVG, MathML) | 🔜 Future Work | Requires namespace handling |
-| **Full Tokenizer States** (80+) | 🔜 Future Work | Only core states implemented |
+| **Adoption Agency Algorithm** | ➡️ Future Work | Complex misnested formatting elements |
+| **Foster Parenting** | ➡️ Future Work | Text/elements misplaced in tables |
+| **Foreign Content** (SVG, MathML) | ➡️ Future Work | Requires namespace handling |
+| **Full Tokenizer States** (80+) | ➡️ Future Work | Only core states implemented |
+
+### Research Future Work Axes (13 Axes)
+
+The thesis identifies **13 research axes** for extending this agentic framework beyond its current scope:
+
+| Axis | Title | Description |
+|---|---|---|
+| 1 | **Adoption Agency Algorithm** | Full WHATWG §8.13 adoption agency for misnested formatting elements |
+| 2 | **Foster Parenting & Misplaced Content** | Relocate table-misplaced text/elements per WHATWG §8.14 |
+| 3 | **Foreign Content Namespaces** | SVG and MathML namespace integration with correct tokenizer switching |
+| 4 | **Full 80+ Tokenizer States** | Complete WHATWG tokenizer state machine beyond the implemented core states |
+| 5 | **Streaming & Incremental Parsing** | Chunk-by-chunk parsing for large documents and live network streams |
+| 6 | **Adversarial Robustness & Fuzzing** | Property-based fuzzing with coverage-guided mutation and grammar-based adversarial inputs |
+| 7 | **Neural-Symbolic Grammar Induction** | Active Automata Learning (L*/TTT) to infer minimal DFAs from parser traces; replace hand-coded FSM transitions with learned grammars |
+| 8 | **Green AI Scheduling & Carbon-Aware Routing** | Dynamic agent scheduling driven by real-time grid carbon intensity; defer non-critical repairs to low-carbon windows |
+| 9 | **Automated Exploit Synthesis & Zero-Day Quarantine** | Automated exploit generation from repair patches to discover zero-day parse differentials; quarantine unsafe subtrees before repair |
+| 10 | **SIMD/AVX-512 & GPU Tokenizer Synthesis** | Vectorised byte-scanning kernels via SIMD/AVX-512 or GPU compute shaders; target sub-millisecond tokenisation for 10 MB+ documents |
+| 11 | **WHATWG Living Standard Autonomous Tracking** | CI pipeline that diffs each WHATWG Living Standard commit, detects spec changes affecting the FSM, and auto-generates patch PRs |
+| 12 | **Differential Shadow Execution & Web-Scale Oracle Mining** | Shadow-execute the agentic parser alongside reference browsers; mine correctness oracles from billions of real-world HTML documents at web scale |
+| 13 | **Distributed Multi-Agent Consensus via CRDTs** | Replace single-leader repair with a CRDT-based distributed consensus protocol so multiple RepairAgentAI replicas agree on the canonical AST without locks |
 
 ### Why This Scope Is Academically Valid
 The research contribution is the **agentic pipeline methodology** — not the completeness of the parser itself. The parser serves as the target system demonstrating that the multi-agent assembly line can:
