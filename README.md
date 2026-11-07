@@ -269,15 +269,12 @@ Agentic AI HTML5 Parser/
 │   ├── compare_benchmarks.py       # Latency & memory benchmark vs BeautifulSoup4, html5lib, lxml
 │   ├── run_adversarial.py          # 15 red-team attack vectors (100% resilience)
 │   ├── run_ablation_study.py       # Empirical ablation: proves each agent's contribution
-│   ├── generate_thesis_charts.py   # Auto-generates 7 publication-ready 300-DPI figures
+│   ├── generate_thesis_charts.py   # Publication figures generator (300-DPI charts)
 │   ├── eval_real_world_pages.py    # 12-site real-world corpus evaluation (1991–2026)
 │   ├── estimate_carbon.py          # Green AI energy consumption & CO2 calculator
 │   ├── repair_pattern_mining.py    # Statistical failure taxonomy miner
 │   ├── demo_self_repair.py         # Live self-healing demo (inject bug → auto-patch)
-│   ├── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
-│   ├── compile_thesis_docx.py      # Compiles all thesis chapters into Master_Thesis_Silvio.docx (local only)
-│   ├── generate_future_docx.py     # Generates Future Works research roadmap document (local only)
-│   └── generate_viva_docx.py       # Generates VIVA.docx oral defense master Q&A guide (local only)
+│   └── run_security_audit.py       # AST static scanner + 6-point STRIDE threat model
 │
 ├── dashboard/                      ← INTERACTIVE 5-TAB WEB DASHBOARD
 │   └── index.html                  # Bootstrap 5: Compliance · Benchmark · Adversarial · Ablation · Real-World
@@ -309,20 +306,6 @@ Agentic AI HTML5 Parser/
 │   ├── security_audit_report.json    # AST code scan findings & STRIDE matrix
 │   └── self_repair_demo_result.json  # Audit trail of live self-healing run
 │
-├── figures/                        ← 7 × 300-DPI PUBLICATION FIGURES (local only, generated via: python cli.py charts)
-│   ├── 01_latency_vs_parsers.png          # Comparative latency bar chart (our parser vs BS4, lxml)
-│   ├── 02_memory_consumption.png          # Peak memory comparison across parsers
-│   ├── 03_repair_pattern_distribution.png # Error taxonomy pie chart (self-repair loop)
-│   ├── 04_parallel_speedup.png            # ThreadPool 42% wall-clock speedup demonstration
-│   ├── 05_ablation_comparison.png         # Per-agent ablation comparison (7-agent vs subsets)
-│   ├── 06_w3c_compliance_progression.png  # W3C match progression: 0% → 31.85% over iterations
-│   └── 07_real_world_corpus_profile.png   # 12-site real-world corpus parse success profile
-│
-├── presentation/                   ← THESIS DEFENSE MATERIALS (local only)
-│   ├── defense_presentation.md     # 25-slide Markdown deck with speaker notes
-│   ├── defense_qa_prep.md          # Viva voce cheat sheet — 25 likely examiner questions + answers
-│   └── slides.html                 # Interactive 17-slide HTML5 defense deck (open in any browser)
-│
 ├── plugins/example_lint/           ← PLUGIN SYSTEM EXAMPLE
 │   ├── plugin.yml                  # Plugin manifest (name, version, hook points)
 │   └── lint_rule.py                # Example lint rule demonstrating the plugin API
@@ -330,7 +313,10 @@ Agentic AI HTML5 Parser/
 ├── cache/                          ← SHA-256 RESPONSE CACHE
 │   └── .gitkeep                    # Cached LLM responses stored here (replay = $0.00, 0.00s latency)
 │
-├── .github/workflows/ci.yml        ← GITHUB ACTIONS CI/CD PIPELINE
+├── .github/                        ← GITHUB ACTIONS CI/CD & TEMPLATES
+│   ├── workflows/ci.yml            # Multi-OS matrix CI (Ubuntu Linux + Windows Server)
+│   ├── ISSUE_TEMPLATE/             # Bug report and feature request templates
+│   └── PULL_REQUEST_TEMPLATE.md    # PR submission checklist
 │
 ├── cli.py                          # Master CLI (one command to run everything)
 ├── orchestrator.py                 # Full pipeline orchestrator with 3-iteration repair loop
@@ -342,6 +328,9 @@ Agentic AI HTML5 Parser/
 ├── architecture.md                 # Full system diagrams, concurrency specs, agent contracts
 ├── quickstart.md                   # Step-by-step setup guide including LLM pipeline
 ├── CONTRIBUTING.md                 # Contribution guidelines
+├── CHANGELOG.md                    # Keep-a-Changelog release history (v1.0.0 – v1.4.0)
+├── SECURITY.md                     # Responsible security disclosure policy & threat model
+├── LICENSE                         # MIT License
 ├── demo_walkthrough.ipynb          # Interactive Jupyter notebook walkthrough
 ├── .env.example                    # API key template — copy to .env and fill in keys
 └── README.md                       # This file
@@ -541,8 +530,6 @@ python cli.py audit
 # Live self-healing demo: inject a bug → watch it auto-patch itself
 python cli.py repair-demo
 
-# Compile thesis to DOCX (local only — thesis/ folder is gitignored)
-python scripts/compile_thesis_docx.py
 ```
 
 ---

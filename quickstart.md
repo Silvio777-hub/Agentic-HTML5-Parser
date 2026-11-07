@@ -117,7 +117,6 @@ python scripts/run_compliance.py
 │
 ├── tests/                # 207 automated tests across 10 test suites (pytest)
 ├── data/                 # Results JSON files (auto-generated)
-├── figures/              # 300-DPI publication figures (auto-generated)
 ├── dashboard/            # Interactive web dashboard HTML
 ├── orchestrator.py       # Main 7-agent pipeline runner
 ├── cli.py                # Unified CLI entry point

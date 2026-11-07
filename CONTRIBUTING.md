@@ -67,7 +67,6 @@ All evaluation scripts work without an Anthropic API key. Set `LLM_PROVIDER=mock
 | `tests/` | 207 automated tests across 10 test modules |
 | `scripts/` | Evaluation, benchmark, and automation scripts |
 | `data/` | JSON result files (auto-generated) |
-| `figures/` | 300-DPI publication figures (auto-generated) |
 | `dashboard/index.html` | 5-tab interactive web dashboard |
 | `plugins/example_lint/` | Example plugin demonstrating the hook API |
 
